@@ -1,73 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  google-site-verification: google79a55f3fcaf86b46.html  <meta charset="UTF-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Katelyn's Campus Queens ♡</title>
-
-  <!-- Google Search Script (loads once) -->
-  <script async src="https://cse.google.com/cse.js?cx=e034be13cfdca4837"></script> 
-  <script src="https://www.gstatic.com/cloud-search/static/cse/v1/prod/cse.js?h=..."></script> <!-- Optional for enhanced UI -->
+  <!-- Google Site Verification (replace the code below with the one Google gave you -->
+  <meta name="google-site-verification" content="79a55f3fcaf86b46" />
+  
+  <title>Katelyn's Campus Queens - Pink College Vibes</title>
+  <meta name="description" content="Everything a college girl needs in one pink place: dorm inspo, student app, cute games, aesthetics ♡">
+  
+  <!-- Google Programmable Search Engine -->
+  <script async src="https://cse.google.com/cse.js?cx=e034be13cfdca4837"></script>
   
   <style>
-    body{font-family:'Georgia',serif;background:#ffeef8;color:#ff6bc1;margin:0;padding:20px;text-align:center;}
-    h1{font-size:3em;margin:30px 0;color:#ff1493;}
-    <script async src="https://cse.google.com/cse.js?cx=e034be13cfdca4837">
-</script>
-<div class="gcse-search"></div>
-    
-    /* ♡ Cute Pink Search Bar ♡ */
-    #pink-search {
-      max-width: 500px;
-      margin: 30px auto;
-      padding: 12px;
-      background: white;
-      border-radius: 50px;
-      box-shadow: 0 10px 30px rgba(255,105,180,0.3);
-    }
-    .gsc-input { 
-      font-size: 1.2em !important;
-      padding: 12px !important;
-      border: none !important;
-      outline: none !important;
-      font-family: 'Georgia', serif !important;
-      color: #ff1493 !important;
-    }
-    .gsc-search-button {
-      background: #ff1493 !important;
-      border: none !important;
-      border-radius: 50px !important;
-      padding: 12px 24px !important;
-      color: white !important;
-    }
-    /* Hide Google branding */
-    .gsc-branding, .gcsc-branding { display: none !important; }
+    body {font-family: 'Georgia', serif; background: #ffeef8; color: #ff6bc1; margin: 0; padding: 20px; text-align: center;}
+    h1 {font-size: 3em; margin: 30px 0; color: #ff1493;}
+    p.tagline {font-style: italic; color: #db7093; margin-bottom: 30px;}
 
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin:40px;}
-    .card{background:white;padding:20px;border-radius:20px;box-shadow:0 10px 30px rgba(255,105,180,0.2);transition:0.3s;}
-    .card:hover{transform:scale(1.05);box-shadow:0 15px 40px rgba(255,20,147,0.3);}
-    .card a{text-decoration:none;color:#ff1493;font-size:1.5em;font-weight:bold;}
-    .card p{color:#666;margin-top:10px;}
-    footer{margin-top:80px;color:#ff8ccd;font-size:0.9em;}
+    /* Pink Search Bar */
+    .gcse-searchbox-only {max-width: 600px; margin: 30px auto;}
+    .gsc-input {font-size: 1.2em !important; padding: 14px !important; border-radius: 50px !important;}
+    .gsc-search-button {background: #ff1493 !important; border-radius: 50px !important; padding: 12px 30px !important;}
+
+    /* Hide Google branding */
+    .gsc-branding, .gcsc-branding {display: none !important;}
+
+    /* Visual reverse search */
+    #visual-search {margin: 50px auto; max-width: 500px;}
+    #upload-btn {background:#ff69b4; color:white; border:none; padding:12px 24px; border-radius:50px; cursor:pointer; font-size:1.1em;}
+    #results img {width:120px; border-radius:12px; margin:8px; box-shadow:0 4px 15px rgba(255,105,180,0.4);}
+
+    .grid {display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:25px; margin:50px auto; max-width:1200px;}
+    .card {background:white; padding:25px; border-radius:20px; box-shadow:0 10px 30px rgba(255,105,180,0.2); transition:0.3s;}
+    .card:hover {transform:scale(1.05);}
+    .card a {text-decoration:none; color:#ff1493; font-size:1.6em; font-weight:bold;}
+    footer {margin:80px 0 20px; color:#ff8ccd;}
   </style>
 </head>
-<body>
-  <h1>♡ Katelyn's Campus Queens ♡</h1>
-  <p>Everything a college girl needs in one pink place</p>
 
-  <!-- ♡ THE SEARCH BAR ♡ -->
-  <div id="pink-search">
-    <div class="gcse-searchbox-only" data-resultsUrl="https://katelynscampusqueens.github.io/search.html"></div>
+<body>
+  <h1>Katelyn's Campus Queens</h1>
+  <p class="tagline">Everything a college girl needs in one pink place</p>
+
+  <!-- Text Search Bar -->
+  <div class="gcse-searchbox-only" data-resultsUrl="https://katelynvparry-tech.github.io/katelyns-campus-queens/search-results.html"></div>
+
+  <!-- Visual / Reverse Image Search -->
+  <div id="visual-search">
+    <h3>Snap or Upload a Photo to Search</h3>
+    <input type="file" id="imageUpload" accept="image/*" style="display:none;">
+    <button id="upload-btn" onclick="document.getElementById('imageUpload').click()">
+      Upload Pink Inspo!
+    </button>
+    <div id="results"></div>
   </div>
 
-<!-- ♡ Visual Search: Upload Photo ♡ -->
-  <div id="visual-search">
-    <h3>♡ Snap or Upload a Photo to Search ♡</h3>
-    <input type="file" id="file-input" accept="image/*" onchange="handleImageUpload(event)">
-    <button id="upload-btn" onclick="document.getElementById('file-input').click()">📸 Upload Pink Inspo!</button>
-    <div id="results"></div>
-  </div>  
-  
   <div class="grid">
     <div class="card"><a href="katelyn_app.html">CampusKit Student App</a><p>Schedule, mood tracker, to-do & more</p></div>
     <div class="card"><a href="TestSite.html">Girl Games Hub</a><p>Chess Blackjack Tic-Tac-Toe</p></div>
@@ -77,105 +64,26 @@
 
   <footer>Made with ♡ by Katelyn • Class of 2028</footer>
 
+  <!-- Reverse Image Search Script (no API key needed!) -->
   <script>
-    // Replace with your Google API Key
-    const API_KEY = 'YOUR_GOOGLE_API_KEY_HERE'; // From Step 1
-    const CX = 'e034be13cfdca4837'; // Your search engine ID
-
-    async function handleImageUpload(event) {
-      const file = event.target.files[0];
+    document.getElementById('imageUpload').addEventListener('change', function(e) {
+      const file = e.target.files[0];
       if (!file) return;
 
-      const formData = new FormData();
-      formData.append('image', file);
-
-      // Step 1: Analyze image with Vision API
-      const visionResponse = await fetch(`https://vision.googleapis.com/v1/images:annotate?key=${API_KEY}`, {
-        method: 'POST',
-        body: JSON.stringify({
-          requests: [{
-            image: { content: await fileToBase64(file) },
-            features: [{ type: 'LABEL_DETECTION', maxResults: 5 }]
-          }]
-        })
-      });
-      const visionData = await visionResponse.json();
-      const labels = visionData.responses[0].labelAnnotations.map(label => label.description).join(' ');
-
-      // Step 2: Search site with extracted text
-      const searchUrl = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX}&q=${encodeURIComponent(labels)}&searchType=image`;
-      const searchResponse = await fetch(searchUrl);
-      const searchData = await searchResponse.json();
-
-      // Step 3: Display results
-      displayResults(searchData.items || []);
-    }
-
-    function fileToBase64(file) {
-      return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = () => resolve(reader.result.split(',')[1]);
-      });
-    }
-
-    function displayResults(items) {
-      const resultsDiv = document.getElementById('results');
-      if (items.length === 0) {
-        resultsDiv.innerHTML = '<p>No pink matches found! Try another photo ♡</p>';
-        return;
-      }
-      resultsDiv.innerHTML = items.map(item => 
-        `<div class="result-item">
-          <img src="${item.image.thumbnailLink}" alt="${item.title}" style="width:100px; border-radius:10px;">
-          <a href="${item.link}">${item.title}</a><p>${item.snippet}</p>
-        </div>`
-      ).join('');
-    } 
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        const imgDataUrl = ev.target.result;
+        const googleUrl = `https://www.google.com/searchbyimage?image_url=${encodeURIComponent(imgDataUrl)}`;
+        window.open(googleUrl, '_blank');
+        
+        // Optional: show thumbnail preview
+        document.getElementById('results').innerHTML = `
+          <p>Searching your photo on Google...</p>
+          <img src="${imgDataUrl}" alt="Your uploaded inspo">
+        `;
+      };
+      reader.readAsDataURL(file);
+    });
   </script>
-</body>
-</html>  
-</body>
-</html> 
-
-<button onclick="reverseImageSearch()">🔍 Reverse Search This Image</button>
-<input type="file" id="tineye-input" accept="image/*" style="display:none;" onchange="uploadToTinEye(event)">
-<script>
-function reverseImageSearch() {
-  document.getElementById('tineye-input').click();
-}
-function uploadToTinEye(event) {
-  const file = event.target.files[0];
-  if (file) {
-    const form = new FormData();
-    form.append('image', file);
-    window.open('https://tineye.com/search', '_blank'); // Or integrate via their API if you sign up (free tier)
-    // For full integration: Use TinEye API (free for 10 searches/day)
-  }
-}
-</script>
-<style>
-    body{font-family:'Georgia',serif;background:#ffeef8;color:#ff6bc1;margin:0;padding:20px;text-align:center;}
-    h1{font-size:3em;margin:30px 0;color:#ff1493;}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin:40px;}
-    .card{background:white;padding:20px;border-radius:20px;box-shadow:0 10px 30px rgba(255,105,180,0.2);transition:0.3s;}
-    .card:hover{transform:scale(1.05);box-shadow:0 15px 40px rgba(255,20,147,0.3);}
-    .card a{text-decoration:none;color:#ff1493;font-size:1.5em;font-weight:bold;}
-    .card p{color:#666;margin-top:10px;}
-    footer{margin-top:80px;color:#ff8ccd;font-size:0.9em;}
-  </style>
-</head>
-<body>
-  <h1>♡ Katelyn's Campus Queens ♡</h1>
-  <p>Everything a college girl needs in one pink place</p>
-
-  <div class="grid">
-    <div class="card"><a href="katelyn_app.html">CampusKit Student App</a><p>Schedule, mood tracker, to-do & more</p></div>
-    <div class="card"><a href="TestSite.html">Girl Games Hub</a><p>Chess ♟ Blackjack ♠ Tic-Tac-Toe</p></div>
-    <div class="card"><a href="dorm3.html">Dorm Shopping Checklist</a><p>Cute Amazon finds + room inspo</p></div>
-    <div class="card"><a href="aesthetic.html">Pink Aesthetic Vault</a><p>Mood boards & wallpapers</p></div>
-  </div>
-
-  <footer>Made with ♡ by Katelyn • Class of 2028</footer>
 </body>
 </html>
