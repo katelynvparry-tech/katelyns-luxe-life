@@ -4,7 +4,68 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Katelyn's Campus Queens ♡</title>
+
+  <!-- Google Search Script (loads once) -->
+  <script async src="https://cse.google.com/cse.js?cx=e034be13cfdca4837"></script> 
   <style>
+    body{font-family:'Georgia',serif;background:#ffeef8;color:#ff6bc1;margin:0;padding:20px;text-align:center;}
+    h1{font-size:3em;margin:30px 0;color:#ff1493;}
+    
+    /* ♡ Cute Pink Search Bar ♡ */
+    #pink-search {
+      max-width: 500px;
+      margin: 30px auto;
+      padding: 12px;
+      background: white;
+      border-radius: 50px;
+      box-shadow: 0 10px 30px rgba(255,105,180,0.3);
+    }
+    .gsc-input { 
+      font-size: 1.2em !important;
+      padding: 12px !important;
+      border: none !important;
+      outline: none !important;
+      font-family: 'Georgia', serif !important;
+      color: #ff1493 !important;
+    }
+    .gsc-search-button {
+      background: #ff1493 !important;
+      border: none !important;
+      border-radius: 50px !important;
+      padding: 12px 24px !important;
+      color: white !important;
+    }
+    /* Hide Google branding */
+    .gsc-branding, .gcsc-branding { display: none !important; }
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin:40px;}
+    .card{background:white;padding:20px;border-radius:20px;box-shadow:0 10px 30px rgba(255,105,180,0.2);transition:0.3s;}
+    .card:hover{transform:scale(1.05);box-shadow:0 15px 40px rgba(255,20,147,0.3);}
+    .card a{text-decoration:none;color:#ff1493;font-size:1.5em;font-weight:bold;}
+    .card p{color:#666;margin-top:10px;}
+    footer{margin-top:80px;color:#ff8ccd;font-size:0.9em;}
+  </style>
+</head>
+<body>
+  <h1>♡ Katelyn's Campus Queens ♡</h1>
+  <p>Everything a college girl needs in one pink place</p>
+
+  <!-- ♡ THE SEARCH BAR ♡ -->
+  <div id="pink-search">
+    <div class="gcse-searchbox-only" data-resultsUrl="https://katelynscampusqueens.github.io/search.html"></div>
+  </div>
+
+  <div class="grid">
+    <div class="card"><a href="katelyn_app.html">CampusKit Student App</a><p>Schedule, mood tracker, to-do & more</p></div>
+    <div class="card"><a href="TestSite.html">Girl Games Hub</a><p>Chess Blackjack Tic-Tac-Toe</p></div>
+    <div class="card"><a href="dorm3.html">Dorm Shopping Checklist</a><p>Cute Amazon finds + room inspo</p></div>
+    <div class="card"><a href="aesthetic.html">Pink Aesthetic Vault</a><p>Mood boards & wallpapers</p></div>
+  </div>
+
+  <footer>Made with ♡ by Katelyn • Class of 2028</footer>
+</body>
+</html> 
+<style>
     body{font-family:'Georgia',serif;background:#ffeef8;color:#ff6bc1;margin:0;padding:20px;text-align:center;}
     h1{font-size:3em;margin:30px 0;color:#ff1493;}
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin:40px;}
