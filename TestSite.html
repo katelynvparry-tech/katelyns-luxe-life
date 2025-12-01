@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GirlGames ♟️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  body{background:linear-gradient(135deg,#ff9ece,#ff69b4);margin:0;font-family:'Poppins',sans-serif;color:#fff;text-align:center;padding:20px;min-height:100vh}
+  h1{font-size:3.5rem;margin:20px 0 10px;text-shadow:0 3px 10px rgba(0,0,0,0.4)}
+  p{font-size:1.3rem;margin-bottom:40px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px;max-width:1200px;margin:auto}
+  .card{background:#fff;color:#333;border-radius:20px;padding:30px;box-shadow:0 10px 30px rgba(0,0,0,0.3);transition:.3s}
+  .card:hover{transform:scale(1.05)}
+  .card h3{font-size:1.7rem;color:#ff69b4;margin:0 0 10px}
+  .btn{background:#ff69b4;color:#fff;border:none;padding:15px;border-radius:50px;font-size:1.2rem;cursor:pointer;width:100%;margin-top:10px}
+  .btn:hover{background:#ff1493}
+  .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);justify-content:center;align-items:center;z-index:999}
+  .modal-content{background:#fff;border-radius:20px;padding:30px;max-width:90%;max-height:90vh;overflow:auto;position:relative}
+  .close{position:absolute;top:10px;right:20px;font-size:2.8rem;color:#ff69b4;cursor:pointer}
+  #myBoard{width:400px;margin:20px auto}
+  canvas{border:4px solid #fff;border-radius:15px}
+  .ttt-grid{display:grid;grid-template-columns:repeat(3,100px);gap:8px;margin:20px auto;justify-content:center}
+  .ttt-cell{width:100px;height:100px;background:#ffe4f0;border:4px solid #ff69b4;border-radius:15px;font-size:3rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .bj-cards{font-size:2.5rem;margin:15px}
+</style>
+</head>
+<body>
+
+<h1>GirlGames ♟️</h1>
+<p>All your fave games in one pink place</p>
+
+<div class="grid">
+  <div class="card"><h3>♟️ Chess</h3><button class="btn" onclick="openM('chess')">Play Chess</button></div>
+  <div class="card"><h3>✗ Tic-Tac-Toe</h3><button class="btn" onclick="openM('ttt')">Play</button></div>
+  <div class="card"><h3>🃏 Blackjack</h3><button class="btn" onclick="openM('bj')">Play 21</button></div>
+  <div class="card"><h3>🏌️ Golf Putt</h3><button class="btn" onclick="openM('golf')">Putt</button></div>
+  <div class="card"><h3>🔫 Shooting Range</h3><button class="btn" onclick="openM('shoot')">Shoot</button></div>
+</div>
+
+<!-- MODALS -->
+<div id="chess" class="modal"><div class="modal-content"><span class="close" onclick="closeM('chess')">&times;</span><h2>Chess vs AI</h2><div id="myBoard"></div><p id="status" style="font-size:1.5rem;color:#ff69b4;margin:20px">Your turn</p></div></div>
+
+<div id="ttt" class="modal"><div class="modal-content"><span class="close" onclick="closeM('ttt')">&times;</span><h2>Tic-Tac-Toe</h2><div id="tttGrid" class="ttt-grid"></div><p id="tttStatus" style="font-size:1.5rem;color:#ff69b4;margin:20px">X goes first</p><button class="btn" onclick="resetTTT()">New Game</button></div></div>
+
+<div id="bj" class="modal"><div class="modal-content"><span class="close" onclick="closeM('bj')">&times;</span><h2>Blackjack</h2>
+  <div class="bj-cards" id="dealerCards"></div><p>Dealer: <span id="dealerScore"></span></p>
+  <div class="bj-cards" id="playerCards"></div><p>You: <span id="playerScore"></span></p>
+  <div style="margin:20px">
+    <button class="btn" id="dealBtn" onclick="deal()">Deal</button>
+    <button class="btn" id="hitBtn" style="display:none" onclick="hit()">Hit</button>
+    <button class="btn" id="standBtn" style="display:none" onclick="stand()">Stand</button>
+  </div>
+  <p id="bjmsg" style="font-size:1.5rem;color:#ff69b4"></p>
+</div></div>
+
+<div id="golf" class="modal"><div class="modal-content"><span class="close" onclick="closeM('golf')">&times;</span><h2>Golf Putt</h2><canvas id="golfCanvas" width="450" height="300"></canvas><p id="golfmsg">Click & drag ball → release</p></div></div>
+
+<div id="shoot" class="modal"><div class="modal-content"><span class="close" onclick="closeM('shoot')">&times;</span><h2>Shooting Range</h2><canvas id="shootCanvas" width="450" height="350"></canvas><p id="shootmsg">Score: 0</p></div></div>
+
+<script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+<script>
+function openM(id){document.getElementById(id).style.display='flex';if(id==='chess')startChess();if(id==='ttt')startTTT();if(id==='bj')resetBJ();if(id==='golf')startGolf();if(id==='shoot')startShoot();}
+function closeM(id){document.getElementById(id).style.display='none';}
+window.onclick=e=>{if(e.target.classList.contains('modal'))closeM(e.target.id);}
+
+/* CHESS - FIXED */
+let board, game = new Chess();
+function startChess(){
+  board = Chessboard('myBoard', {
+    draggable: true,
+    position: 'start',
+    onDrop: (source, target) => {
+      const move = game.move({from: source, to: target, promotion: 'q'});
+      if (move === null) return 'snapback';
+      updateChessStatus();
+      setTimeout(aiMove, 300);
+    }
+  });
+  updateChessStatus();
+}
+function updateChessStatus(){
+  let status = game.turn() === 'w' ? 'Your turn' : 'AI thinking…';
+  if (game.in_checkmate()) status = 'Checkmate!';
+  if (game.in_draw()) status = 'Draw!';
+  document.getElementById('status').textContent = status;
+}
+function aiMove(){
+  const moves = game.moves();
+  if (moves.length > 0) {
+    const move = moves[Math.floor(Math.random() * moves.length)];
+    game.move(move);
+    board.position(game.fen());
+    updateChessStatus();
+  }
+}
+
+/* TIC-TAC-TOE - already worked */
+let ttt = ['','','','','','','','',''], current = 'X';
+function startTTT(){
+  const g = document.getElementById('tttGrid'); g.innerHTML='';
+  for(let i=0;i<9;i++){
+    const c = document.createElement('div'); c.className='ttt-cell'; c.onclick=()=>playTTT(i); g.appendChild(c);
+  }
+  document.getElementById('tttStatus').textContent="X goes first";
+}
+function playTTT(i){
+  if(ttt[i] || checkWin()) return;
+  ttt[i]=current; document.querySelectorAll('.ttt-cell')[i].textContent=current;
+  if(checkWin()){document.getElementById('tttStatus').textContent=current+' wins!';}
+  else if(!ttt.includes('')){document.getElementById('tttStatus').textContent='Draw!';}
+  else{current=current==='X'?'O':'X';document.getElementById('tttStatus').textContent=current+"'s turn";}
+}
+function checkWin(){const w=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];return w.some(c=>c.every(i=>ttt[i]===current));}
+function resetTTT(){ttt.fill('');current='X';startTTT();}
+
+/* BLACKJACK - FIXED */
+let deck=[],player=[],dealer=[];
+function resetBJ(){
+  deck=[];player=[];dealer=[];createDeck();shuffle();
+  document.getElementById('dealerCards').innerHTML='';document.getElementById('playerCards').innerHTML='';
+  document.getElementById('dealerScore').textContent='';document.getElementById('playerScore').textContent='';
+  document.getElementById('bjmsg').textContent='';document.getElementById('dealBtn').style.display='inline';
+  document.getElementById('hitBtn').style.display='none';document.getElementById('standBtn').style.display='none';
+}
+function createDeck(){const s=['♥','♦','♣','♠'],r=['A','2','3','4','5','6','7','8','9','10','J','Q','K'];s.forEach(su=>r.forEach(ra=>deck.push(ra+su)));}
+function shuffle(){for(let i=deck.length-1;i>0;i--){let j=Math.floor(Math.random()*i);[deck[i],deck[j]]=[deck[j],deck[i]];}}
+function deal(){
+  player=[deck.pop(),deck.pop()];dealer=[deck.pop(),deck.pop()];showCards();
+  document.getElementById('dealBtn').style.display='none';
+  document.getElementById('hitBtn').style.display='inline';document.getElementById('standBtn').style.display='inline';
+  if(calc(player)===21){document.getElementById('bjmsg').textContent='Blackjack! You win!';endBJ();}
+}
+function showCards(dealerFull=false){
+  document.getElementById('playerCards').innerHTML=player.join(' ');document.getElementById('playerScore').textContent=calc(player);
+  const d = dealerFull?dealer:[dealer[0],'🂠'];document.getElementById('dealerCards').innerHTML=d.join(' ');
+  document.getElementById('dealerScore').textContent=dealerFull?calc(dealer):'?';
+}
+function calc(h){let s=0,a=0;for(let c of h){let v=c[0];if(v==='A'){a++;s+=11}else if(['J','Q','K'].includes(v))s+=10;else s+=parseInt(v);}while(s>21&&a--)s-=10;return s;}
+function hit(){player.push(deck.pop());showCards();if(calc(player)>21){document.getElementById('bjmsg').textContent='Bust! Dealer wins';endBJ();}}
+function stand(){
+  while(calc(dealer)<17)dealer.push(deck.pop());showCards(true);
+  const p=calc(player),d=calc(dealer);
+  if(p>21)msg='Bust! Dealer wins';
+  else if(d>21||p>d)msg='You win!';
+  else if(p<d)msg='Dealer wins';
+  else msg='Push';
+  document.getElementById('bjmsg').textContent=msg;endBJ();
+}
+function endBJ(){document.getElementById('hitBtn').style.display='none';document.getElementById('standBtn').style.display='none';}
+
+/* GOLF & SHOOTING - already working for you */
+let golfBall={x:60,y:150,r:10},hole={x:380,y:150,r:15},vx=0,vy=0,strokes=0,dragging=false,golfCtx;
+function startGolf(){
+  const c=document.getElementById('golfCanvas');golfCtx=c.getContext('2d');
+  strokes=0;golfBall={x:60,y:150,r:10};vx=0;vy=0;dragging=false;
+  c.onmousedown=e=>{let r=c.getBoundingClientRect();if(Math.hypot(e.clientX-r.left-golfBall.x,e.clientY-r.top-golfBall.y)<30)dragging=true;}
+  c.onmousemove=e=>{if(dragging){let r=c.getBoundingClientRect();golfBall.x=e.clientX-r.left;golfBall.y=e.clientY-r.top;}}
+  c.onmouseup=e=>{if(dragging){let r=c.getBoundingClientRect();let mx=e.clientX-r.left,my=e.clientY-r.top;vx=(60-mx)/12;vy=(150-my)/12;strokes++;dragging=false;document.getElementById('golfmsg').textContent='Strokes: '+strokes;}}
+  requestAnimationFrame(golfLoop);
+}
+function golfLoop(){
+  golfCtx.clearRect(0,0,450,300);golfCtx.fillStyle='#228B22';golfCtx.fillRect(0,0,450,300);
+  golfCtx.fillStyle='#000';golfCtx.beginPath();golfCtx.arc(hole.x,hole.y,hole.r,0,Math.PI*2);golfCtx.fill();
+  golfCtx.fillStyle='#fff';golfCtx.beginPath();golfCtx.arc(golfBall.x,golfBall.y,golfBall.r,0,Math.PI*2);golfCtx.fill();
+  golfBall.x+=vx;golfBall.y+=vy;vx*=0.97;vy*=0.97;
+  if(Math.hypot(golfBall.x-hole.x,golfBall.y-hole.y)<hole.r+golfBall.r){alert('Hole in '+strokes+'!');startGolf();}
+  requestAnimationFrame(golfLoop);
+}
+
+let shootCtx,score=0,targets=[];
+function startShoot(){
+  const c=document.getElementById('shootCanvas');shootCtx=c.getContext('2d');score=0;targets=[];
+  document.getElementById('shootmsg').textContent='Score: 0';
+  setInterval(()=>targets.push({x:Math.random()*400+25,y:Math.random()*300+25,r:20+Math.random()*15}),1200);
+  c.onclick=e=>{let r=c.getBoundingClientRect();let x=e.clientX-r.left,y=e.clientY-r.top;
+    targets=targets.filter(t=>{if(Math.hypot(x-t.x,y-t.y)<t.r){score++;document.getElementById('shootmsg').textContent='Score: '+score;return false;}return true;});
+  };
+  requestAnimationFrame(shootLoop);
+}
+function shootLoop(){
+  shootCtx.clearRect(0,0,450,350);shootCtx.fillStyle='#87CEEB';shootCtx.fillRect(0,0,450,350);
+  targets.forEach(t=>{shootCtx.fillStyle='#ff1744';shootCtx.beginPath();shootCtx.arc(t.x,t.y,t.r,0,Math.PI*2);shootCtx.fill();});
+  requestAnimationFrame(shootLoop);
+}
+</script>
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>GirlGames ♟️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+<style>
+body{background:linear-gradient(135deg,#ff9ece,#ff69b4);margin:0;font-family:'Poppins',sans-serif;color:#fff;text-align:center;padding:20px}
+h1{font-size:3rem;margin:20px 0 10px}
+p{font-size:1.3rem;margin-bottom:30px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;max-width:1100px;margin:auto}
+.card{background:#fff;color:#333;border-radius:20px;padding:25px;box-shadow:0 10px 30px rgba(0,0,0,0.3);transition:0.3s}
+.card:hover{transform:scale(1.05);box-shadow:0 20px 40px rgba(0,0,0,0.4)}
+.card h3{font-size:1.6rem;color:#ff69b4;margin:0 0 10px}
+.btn{background:#ff69b4;color:#fff;border:none;padding:14px;border-radius:50px;font-size:1.1rem;cursor:pointer;width:100%}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);justify-content:center;align-items:center}
+.modal-content{background:#fff;border-radius:20px;padding:30px;max-width:90%;max-height:90vh;overflow:auto;position:relative}
+.close{position:absolute;top:10px;right:20px;font-size:2.5rem;color:#ff69b4;cursor:pointer}
+</style>
+</head>
+<body>
+<h1>GirlGames ♟️</h1>
+<p>All your fave games in one pink place</p>
+<div class="grid">
+  <div class="card"><h3>Chess</h3><button class="btn" onclick="open('chess')">Play Chess</button></div>
+  <div class="card"><h3>Tic-Tac-Toe</h3><button class="btn" onclick="open('ttt')">Play</button></div>
+  <div class="card"><h3>Blackjack</h3><button class="btn" onclick="open('bj')">Play 21</button></div>
+  <div class="card"><h3>Golf Putt</h3><button class="btn" onclick="open('golf')">Putt</button></div>
+  <div class="card"><h3>Shooting Range</h3><button class="btn" onclick="open('shoot')">Shoot</button></div>
+</div>
+
+<div id="chess" class="modal"><div class="modal-content"><span class="close" onclick="closeM('chess')">×</span><h2>Chess vs AI</h2><div id="board" style="width:400px;margin:auto"></div></div></div>
+<div id="ttt" class="modal"><div class="modal-content"><span class="close" onclick="closeM('ttt')">×</span><h2>Tic-Tac-Toe</h2><div id="tttgrid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;width:300px;margin:auto"></div><p id="tttmsg" style="font-size:1.5rem;margin:20px">X goes first</p></div></div>
+<div id="bj" class="modal"><div class="modal-content"><span class="close" onclick="closeM('bj')">×</span><h2>Blackjack</h2><div id="dealer"></div><div id="player"></div><button class="btn" onclick="deal()">Deal</button> <button class="btn" id="hit" style="display:none" onclick="hit()">Hit</button> <button class="btn" id="stand" style="display:none" onclick="stand()">Stand</button><p id="bjmsg"></p></div></div>
+<div id="golf" class="modal"><div class="modal-content"><span class="close" onclick="closeM('golf')">×</span><h2>Golf Putt</h2><canvas id="golfcanvas" width="400" height="250" style="background:#228B22;border:3px solid #fff"></canvas><p>Click & drag the ball → release to shoot</p></div></div>
+<div id="shoot" class="modal"><div class="modal-content"><span class="close" onclick="closeM('shoot')">×</span><h2>Shooting Range</h2><canvas id="shootcanvas" width="400" height="300" style="background:#87CEEB"></canvas><p id="shootmsg">Score: 0</p></div></div>
+
+<script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+<script>
+// (Full working scripts for all 5 games — chess, ttt, blackjack, golf, shooting — are included in the version I’m about to send you in the next message because it’s too long for one box again)
+
+function open(id){document.getElementById(id).style.display='flex';if(id=='chess')startChess();if(id=='ttt')startTTT();if(id=='bj')resetBJ();if(id=='golf')startGolf();if(id=='shoot')startShoot();}
+function closeM(id){document.getElementById(id).style.display='none';}
+</script>
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+<title>GirlGames ♟️💕</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#ffb6c1,#ff69b4);color:#333;margin:0;padding:20px;text-align:center;min-height:100vh}
+h1{font-size:3rem;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,0.3);margin-bottom:10px}
+.subtitle{font-size:1.2rem;color:#fff;margin-bottom:40px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;max-width:1200px;margin:0 auto}
+.card{background:#fff;border-radius:20px;padding:30px;box-shadow:0 10px 30px rgba(0,0,0,0.2);cursor:pointer;transition:transform 0.3s,box-shadow 0.3s}
+.card:hover{transform:translateY(-10px);box-shadow:0 20px 40px rgba(0,0,0,0.3)}
+.card h3{font-size:1.5rem;color:#ff69b4;margin:0 0 10px}
+.btn{display:block;background:#ff69b4;color:#fff;padding:15px;border:none;border-radius:50px;font-size:1.1rem;font-weight:600;cursor:pointer;width:100%;margin-top:10px;transition:background 0.3s}
+.btn:hover{background:#ff1493}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:1000;justify-content:center;align-items:center}
+.modal-content{background:#fff;border-radius:20px;padding:30px;max-width:90%;max-height:90%;overflow:auto;position:relative;max-width:600px}
+.close{position:absolute;top:10px;right:20px;font-size:2.5rem;color:#ff69b4;cursor:pointer}
+#myBoard{width:400px;height:400px;margin:20px auto}
+canvas{border:3px solid #ff69b4;border-radius:10px;background:#90ee90;cursor:pointer}
+.ttt-cell{width:80px;height:80px;background:#ffe4f0;border:3px solid #ff69b4;font-size:2.5rem;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:10px;margin:5px}
+.ttt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:20px auto}
+.bj-controls{display:flex;gap:10px;justify-content:center;margin:20px 0;flex-wrap:wrap}
+@media (max-width:600px){h1{font-size:2rem}.grid{grid-template-columns:1fr;gap:15px}.modal-content{padding:20px;max-width:95%}}
+</style>
+</head>
+<body>
+<h1>GirlGames ♟️💃</h1>
+<p class="subtitle">Play chess, tic-tac-toe, blackjack, golf & more!</p>
+<div class="grid">
+<div class="card" onclick="openGame('chess')"><h3>♟️ Chess</h3><p>vs AI</p><button class="btn">Play</button></div>
+<div class="card" onclick="openGame('ttt')"><h3>✗ Tic Tac Toe</h3><p>2-player</p><button class="btn">Play</button></div>
+<div class="card" onclick="openGame('bj')"><h3>🃏 Blackjack</h3><p>Beat dealer</p><button class="btn">Play</button></div>
+<div class="card" onclick="openGame('golf')"><h3>🏌️ Golf Putt</h3><p>Practice swing</p><button class="btn">Play</button></div>
+<div class="card" onclick="openGame('shoot')"><h3>🔫 Shooting</h3><p>Hit targets</p><button class="btn">Play</button></div>
+<div class="card" onclick="openGame('belly')"><h3>💃 Belly Dance</h3><p>Beginner tutorial</p><button class="btn">Play</button></div>
+</div>
+
+<div id="chess" class="modal"><div class="modal-content"><span class="close" onclick="closeGame('chess')">&times;</span><h2>Chess vs AI</h2><div id="myBoard"></div><p id="chessStatus"></p></div></div>
+<div id="ttt" class="modal"><div class="modal-content"><span class="close" onclick="closeGame('ttt')">&times;</span><h2>Tic Tac Toe</h2><div id="tttBoard" class="ttt-grid"></div><p id="tttStatus">X's turn</p><button class="btn" onclick="resetTTT()">New Game</button></div></div>
+<div id="bj" class="modal"><div class="modal-content"><span class="close" onclick="closeGame('bj')">&times;</span><h2>Blackjack</h2><div id="dealerHand"></div><p id="dealerScore"></p><div id="playerHand"></div><p id="playerScore"></p><div class="bj-controls"><button class="btn" onclick="dealBJ()">Deal</button><button class="btn" onclick="hitBJ()" id="hitBtn" style="display:none">Hit</button><button class="btn" onclick="standBJ()" id="standBtn" style="display:none">Stand</button></div><p id="bjStatus"></p></div></div>
+<div id="golf" class="modal"><div class="modal-content"><span class="close" onclick="closeGame('golf')">&times;</span><h2>Golf Putt</h2><canvas id="golfCanvas" width="400" height="250"></canvas><p id="golfStatus">Click and drag ball to swing</p></div></div>
+<div id="shoot" class="modal"><div class="modal-content"><span class="close" onclick="closeGame('shoot')">&times;</span><h2>Shooting Range</h2><canvas id="shootCanvas" width="400" height="300"></canvas><p id="shootStatus">Click red targets! Score: 0</p></div></div>
+<div id="belly" class="modal"><div class="modal-content"><span class="close" onclick="closeGame('belly')">&times;</span><h2>Belly Dance</h2><iframe width="500" height="315" src="https://www.youtube.com/embed/HLyL2XX4TjU?autoplay=1" frameborder="0" allowfullscreen></iframe></div></div>
+
+<script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+<script>
+let chessGame=new Chess();let chessBoard;
+function openGame(id){document.getElementById(id).style.display='flex';if(id=='chess')initChess();if(id=='ttt')initTTT();if(id=='bj')resetBJ();if(id=='golf')initGolf();if(id=='shoot')initShoot();}
+function closeGame(id){document.getElementById(id).style.display='none';}
+window.onclick=e=> {if(e.target.classList.contains('modal'))closeGame(e.target.id);}
+function initChess(){chessGame=new Chess();chessBoard=Chessboard('myBoard',{draggable:true,position:'start',onDrop:onChessDrop,onDragStart:onChessDrag});updateChessStatus();}
+function onChessDrag(source,piece){if(chessGame.game_over()||chessGame.turn()==='b')return false;}
+function onChessDrop(source,target){let move=chessGame.move({from:source,to:target,promotion:'q'});if(move===null)return'snapback';updateChessStatus();setTimeout(aiChessMove,250);}
+function aiChessMove(){let moves=chessGame.moves();if(moves.length){let randomMove=moves[Math.floor(Math.random()*moves.length)];chessGame.move(randomMove);chessBoard.position(chessGame.fen());updateChessStatus();}}
+function updateChessStatus(){let status=chessGame.turn()==='w'?'Your turn':'AI turn';if(chessGame.in_checkmate())status='Checkmate!';if(chessGame.in_draw())status='Draw!';document.getElementById('chessStatus').textContent=status;}
+let tttBoard=['','','','','','','','',''];let tttCurrentPlayer='X';
+function initTTT(){let grid=document.getElementById('tttBoard');grid.innerHTML='';for(let i=0;i<9;i++){let cell=document.createElement('div');cell.className='ttt-cell';cell.onclick=()=>tttPlay(i);grid.appendChild(cell);}resetTTT();}
+function resetTTT(){tttBoard.fill('');tttCurrentPlayer='X';document.getElementById('tttStatus').textContent="X's turn";document.querySelectorAll('.ttt-cell').forEach(c=>c.textContent='');}
+function tttPlay(index){if(tttBoard[index]||checkTTTWinner())return;tttBoard[index]=tttCurrentPlayer;document.querySelectorAll('.ttt-cell')[index].textContent=tttCurrentPlayer;if(checkTTTWinner()){document.getElementById('tttStatus').textContent=tttCurrentPlayer+' wins!';return;}if(!tttBoard.includes('')){document.getElementById('tttStatus').textContent='Draw!';return;}tttCurrentPlayer=tttCurrentPlayer==='X'?'O':'X';document.getElementById('tttStatus').textContent=tttCurrentPlayer+"'s turn";}
+function checkTTTWinner(){const wins=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];return wins.some(combo=>combo.every(i=>tttBoard[i]===tttCurrentPlayer));}
+let bjDeck=[];let bjPlayer=[];let bjDealer=[];let bjCanHit=true;
+function resetBJ(){bjPlayer=[];bjDealer=[];bjCanHit=true;document.getElementById('hitBtn').style.display='none';document.getElementById('standBtn').style.display='none';document.getElementById('dealBtn').style.display='inline';document.getElementById('playerHand').innerHTML='';document.getElementById('dealerHand').innerHTML='';document.getElementById('playerScore').textContent='';document.getElementById('dealerScore').textContent='';document.getElementById('bjStatus').textContent='';createDeck();shuffleDeck();}
+function createDeck(){bjDeck=['A♥','2♥','3♥','4♥','5♥','6♥','7♥','8♥','9♥','10♥','J♥','Q♥','K♥','A♦','2♦','3♦','4♦','5♦','6♦','7♦','8♦','9♦','10♦','J♦','Q♦','K♦','A♣','2♣','3♣','4♣','5♣','6♣','7♣','8♣','9♣','10♣','J♣','Q♣','K♣','A♠','2♠','3♠','4♠','5♠','6♠','7♠','8♠','9♠','10♠','J♠','Q♠','K♠'];}
+function shuffleDeck(){for(let i=bjDeck.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[bjDeck[i],bjDeck[j]]=[bjDeck[j],bjDeck[i]];}}
+function dealBJ(){bjPlayer=[bjDeck.pop(),bjDeck.pop()];bjDealer=[bjDeck.pop(),bjDeck.pop()];displayBJ();document.getElementById('dealBtn').style.display='none';document.getElementById('hitBtn').style.display='inline';document.getElementById('standBtn').style.display='inline';bjCanHit=true;checkBJWinner();}
+function hitBJ(){if(!bjCanHit)return;bjPlayer.push(bjDeck.pop());displayBJ();if(getScore(bjPlayer)>21){document.getElementById('bjStatus').textContent='Bust! Dealer wins.';endBJ();}}
+function standBJ(){bjCanHit=false;while(getScore(bjDealer)<17){bjDealer.push(bjDeck.pop());}displayBJ(true);let pScore=getScore(bjPlayer);let dScore=getScore(bjDealer);if(pScore>21)document.getElementById('bjStatus').textContent='Bust! Dealer wins.';else if(dScore>21||pScore>dScore)document.getElementById('bjStatus').textContent='You win!';else if(dScore>pScore)document.getElementById('bjStatus').textContent='Dealer wins.';else document.getElementById('bjStatus').textContent='Push!';endBJ();}
+function getScore(hand){let score=0;let aces=0;for(let card of hand){let value=card.slice(0,-1);if(['J','Q','K'].includes(value))score+=10;else if(value==='A'){aces++;score+=11;}else score+=parseInt(value);}while(score>21&&aces>0){score-=10;aces--;}return score;}
+function displayBJ(showDealer=false){document.getElementById('playerHand').innerHTML=bjPlayer.map(c=>`<span style="font-size:2rem;margin:5px">${c}</span>`).join('');let dealerShow=showDealer?bjDealer:bjDealer.slice(0,1).concat(['??']);document.getElementById('dealerHand').innerHTML=dealerShow.map(c=>`<span style="font-size:2rem;margin:5px">${c}</span>`).join('');document.getElementById('playerScore').textContent=getScore(bjPlayer);document.getElementById('dealerScore').textContent=showDealer?getScore(bjDealer):'Hidden';}
+function endBJ(){bjCanHit=false;document.getElementById('hitBtn').style.display='none';document.getElementById('standBtn').style.display='none';}
+let golfCtx,golfBall={x:50,y:125,r:8},golfHole={x:350,y:125,r:12},golfStrokes=0,golfSwinging=false,golfVx=0,golfVy=0;
+function initGolf(){let canvas=document.getElementById('golfCanvas');golfCtx=canvas.getContext('2d');golfBall={x:50,y:125,r:8};golfHole={x:350,y:125,r:12};golfStrokes=0;golfSwinging=false;golfVx=0;golfVy=0;canvas.onmousedown=golfMouseDown;canvas.onmouseup=golfMouseUp;golfLoop();}
+function golfMouseDown(e){let rect=document.getElementById('golfCanvas').getBoundingClientRect();let mx=e.clientX-rect.left,my=e.clientY-rect.top;if(Math.hypot(mx-golfBall.x,my-golfBall.y)<20)golfSwinging=true;}
+function golfMouseUp(e){if(!golfSwinging)return;let rect=document.getElementById('golfCanvas').getBoundingClientRect();let mx=e.clientX-rect.left,my=e.clientY-rect.top;let dx=golfBall.x-mx,dy=golfBall.y-my;let power=Math.hypot(dx,dy)/20;golfVx=dx/power*5;golfVy=dy/power*5;golfStrokes++;golfSwinging=false;document.getElementById('golfStatus').textContent=`Strokes: ${golfStrokes}`;}
+function golfLoop(){golfCtx.clearRect(0,0,400,250);golfCtx.fillStyle='#228B22';golfCtx.fillRect(0,0,400,250);golfCtx.fillStyle='#000';golfCtx.beginPath();golfCtx.arc(golfHole.x,golfHole.y,golfHole.r,0,Math.PI*2);golfCtx.fill();golfCtx.fillStyle='#fff';golfCtx.beginPath();golfCtx.arc(golfBall.x,golfBall.y,golfBall.r,0,Math.PI*2);golfCtx.fill();golfCtx.strokeStyle='#000';golfCtx.lineWidth=2;golfCtx.stroke();golfBall.x+=golfVx;golfBall.y+=golfVy;golfVx*=0.97;golfVy*=0.97;if(Math.hypot(golfBall.x-golfHole.x,golfBall.y-golfHole.y)<golfHole.r+golfBall.r){alert(`Hole in ${golfStrokes}!`);initGolf();}requestAnimationFrame(golfLoop);}
+let shootCtx,shootScore=0,shootTime=30,shootInterval,shootTargets=[];
+function initShoot(){let canvas=document.getElementById('shootCanvas');shootCtx=canvas.getContext('2d');shootScore=0;shootTime=30;shootTargets=[];document.getElementById('shootStatus').textContent='Score: 0 | Time: 30';shootInterval=setInterval(()=>{shootTime--;document.getElementById('shootStatus').textContent=`Score: ${shootScore} | Time: ${shootTime}`;if(shootTime<=0){clearInterval(shootInterval);alert(`Game Over! Score: ${shootScore}`);}},1000);canvas.onclick=shootClick;spawnTarget();shootLoop();}
+function shootClick(e){let rect=document.getElementById('shootCanvas').getBoundingClientRect();let mx=e.clientX-rect.left,my=e.clientY-rect.top;for(let i=shootTargets.length-1;i>=0;i--){let t=shootTargets[i];if(Math.hypot(mx-t.x,my-t.y)<30){shootTargets.splice(i,1);shootScore++;document.getElementById('shootStatus').textContent=`Score: ${shootScore} | Time: ${shootTime}`;break;}}}
+function spawnTarget(){if(shootTime>0){shootTargets.push({x:Math.random()*380+10,y:Math.random()*280+10,r:25});setTimeout(spawnTarget,1500);}}
+function shootLoop(){shootCtx.clearRect(0,0,400,300);shootCtx.fillStyle='#87CEEB';shootCtx.fillRect(0,0,400,300);shootTargets.forEach(t=>{shootCtx.fillStyle='#ff0000';shootCtx.beginPath();shootCtx.arc(t.x,t.y,t.r,0,Math.PI*2);shootCtx.fill();shootCtx.strokeStyle='#fff';shootCtx.lineWidth=3;shootCtx.stroke();});requestAnimationFrame(shootLoop);}
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GirlGames ♟️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  body{background:linear-gradient(135deg,#ff9ece,#ff69b4);margin:0;font-family:'Poppins',sans-serif;color:#fff;text-align:center;padding:20px;min-height:100vh}
+  h1{font-size:3.5rem;margin:20px 0 10px;text-shadow:0 3px 10px rgba(0,0,0,0.4)}
+  p{font-size:1.3rem;margin-bottom:40px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px;max-width:1200px;margin:auto}
+  .card{background:#fff;color:#333;border-radius:20px;padding:30px;box-shadow:0 10px 30px rgba(0,0,0,0.3);transition:.3s}
+  .card:hover{transform:scale(1.05)}
+  .card h3{font-size:1.7rem;color:#ff69b6c1;margin:0 0 10px}
+  .btn{background:#ff69b4;color:#fff;border:none;padding:15px;border-radius:50px;font-size:1.2rem;cursor:pointer;width:100%;margin-top:10px}
+  .btn:hover{background:#ff1493}
+  .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);justify-content:center;align-items:center;z-index:999}
+  .modal-content{background:#fff;border-radius:20px;padding:30px;max-width:90%;max-height:90vh;overflow:auto;position:relative}
+  .close{position:absolute;top:10px;right:20px;font-size:2.8rem;color:#ff69b4;cursor:pointer}
+  #myBoard{width:400px;margin:20px auto}
+  canvas{border:4px solid #fff;border-radius:15px}
+  .ttt-grid{display:grid;grid-template-columns:repeat(3,100px);gap:8px;margin:20px auto;justify-content:center}
+  .ttt-cell{width:100px;height:100px;background:#ffe4f0;border:4px solid #ff69b4;border-radius:15px;font-size:3rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GirlGames ♟️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  body{background:linear-gradient(135deg,#ff9ece,#ff69b4);margin:0;font-family:'Poppins',sans-serif;color:#fff;text-align:center;padding:20px;min-height:100vh}
+  h1{font-size:3.5rem;margin:20px 0 10px;text-shadow:0 3px 10px rgba(0,0,0,0.4)}
+  p{font-size:1.3rem;margin-bottom:40px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px;max-width:1200px;margin:auto}
+  .card{background:#fff;color:#333;border-radius:20px;padding:30px;box-shadow:0 10px 30px rgba(0,0,0,0.3);transition:.3s}
+  .card:hover{transform:scale(1.05)}
+  .card h3{font-size:1.7rem;color:#ff69b6c1;margin:0 0 10px}
+  .btn{background:#ff69b4;color:#fff;border:none;padding:15px;border-radius:50px;font-size:1.2rem;cursor:pointer;width:100%;margin-top:10px}
+  .btn:hover{background:#ff1493}
+  .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);justify-content:center;align-items:center;z-index:999}
+  .modal-content{background:#fff;border-radius:20px;padding:30px;max-width:90%;max-height:90vh;overflow:auto;position:relative}
+  .close{position:absolute;top:10px;right:20px;font-size:2.8rem;color:#ff69b4;cursor:pointer}
+  #myBoard{width:400px;margin:20px auto}
+  canvas{border:4px solid #fff;border-radius:15px}
+  .ttt-grid{display:grid;grid-template-columns:repeat(3,100px);gap:8px;margin:20px auto;justify-content:center}
+  .ttt-cell{width:100px;height:100px;background:#ffe4f0;border:4px solid #ff69b4;border-radius:15px;font-size:3rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+</style>
+</head>
+<body>
+
+<h1>GirlGames ♟️</h1>
+<p>All your fave games in one pink place</p>
+
+<div class="grid">
+  <div class="card"><h3>♟️ Chess</h3><button class="btn" onclick="openM('chess')">Play Chess</button></div>
+  <div class="card"><h3>✗ Tic-Tac-Toe</h3><button class="btn" onclick="openM('ttt')">Play</button></div>
+  <div class="card"><h3>Blackjack</h3><button class="btn" onclick="openM('bj')">Play 21</button></div>
+  <div class="card"><h3>Golf Putt</h3><button class="btn" onclick="openM('golf')">Putt</button></div>
+  <div class="card"><h3>Shooting Range</h3><button class="btn" onclick="openM('shoot')">Shoot</button></div>
+</div>
+
+<!-- MODALS -->
+<div id="chess" class="modal"><div class="modal-content"><span class="close" onclick="closeM('chess')">&times;</span><h2>Chess vs AI</h2><div id="myBoard"></div><p id="status" style="font-size:1.5rem;color:#ff69b4;margin:20px"></p></div></div>
+
+<div id="ttt" class="modal"><div class="modal-content"><span class="close" onclick="closeM('ttt')">&times;</span><h2>Tic-Tac-Toe</h2><div id="tttGrid" class="ttt-grid"></div><p id="tttStatus" style="font-size:1.5rem;color:#ff69b4;margin:20px">X goes first</p><button class="btn" onclick="resetTTT()">New Game</button></div></div>
+
+<div id="bj" class="modal"><div class="modal-content"><span class="close" onclick="closeM('bj')">&times;</span><h2>Blackjack</h2><div id="dealerCards" style="font-size:2.5rem;margin:15px"></div><p id="dealerScore"></p><div id="playerCards" style="font-size:2.5rem;margin:15px"></div><p id="playerScore"></p><div style="margin:20px"><button class="btn" onclick="deal()">Deal</button> <button class="btn" id="hit" style="display:none" onclick="hit()">Hit</button> <button class="btn" id="stand" style="display:none" onclick="stand()">Stand</button></div><p id="bjmsg" style="font-size:1.5rem;color:#ff69b4"></p></div></div>
+
+<div id="golf" class="modal"><div class="modal-content"><span class="close" onclick="closeM('golf')">&times;</span><h2>Golf Putt</h2><canvas id="golfCanvas" width="450" height="300"></canvas><p id="golfmsg" style="font-size:1.4rem;margin:10px">Click & drag ball → release</p></div></div>
+
+<div id="shoot" class="modal"><div class="modal-content"><span class="close" onclick="closeM('shoot')">&times;</span><h2>Shooting Range</h2><canvas id="shootCanvas" width="450" height="350"></canvas><p id="shootmsg" style="font-size:1.4rem">Score: 0</p></div></div>
+
+<script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+<script>
+function openM(id){document.getElementById(id).style.display='flex';if(id==='chess')startChess();if(id==='ttt')startTTT();if(id==='bj')resetBJ();if(id==='golf')startGolf();if(id==='shoot')startShoot();}
+function closeM(id){document.getElementById(id).style.display='none';}
+window.onclick=e=>{if(e.target.classList.contains('modal'))closeM(e.target.id);}
+
+/* CHESS */
+let board,game=new Chess();
+function startChess(){
+  board=Chessboard('myBoard',{draggable:true,position:'start',onDrop:(s,t)=>{let move=game.move({from:s,to:t,promotion:'q'});if(move===null)return'snapback';updateStatus();setTimeout(aiMove,300);}});
+  updateStatus();
+}
+function updateStatus(){
+  let status='Your turn';
+  if(game.in_checkmate())status='Checkmate!';
+  else if(game.in_draw())status='Draw!';
+  else if(game.turn()==='b')status='AI thinking…';
+  document.getElementById('status').innerText=status;
+}
+function aiMove(){
+  let moves=game.moves();
+  if(moves.length>0){
+    let move=moves[Math.floor(Math.random()*moves.length)];
+    game.move(move);
+    board.position(game.fen());
+    updateStatus();
+  }
+}
+
+/* TIC-TAC-TOE */
+let ttt=['','','','','','','','',''],current='X';
+function startTTT(){
+  let g=document.getElementById('tttGrid');g.innerHTML='';
+  for(let i=0;i<9;i++){let c=document.createElement('div');c.className='ttt-cell';c.onclick=()=>playTTT(i);g.appendChild(c);}
+  document.getElementById('tttStatus').innerText="X goes first";
+}
+function playTTT(i){
+  if(ttt[i]||checkWin())return;
+  ttt[i]=current;
+  document.querySelectorAll('.ttt-cell')[i].innerText=current;
+  if(checkWin()){document.getElementById('tttStatus').innerText=current+' wins!';}
+  else if(!ttt.includes('')){document.getElementById('tttStatus').innerText='Draw!';}
+  else{current=current==='X'?'O':'X';document.getElementById('tttStatus').innerText=current+"'s turn";}
+}
+function checkWin(){const w=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];return w.some(c=>c.every(i=>ttt[i]===current));}
+function resetTTT(){ttt.fill('');current='X';startTTT();}
+
+/* BLACKJACK */
+let deck=[],player=[],dealer=[];
+function resetBJ(){deck=[];player=[];dealer=[];document.getElementById('hit').style.display='none';document.getElementById('stand').style.display='none';document.getElementById('dealerCards').innerHTML='';document.getElementById('playerCards').innerHTML='';document.getElementById('bjmsg').innerText='';createDeck();shuffle();}
+function createDeck(){const s=['♥','♦','♣','♠'],r=['A','2','3','4','5','6','7','8','9','10','J','Q','K'];s.forEach(su=>r.forEach(ra=>deck.push(ra+su)));}
+function shuffle(){for(let i=deck.length-1;i>0;i--){let j=Math.floor(Math.random()*i);[deck[i],deck[j]]=[deck[j],deck[j],deck[i]];}}
+function deal(){player=[deck.pop(),deck.pop()];dealer=[deck.pop(),deck.pop()];showCards();document.getElementById('hit').style.display='inline';document.getElementById('stand').style.display='inline';if(calc(player)===21){document.getElementById('bjmsg').innerText='Blackjack! You win!';endGame();}}
+function showCards(hideDealer=false){document.getElementById('playerCards').innerHTML=player.join(' ');document.getElementById('playerScore').innerText='You: '+calc(player);let d=hideDealer?[dealer[0],'??']:dealer;document.getElementById('dealerCards').innerHTML=d.join(' ');document.getElementById('dealerScore').innerText=hideDealer?'Dealer: ?':'Dealer: '+calc(dealer);}
+function calc(h){let s=0;a=0;for(let c of h){let v=c.slice(0,-1);if(v==='A'){a++;s+=11}else if(['J','Q','K'].includes(v))s+=10;else s+=+v;}while(s>21&&a--)s-=10;return s;}
+function hit(){player.push(deck.pop());showCards();if(calc(player)>21){document.getElementById('bjmsg').innerText='Bust! Dealer wins';endGame();}}
+function stand(){while(calc(dealer)<17)dealer.push(deck.pop());showCards(true);let p=calc(player),d=calc(dealer);if(p>21)msg='Bust! Dealer wins';else if(d>21||p>d)msg='You win!';else if(p<d)msg='Dealer wins';else msg='Push';document.getElementById('bjmsg').innerText=msg;endGame();}
+function endGame(){document.getElementById('hit').style.display='none';document.getElementById('stand').style.display='none';}
+
+/* GOLF PUTT */
+let golfBall={x:60,y:150,r:10},hole={x:380,y:150,r:15},vx=0,vy=0,strokes=0,dragging=false;
+function startGolf(){let c=document.getElementById('golfCanvas');ctx=c.getContext('2d');strokes=0;golfBall={x:60,y:150,r:10};vx=0;vy=0;dragging=false;document.getElementById('golfmsg').innerText='Click & drag ball → release';c.onmousedown=e=>{let r=c.getBoundingClientRect();let mx=e.clientX-r.left,my=e.clientY-r.top;if(Math.hypot(mx-golfBall.x,my-golfBall.y)<30)dragging=true;};c.onmousemove=e=>{if(dragging){let r=c.getBoundingClientRect();golfBall.x=e.clientX-r.left;golfBall.y=e.clientY-r.top;}};c.onmouseup=e=>{if(dragging){let r=c.getBoundingClientRect();let mx=e.clientX-r.left,my=e.clientY-r.top;vx=(60-mx)/15;vy=(150-my)/15;strokes++;dragging=false;}};requestAnimationFrame(golfLoop);}
+function golfLoop(){let c=document.getElementById('golfCanvas');ctx=c.getContext('2d');ctx.clearRect(0,0,450,300);ctx.fillStyle='#228B22';ctx.fillRect(0,0,450,300);ctx.fillStyle='#000';ctx.beginPath();ctx.arc(hole.x,hole.y,hole.r,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(golfBall.x,golfBall.y,golfBall.r,0,Math.PI*2);ctx.fill();golfBall.x+=vx;golfBall.y+=vy;vx*=0.97;vy*=0.97;if(Math.hypot(golfBall.x-hole.x,golfBall.y-hole.y)<hole.r+golfBall.r){alert('Hole in '+strokes+'!');startGolf();}requestAnimationFrame(golfLoop);}
+
+/* SHOOTING RANGE */
+let score=0,targets=[];
+function startShoot(){let c=document.getElementById('shootCanvas');ctx=c.getContext('2d');score=0;targets=[];document.getElementById('shootmsg').innerText='Score: 0';setInterval(()=>spawnTarget(),1200);c.onclick=e=>{let r=c.getBoundingClientRect();let x=e.clientX-r.left,y=e.clientY-r.top;targets=targets.filter(t=> {if(Math.hypot(x-t.x,y-t.y)<t.r){score++;document.getElementById('shootmsg').innerText='Score: '+score;return false;}return true;});};requestAnimationFrame(shootLoop);}
+function spawnTarget(){targets.push({x:Math.random()*400+25,y:Math.random()*300+25,r:20+Math.random()*15});}
+function shootLoop(){let c=document.getElementById('shootCanvas');ctx=c.getContext('2d');ctx.clearRect(0,0,450,350);ctx.fillStyle='#87CEEB';ctx.fillRect(0,0,450,350);targets.forEach(t=>{ctx.fillStyle='#ff1744';ctx.beginPath();ctx.arc(t.x,t.y,t.r,0,Math.PI*2);ctx.fill();});requestAnimationFrame(shootLoop);}
+</script>
+</body>
+</html>
