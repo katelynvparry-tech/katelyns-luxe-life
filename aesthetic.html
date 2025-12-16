@@ -5,9 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kate’s Aesthetic Picks ♡ 2025</title>
   <style>
-    body {margin:0; font-family:'Segoe UI',sans-serif; background:#fdf2f8; color:#333;}
-    h1 {text-align:center; color:#ec4899; padding:40px 20px 10px; font-size:2.5em;}
-    .sub {text-align:center; font-size:1.2em; color:#a78bfa; margin-bottom:40px;}
+    body {margin:0; font-family:'Segoe UI',sans-serif; background:#fdf2f8 url('https://thumbs.dreamstime.com/b/soft-pink-marble-showcases-gold-veining-luxurious-pattern-wallpaper-texture-intricate-smooth-polished-surface-370527400.jpg') repeat; background-size: cover; color:#333;}
+    .hero-container {position:relative; width:100%; height:60vh; overflow:hidden;}
+    .hero {position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 1.5s ease;}
+    .hero.active {opacity:1;}
+    .moodboard {display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; padding:40px 20px; background:rgba(255,255,255,0.75); border-radius:20px; margin:20px auto; max-width:1400px;}
+    .moodboard img {width:100%; height:auto; border-radius:15px; box-shadow:0 8px 25px rgba(236,72,153,.2); transition:.3s;}
+    .moodboard img:hover {transform:scale(1.05);}
+    h1 {text-align:center; color:#ec4899; padding:20px 20px 10px; font-size:2.5em;}
+    .sub {text-align:center; font-size:1.2em; color:#a78bfa; margin-bottom:20px;}
     .grid {display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px; padding:0 20px; max-width:1200px; margin:auto;}
     .item {background:white; border-radius:20px; overflow:hidden; box-shadow:0 8px 25px rgba(236,72,153,.15); text-align:center; padding:15px; transition:.3s;}
     .item:hover {transform:scale(1.05);}
@@ -21,176 +27,131 @@
 </head>
 <body>
 
-<h1>Kate’s Aesthetic Picks ♡</h1>
-<p class="sub">Pretty things I can't stop staring at — outfits, cases, jewels, glow-ups. All vibes, no filler.</p>
+  <div class="hero-container" id="heroContainer"></div>
 
-<div class="grid">
+  <h1>Kate’s Aesthetic Picks ♡</h1>
+  <p class="sub">Golden divine oracle queen mood board — goddess statues, chess queens, perfumes, pomegranates, succulents, mermaids, dream bedrooms, jewelry & more. Refresh for endless new inspo ♕✨</p>
 
-  <!-- 1: Pastel Phone Case -->
-  <div class="item">
-    <img src="https://m.media-amazon.com/images/I/71abc123def.jpg" alt="Lavender Pastel Phone Case">
-    <h3 class="name">Lavender Pastel iPhone Case</h3>
-    <div class="price">$14.99</div>
-    <a href="https://www.amazon.com/dp/B0C123ABC4?tag=YOURTAGHERE" class="btn" target="_blank">Grab It ♡</a>
+  <div class="moodboard" id="moodboard"></div>
+
+  <div class="grid">
+    <!-- Paste your 20 product items here -->
   </div>
 
-  <!-- 2: Floral Crop Top Outfit -->
-  <div class="item">
-    <img src="https://m.media-amazon.com/images/I/81def456ghi.jpg" alt="Floral Crop Top">
-    <h3 class="name">Blush Floral Crop Top Set</h3>
-    <div class="price">$28.99</div>
-    <a href="https://www.amazon.com/dp/B0D456DEF7?tag=YOURTAGHERE" class="btn" target="_blank">Grab It ♡</a>
+  <div class="disc">
+    ♡ Curated vibes only — affiliate links mean I earn a tiny commission if you love it too (at no extra cost!). Refresh for fresh divine magic ♡
   </div>
 
-  <!-- 3: Dainty Gold Chain Necklace -->
-  <div class="item">
-    <img src="https://m.media-amazon.com/images/I/71ghi789jkl.jpg" alt="Dainty Gold Chain">
-    <h3 class="name">Dainty Layered Gold Chain</h3>
-    <div class="price">$12.99</div>
-    <a href="https://www.amazon.com/dp/B07KLMNOP9?tag=YOURTAGHERE" class="btn" target="_blank">Grab It ♡</a>
-  </div>
+  <script>
+    const images = [
+      // Aphrodite & goddess statues
+      "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTExL3Jhd3BpeGVsb2ZmaWNlMTlfZHJlYW15X3BhbGVfcGlua19hZXN0aGV0aWNfd2FsbHBhcGVyX29mX2dyZWVrX18yZjU1MjZhNC0xNzM4LTQ5ZDItYjVhNi1hNjgyN2E5MjQxMGVfMS5qcGc.jpg",
+      "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTExL3Jhd3BpeGVsb2ZmaWNlMTlfZHJlYW15X3BhbGVfcGlua19hZXN0aGV0aWNfd2FsbHBhcGVyX29mX2dyZWVrX19mODI1OGY2ZS1jMjY0LTRiMjktOTIyMS1hOTgyYjBmZGU4ODBfMS5qcGc.jpg",
+      "https://thumbs.dreamstime.com/b/greek-goddess-aphrodite-depicted-digital-artwork-statue-offered-as-stock-greek-goddess-aphrodite-depicted-365584933.jpg",
+      "https://indonesiaexpat.id/wp-content/uploads/2025/02/3d-rendering-statue-with-flowers.jpg",
+      "https://i.etsystatic.com/12061794/r/il/48e310/2281236527/il_fullxfull.2281236527_904y.jpg",
 
-  <!-- 4: Collagen Glow Serum -->
-  <div class="item">
-    <img src="https://m.media-amazon.com/images/I/81mno012pqr.jpg" alt="Collagen Serum">
-    <h3 class="name">Collagen Plumping Serum</h3>
-    <div class="price">$19.99</div>
-    <a href="https://www.amazon.com/dp/B08STUV123?tag=YOURTAGHERE" class="btn" target="_blank">Grab It ♡</a>
-  </div>
+      // Bastet statues
+      "https://i.ebayimg.com/images/g/KQYAAOSw-wtknRyz/s-l1200.jpg",
+      "https://i.etsystatic.com/24513741/c/803/637/32/251/il/cf57f5/5507997552/il_340x270.5507997552_gubh.jpg",
+      "https://i.ebayimg.com/images/g/CNAAAOSwOTRnfZ~0/s-l1200.jpg",
 
-  <!-- 5: Strawberry Aesthetic Case -->
-  <div class="item">
-    <img src="https://m.media-amazon.com/images/I/71wxy456zAB.jpg" alt="Strawberry Phone Case">
-    <h3 class="name">Strawberry Print Phone Case</h3>
-    <div class="price">$16.99</div>
-    <a href="https://www.amazon.com/dp/B0E789FGH2?tag=YOURTAGHERE" class="btn" target="_blank">Grab It ♡</a>
-  </div>
+      // Medusa statues
+      "https://i.etsystatic.com/13933039/r/il/d8df97/5934750712/il_fullxfull.5934750712_cwbh.jpg",
+      "https://i.etsystatic.com/53505305/r/il/274842/6251482553/il_fullxfull.6251482553_gros.jpg",
 
-  <!-- 6: Oversized Hoop Earrings -->
-  <div class="item">
-    <img src="https://m.media-amazon.com/images/I/81ijk345lmn.jpg" alt="Gold Hoops">
-    <h3 class="name">Gold Oversized Hoops</h3>
-    <div class="price">$9.99</div>
-    <a href="https://www.amazon.com/dp/B09OPQRS45?tag=YOURTAGHERE" class="btn" target="_blank">Grab It ♡</a>
-  </div>
+      // Persephone statues
+      "https://i.etsystatic.com/13953711/c/1140/906/0/0/il/fedfde/3752129863/il_340x270.3752129863_l6ky.jpg",
+      "https://m.media-amazon.com/images/I/61vM6+hdfnL.jpg",
 
-  <!-- 7: Lip Sleeping Mask -->
-  <div class="item">
-    <img src="https://m.media-amazon.com/images/I/71tuv678wxy.jpg" alt="Lip Mask">
-    <h3 class="name">Berry Lip Sleeping Mask</h3>
-    <div class="price">$18.99</div>
-    <a href="https://www.amazon.com/dp/B07YZABCD6?tag=YOURTAGHERE" class="btn" target="_blank">Grab It ♡</a>
-  </div>
+      // Golden chess queens
+      "https://i.etsystatic.com/19721251/r/il/09f609/5495538689/il_570xN.5495538689_i9dp.jpg",
+      "https://thumbs.dreamstime.com/b/high-end-marble-chess-set-gold-pieces-elegant-angle-shot-luxurious-white-board-opposing-sides-highly-detailed-408756737.jpg",
+      "https://thumbs.dreamstime.com/b/gold-glass-chess-pieces-board-closeup-406431187.jpg",
 
-  <!-- 8: Peach Floral Dress -->
-  <div class="item">
-    <img src="https://m.media-amazon.com/images/I/81zcd901efg.jpg" alt="Peach Dress">
-    <h3 class="name">Peach Floral Mini Dress</h3>
-    <div class="price">$32.99</div>
-    <a href="https://www.amazon.com/dp/B0F234GHI7?tag=YOURTAGHERE" class="btn" target="_blank">Grab It ♡</a>
-  </div>
+      // Perfume bottles
+      "https://media.istockphoto.com/id/2172836783/photo/a-chic-bottle-with-a-gold-cap-of-cosmetic-perfume-on-an-abstract-marble-background-top-view.jpg?s=170667a&w=is&k=20&c=sf5D5RZ5Tr-J_I20AnLUzH2IgA-TVUZM35doCh5U7nc=",
+      "https://www.shutterstock.com/image-photo/luxury-perfume-bottle-on-marble-260nw-2606663609.jpg",
+      "https://thumbs.dreamstime.com/b/luxurious-clear-glass-perfume-bottle-gold-cap-elegant-marble-display-surrounded-fresh-green-leaves-description-389652792.jpg",
 
-  <!-- 9: Heart Charm Bracelet -->
-  <div class="item">
-    <img src="https://m.media-amazon.com/images/I/71jkl012mno.jpg" alt="Heart Bracelet">
-    <h3 class="name">Heart Charm Tennis Bracelet</h3>
-    <div class="price">$22.99</div>
-    <a href="https://www.amazon.com/dp/B08UVWCDE8?tag=YOURTAGHERE" class="btn" target="_blank">Grab It ♡</a>
-  </div>
+      // Pomegranates & fruits
+      "https://t3.ftcdn.net/jpg/16/60/01/86/360_F_1660018623_YQ3FO2htj65aBeHy3OYzK3HBCCRP9yZW.jpg",
+      "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh88bRr_NzA0H3U_Qv0owFQml7XCngX0uUtoa9Mvj-Ia-JVCC31qmrizFgLrMxp5SK8hzDobPjwegv5p6yFHiHO3FRfE-_jENvSzOD6ecfSOQBNpOQscThLBqCShI2uRk__ADO4_QcIIRE/s1600/PC081393.JPG",
 
-  <!-- 10: Reusable Eye Patches -->
-  <div class="item">
-    <img src="https://m.media-amazon.com/images/I/81pqr345stu.jpg" alt="Eye Patches">
-    <h3 class="name">Silk Reusable Eye Patches</h3>
-    <div class="price">$14.99</div>
-    <a href="https://www.amazon.com/dp/B09XYZAEF9?tag=YOURTAGHERE" class="btn" target="_blank">Grab It ♡</a>
-  </div>
+      // Succulents
+      "https://c8.alamy.com/comp/2PHJW6B/cactus-and-succulents-collection-in-small-decorative-ceramic-flowerpots-arranged-on-a-marble-stand-2PHJW6B.jpg",
+      "https://i.etsystatic.com/31725365/r/il/75dd53/5070390967/il_fullxfull.5070390967_9r5k.jpg",
+      "https://bloomscape.com/wp-content/uploads/2021/07/Succulents-scaled.jpg?ver=559429",
 
-  <!-- 11: Glitter Glam Phone Case -->
-  <div class="item">
-    <img src="https://m.media-amazon.com/images/I/71vwx678yzA.jpg" alt="Glitter Case">
-    <h3 class="name">Pink Glitter Phone Case</h3>
-    <div class="price">$13.99</div>
-    <a href="https://www.amazon.com/dp/B0G345HIJ0?tag=YOURTAGHERE" class="btn" target="_blank">Grab It ♡</a>
-  </div>
+      // Mermaid tails
+      "https://i.etsystatic.com/9313816/r/il/017eb8/2265305937/il_fullxfull.2265305937_4kau.jpg",
+      "https://happywall-img-gallery.imgix.net/53341/mermaid-glitter-scales-2a-roll.jpg?w=1400&auto=format&q=40",
 
-  <!-- 12: Minimalist Stud Earrings -->
-  <div class="item">
-    <img src="https://m.media-amazon.com/images/I/81bcd901efg.jpg" alt="Pearl Studs">
-    <h3 class="name">Pearl Minimalist Studs</h3>
-    <div class="price">$8.99</div>
-    <a href="https://www.amazon.com/dp/B07KLMNOP9?tag=YOURTAGHERE" class="btn" target="_blank">Grab It ♡</a>
-  </div>
+      // Dream bedrooms
+      "https://m.media-amazon.com/images/S/aplus-media-library-service-media/f703c0f9-528b-4324-9bcf-623fb8eccf14.__CR0,0,1940,1200_PT0_SX970_V1___.jpg",
+      "https://basichomediy.com/wp-content/uploads/2023/02/pink-princess-bedroom-ideas-with-canopy-1024x683.png",
 
-  <!-- 13: Hydrating Face Mist -->
-  <div class="item">
-    <img src="https://m.media-amazon.com/images/I/71ghi234jkl.jpg" alt="Face Mist">
-    <h3 class="name">Rose Hydrating Face Mist</h3>
-    <div class="price">$11.99</div>
-    <a href="https://www.amazon.com/dp/B08STUV123?tag=YOURTAGHERE" class="btn" target="_blank">Grab It ♡</a>
-  </div>
+      // Gold jewelry
+      "https://media.istockphoto.com/id/1331089160/photo/different-elegant-bijouterie-and-plate-on-white-marble-table-flat-lay.jpg?s=612x612&w=0&k=20&c=3WOGBkSwU9hfJD-x43wMEBITuc0NrUD6E8x1l0BYQOA=",
+      "https://imageretouchinglab.com/wp-content/uploads/2024/06/10.-Rose-Gold-Flower-Jewelry-1024x687.webp",
 
-  <!-- 14: Blush Pink Leggings -->
-  <div class="item">
-    <img src="https://m.media-amazon.com/images/I/81mno567pqr.jpg" alt="Pink Leggings">
-    <h3 class="name">Blush High-Waist Leggings</h3>
-    <div class="price">$24.99</div>
-    <a href="https://www.amazon.com/dp/B0H678IJK1?tag=YOURTAGHERE" class="btn" target="_blank">Grab It ♡</a>
-  </div>
+      // Belly dance fabrics
+      "https://i.ebayimg.com/images/g/U~AAAOSw~YZi~PuP/s-l400.jpg",
+      "https://m.media-amazon.com/images/S/aplus-media-library-service-media/69804b1d-2e1b-47af-bb5d-64b7ff8e81cd.__CR100,0,1600,1200_PT0_SX600_V1___.jpg",
 
-  <!-- 15: Layered Pearl Necklace -->
-  <div class="item">
-    <img src="https://m.media-amazon.com/images/I/71stu890vwx.jpg" alt="Pearl Necklace">
-    <h3 class="name">Layered Faux Pearl Necklace</h3>
-    <div class="price">$17.99</div>
-    <a href="https://www.amazon.com/dp/B09OPQRS45?tag=YOURTAGHERE" class="btn" target="_blank">Grab It ♡</a>
-  </div>
+      // Steampunk gears
+      "https://thumbs.dreamstime.com/z/dive-mesmerizing-world-intricate-mechanical-artistry-captivating-steampunk-gears-background-detailed-387326290.jpg",
+      "https://i.etsystatic.com/8763581/r/il/9a6e0a/1022087060/il_fullxfull.1022087060_l50i.jpg",
 
-  <!-- 16: Cupcake Print Case -->
-  <div class="item">
-    <img src="https://m.media-amazon.com/images/I/81yzA234bcd.jpg" alt="Cupcake Case">
-    <h3 class="name">Pastel Cupcake Phone Case</h3>
-    <div class="price">$15.99</div>
-    <a href="https://www.amazon.com/dp/B0I901JKM2?tag=YOURTAGHERE" class="btn" target="_blank">Grab It ♡</a>
-  </div>
+      // Exotic flowers
+      "https://rosehausco.com/cdn/shop/files/Pink_Collection.jpg?v=1753942606&width=3840",
+      "https://cdn.shopify.com/s/files/1/2176/7751/files/Modern_silk_flowers_on_a_marble_table.jpg?v=1759893164",
 
-  <!-- 17: Exfoliating Lip Scrub -->
-  <div class="item">
-    <img src="https://m.media-amazon.com/images/I/71efg567hij.jpg" alt="Lip Scrub">
-    <h3 class="name">Sugar Exfoliating Lip Scrub</h3>
-    <div class="price">$9.99</div>
-    <a href="https://www.amazon.com/dp/B07YZABCD6?tag=YOURTAGHERE" class="btn" target="_blank">Grab It ♡</a>
-  </div>
+      // Pink-gold marble textures
+      "https://thumbs.dreamstime.com/b/abstract-pink-gold-swirling-marble-texture-glitter-accents-generative-ai-image-369831919.jpg",
+      "https://everwallpaper.com/cdn/shop/products/1069.jpg?v=1658824666",
+      "https://png.pngtree.com/background/20250522/original/pngtree-abstract-pink-gold-marble-background-with-glitter-swirls-for-stylish-texture-picture-image_16566477.jpg",
+      "https://thumbs.dreamstime.com/b/elegant-swirling-pink-gold-marble-texture-liquid-paint-effect-perfect-sophisticated-wallpaper-designs-elegant-327777952.jpg"
+      // Add more if you want – this pool is already huge!
+    ];
 
-  <!-- 18: Lavender Cardigan -->
-  <div class="item">
-    <img src="https://m.media-amazon.com/images/I/81klm890nop.jpg" alt="Lavender Cardigan">
-    <h3 class="name">Oversized Lavender Cardigan</h3>
-    <div class="price">$29.99</div>
-    <a href="https://www.amazon.com/dp/B0J234KLM3?tag=YOURTAGHERE" class="btn" target="_blank">Grab It ♡</a>
-  </div>
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
 
-  <!-- 19: Initial Charm Anklet -->
-  <div class="item">
-    <img src="https://m.media-amazon.com/images/I/71pqr123stu.jpg" alt="Anklet">
-    <h3 class="name">Personalized Initial Anklet</h3>
-    <div class="price">$13.99</div>
-    <a href="https://www.amazon.com/dp/B08UVWCDE8?tag=YOURTAGHERE" class="btn" target="_blank">Grab It ♡</a>
-  </div>
+    const shuffled = shuffle([...images]);
+    const moodImages = shuffled.slice(0, Math.floor(Math.random() * 7) + 12); // 12–18 images
 
-  <!-- 20: Jelly Makeup Bag -->
-  <div class="item">
-    <img src="https://m.media-amazon.com/images/I/81vwx456yzA.jpg" alt="Jelly Bag">
-    <h3 class="name">Clear Jelly Makeup Bag</h3>
-    <div class="price">$10.99</div>
-    <a href="https://www.amazon.com/dp/B09XYZAEF9?tag=YOURTAGHERE" class="btn" target="_blank">Grab It ♡</a>
-  </div>
+    const moodboard = document.getElementById('moodboard');
+    moodImages.forEach(src => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = "Golden Divine Oracle Queen Aesthetic";
+      img.loading = "lazy"; // Faster loading
+      moodboard.appendChild(img);
+    });
 
-</div>
+    const heroContainer = document.getElementById('heroContainer');
+    shuffled.slice(0, 5).forEach((src, index) => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.classList.add('hero');
+      if (index === 0) img.classList.add('active');
+      heroContainer.appendChild(img);
+    });
 
-<div class="disc">
-  ♡ Curated vibes only — affiliate links mean I earn a tiny commission if you love it too (at no extra cost!). Pin & share your faves ♡
-</div>
+    const heroes = document.querySelectorAll('.hero');
+    let current = 0;
+    setInterval(() => {
+      heroes[current].classList.remove('active');
+      current = (current + 1) % heroes.length;
+      heroes[current].classList.add('active');
+    }, 8000);
+  </script>
 
 </body>
 </html>
