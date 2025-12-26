@@ -1,0 +1,166 @@
+'EOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Campus Queens Calendar ♡</title>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    body{margin:0;padding:0;background:linear-gradient(135deg,#ff1493,#ffd1dc);font-family:'Poppins',sans-serif;color:#fff;min-height:100vh}
+    .header{text-align:center;padding:40px 20px;background:rgba(0,0,0,0.3)}
+    h1{font-family:'Playfair Display',serif;font-size:4.5rem;margin:0;text-shadow:0 0 20px #ff1493,0 0 40px #fff}
+    .container{max-width:1100px;margin:0 auto;padding:20px}
+    #calendar{background:rgba(255,255,255,0.15);border-radius:20px;padding:20px;backdrop-filter:blur(10px);box-shadow:0 20px 40px rgba(0,0,0,0.3)}
+    .fc-button{background:#ff1493 !important;border:none !important;color:#fff !important}
+    .fc-button:hover{background:#ffd700 !important;color:#ff1493 !important}
+    .fc-event{background:linear-gradient(45deg,#ff1493,#ffd700)!important;border:none!important;border-radius:12px!important;color:#fff;font-weight:600}
+    .back-btn{position:fixed;top:20px;left:20px;z-index:9999;background:rgba(0,0,0,0.5);color:#fff;padding:12px 20px;border-radius:50px;text-decoration:none}
+    .back-btn:hover{background:#ff1493}
+    .modal{display:none;position:fixed;z-index:10000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px)}
+    .modal-content{background:linear-gradient(135deg,#ff1493,#ffd1dc);margin:8% auto;padding:35px;border-radius:25px;width:90%;max-width:520px;color:#fff;box-shadow:0 25px 50px rgba(0,0,0,0.5)}
+    .modal input,.modal textarea{width:100%;padding:14px;margin:12px 0;border:none;border-radius:10px;font-size:16px}
+    .modal button{background:#ffd700;color:#ff1493;padding:14px 28px;border:none;border-radius:12px;margin:8px;cursor:pointer;font-weight:700;font-size:16px}
+    .close{float:right;font-size:32px;cursor:pointer}
+    #login-modal{display:block}
+    .add-btn{position:fixed;top:20px;right:20px;z-index:9999;background:#ffd700;color:#ff1493;padding:14px 28px;border:none;border-radius:50px;font-weight:700;cursor:pointer;box-shadow:0 15px 30px rgba(0,0,0,0.4);display:none}
+  </style>
+</head>
+<body>
+
+  <a href="index.html" class="back-btn">← Back to Campus Queens</a>
+
+  <div class="header">
+    <h1>♡ Campus Queens Calendar ♡</h1>
+    <p>Events • Parties • Crown Moments</p>
+  </div>
+
+  <div class="container">
+    <div id="calendar"></div>
+  </div>
+
+  <!-- Queen Login -->
+  <div id="login-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">×</span>
+      <h2>👑 Queen Login</h2>
+      <form id="login-form">
+        <input type="password" placeholder="Queen Code → queens2025" required>
+        <br><button type="submit">Enter Empire</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add/Edit Event Modal -->
+  <div id="event-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">×</span>
+      <h2 id="modal-title">Add Crown Event</h2>
+      <form id="event-form">
+        <input type="text" id="event-title" placeholder="Event Title ♡" required>
+        <input type="date" id="event-date" required>
+        <input type="time" id="event-time" required value="19:00">
+        <textarea id="event-desc" placeholder="Details, location, dress code... (optional)"></textarea>
+        <button type="submit">💾 Save Event</button>
+        <button type="button" id="delete-btn" style="display:none;background:#ff1493">🗑️ Delete Forever</button>
+      </form>
+    </div>
+  </div>
+
+  <button class="add-btn">+ Add Crown Event</button>
+
+  <script>
+    let events = JSON.parse(localStorage.getItem('campusQueensEvents')) || [];
+    let calendar, isAdmin = false, editingId = null;
+
+    function save() { localStorage.setItem('campusQueensEvents', JSON.stringify(events)); }
+    function render() {
+      const el = document.getElementById('calendar');
+      calendar = new FullCalendar.Calendar(el, {
+        initialView: 'dayGridMonth',
+        headerToolbar: { left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek,timeGridDay' },
+        events: events.map(e => ({
+          id: e.id,
+          title: e.title + (e.time ? ` @ ${e.time}` : ''),
+          start: `${e.date}T${e.time || '00:00'}`,
+          extendedProps: { desc: e.desc }
+        })),
+        editable: isAdmin,
+        eventClick: info => {
+          if (!isAdmin) return alert(`${info.event.title}\n\n${info.event.extendedProps.desc || 'No details yet ♡'}`);
+          editingId = info.event.id;
+          const ev = events.find(x => x.id === editingId);
+          document.getElementById('event-title').value = ev.title;
+          document.getElementById('event-date').value = ev.date;
+          document.getElementById('event-time').value = ev.time || '19:00';
+          document.getElementById('event-desc').value = ev.desc || '';
+          document.getElementById('modal-title').textContent = 'Edit Event';
+          document.getElementById('delete-btn').style.display = 'inline-block';
+          document.getElementById('event-modal').style.display = 'block';
+        },
+        eventDrop: info => { if(isAdmin) { const ev = events.find(x=>x.id===info.event.id); ev.date = info.event.startStr.split('T')[0]; ev.time = info.event.startStr.split('T')[1]?.slice(0,5); save(); }}
+      });
+      calendar.render();
+    }
+
+    // Login
+    document.getElementById('login-form').onsubmit = e => {
+      e.preventDefault();
+      if (e.target[0].value === 'queens2025') {
+        isAdmin = true;
+        document.getElementById('login-modal').style.display = 'none';
+        document.querySelector('.add-btn').style.display = 'block';
+        render();
+      } else alert('Wrong code, darling ♡');
+    };
+
+    // Add new event
+    document.querySelector('.add-btn').onclick = () => {
+      editingId = null;
+      document.getElementById('event-form').reset();
+      document.getElementById('event-date').valueAsDate = new Date();
+      document.getElementById('event-time').value = '19:00';
+      document.getElementById('modal-title').textContent = 'Add Crown Event';
+      document.getElementById('delete-btn').style.display = 'none';
+      document.getElementById('event-modal').style.display = 'block';
+    };
+
+    // Save event
+    document.getElementById('event-form').onsubmit = e => {
+      e.preventDefault();
+      const title = document.getElementById('event-title').value.trim();
+      const date = document.getElementById('event-date').value;
+      const time = document.getElementById('event-time').value;
+      const desc = document.getElementById('event-desc').value;
+
+      if (editingId) {
+        const ev = events.find(x => x.id === editingId);
+        ev.title = title; ev.date = date; ev.time = time; ev.desc = desc;
+      } else {
+        events.push({ id: Date.now().toString(), title, date, time, desc });
+      }
+      save();
+      calendar.refetchEvents();
+      document.getElementById('event-modal').style.display = 'none';
+    };
+
+    // Delete
+    document.getElementById('delete-btn').onclick = () => {
+      if (confirm('Delete this event forever? 👑')) {
+        events = events.filter(x => x.id !== editingId);
+        save(); calendar.refetchEvents();
+        document.getElementById('event-modal').style.display = 'none';
+      }
+    };
+
+    // Close modals
+    document.querySelectorAll('.close').forEach(x => x.onclick = () => document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'));
+    window.onclick = e => { if (e.target.classList.contains('modal')) e.target.style.display = 'none'; };
+
+    // Start blank
+    render();
+  </script>
+</body>
+</html>
+EOF

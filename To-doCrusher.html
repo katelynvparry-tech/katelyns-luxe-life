@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do Crusher 💥</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #5e60ce;
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        p.subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 40px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        .section {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .section:hover {
+            transform: translateY(-5px);
+        }
+        .section h2 {
+            color: #5e60ce;
+            margin-top: 0;
+            font-size: 1.6rem;
+            border-bottom: 3px solid #e0e0ff;
+            padding-bottom: 10px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        li {
+            background: #f8f9ff;
+            margin: 12px 0;
+            padding: 14px 18px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        li:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        li.completed {
+            opacity: 0.7;
+            background: #e8f5e9;
+        }
+        li.completed span {
+            text-decoration: line-through;
+            color: #666;
+        }
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #5e60ce;
+            cursor: pointer;
+        }
+        .task-text {
+            flex: 1;
+            margin-left: 12px;
+            font-size: 1.1rem;
+        }
+        .delete-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        .delete-btn:hover {
+            background: #ff5252;
+            transform: scale(1.1);
+        }
+        .add-task {
+            display: flex;
+            margin-top: 20px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: 12px 0 0 12px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #5e60ce;
+        }
+        button.add-btn {
+            padding: 0 24px;
+            background: #5e60ce;
+            color: white;
+            border: none;
+            border-radius: 0 12px 12px 0;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        button.add-btn:hover {
+            background: #4d4fc0;
+        }
+    </style>
+</head>
+<body>
+    <h1>To-Do Crusher 💥</h1>
+    <p class="subtitle">Prioritize homework, shopping, and glow-up goals. Crush them one by one!</p>
+
+    <div class="container">
+        <!-- Homework Section -->
+        <div class="section">
+            <h2>📚 Homework Priorities</h2>
+            <ul id="homework-list">
+                <li><input type="checkbox"><span class="task-text">Finish math assignment due tomorrow</span><button class="delete-btn">🗑️</button></li>
+                <li><input type="checkbox"><span class="task-text">Read chapter 5 for history</span><button class="delete-btn">🗑️</button></li>
+                <li><input type="checkbox"><span class="task-text">Review notes for science quiz</span><button class="delete-btn">🗑️</button></li>
+            </ul>
+            <div class="add-task">
+                <input type="text" id="homework-input" placeholder="Add new homework task...">
+                <button class="add-btn" onclick="addTask('homework')">Add</button>
+            </div>
+        </div>
+
+        <!-- Shopping Section -->
+        <div class="section">
+            <h2>🛒 Shopping List</h2>
+            <ul id="shopping-list">
+                <li><input type="checkbox"><span class="task-text">Groceries: milk, eggs, bread</span><button class="delete-btn">🗑️</button></li>
+                <li><input type="checkbox"><span class="task-text">New notebook and pens</span><button class="delete-btn">🗑️</button></li>
+                <li><input type="checkbox"><span class="task-text">Birthday gift for friend</span><button class="delete-btn">🗑️</button></li>
+            </ul>
+            <div class="add-task">
+                <input type="text" id="shopping-input" placeholder="Add new shopping item...">
+                <button class="add-btn" onclick="addTask('shopping')">Add</button>
+            </div>
+        </div>
+
+        <!-- Glow-Up Goals Section -->
+        <div class="section">
+            <h2>✨ Glow-Up Goals</h2>
+            <ul id="glowup-list">
+                <li><input type="checkbox"><span class="task-text">Workout 30 mins daily</span><button class="delete-btn">🗑️</button></li>
+                <li><input type="checkbox"><span class="task-text">Skincare routine morning & night</span><button class="delete-btn">🗑️</button></li>
+                <li><input type="checkbox"><span class="task-text">Read self-improvement book</span><button class="delete-btn">🗑️</button></li>
+            </ul>
+            <div class="add-task">
+                <input type="text" id="glowup-input" placeholder="Add new glow-up goal...">
+                <button class="add-btn" onclick="addTask('glowup')">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addTask(category) {
+            const input = document.getElementById(category + '-input');
+            const taskText = input.value.trim();
+            if (taskText === '') return;
+
+            const list = document.getElementById(category + '-list');
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <input type="checkbox">
+                <span class="task-text">${taskText}</span>
+                <button class="delete-btn">🗑️</button>
+            `;
+            list.appendChild(li);
+            input.value = '';
+
+            attachEventListeners(li);
+        }
+
+        function attachEventListeners(li) {
+            const checkbox = li.querySelector('input[type="checkbox"]');
+            const deleteBtn = li.querySelector('.delete-btn');
+
+            checkbox.addEventListener('change', () => {
+                li.classList.toggle('completed', checkbox.checked);
+            });
+
+            deleteBtn.addEventListener('click', () => {
+                li.style.transition = 'all 0.4s ease';
+                li.style.opacity = '0';
+                li.style.transform = 'translateX(100px)';
+                setTimeout(() => li.remove(), 400);
+            });
+        }
+
+        // Attach events to existing tasks
+        document.querySelectorAll('li').forEach(attachEventListeners);
+    </script>
+</body>
+</html>

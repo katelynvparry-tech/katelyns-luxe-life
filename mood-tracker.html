@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🌈 Mood Tracker</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg: #f0f2f5;
+      --card: #ffffff;
+      --primary: #6c5ce7;
+      --happy: #a29bfe;
+      --sad: #74b9ff;
+      --angry: #ff7675;
+      --calm: #81ecec;
+      --anxious: #ffeaa7;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg);
+      margin: 0;
+      padding: 20px;
+      color: #2d3436;
+    }
+    h1 { text-align: center; color: var(--primary); }
+    .container { max-width: 900px; margin: 0 auto; }
+    .card {
+      background: var(--card);
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
+    .mood-buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .mood-btn {
+      padding: 16px;
+      border: none;
+      border-radius: 12px;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .mood-btn:hover { transform: scale(1.1); }
+    .happy { background:#a29bfe; }
+    .calm { background:#81ecec; }
+    .neutral { background:#fdcb6e; }
+    .sad { background:#74b9ff; }
+    .angry { background:#ff7675; }
+    .anxious { background:#ffeaa7; color:#2d3436; }
+
+    textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; margin-top: 10px; }
+    button.primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .tips, .games { margin-top: 20px; padding: 15px; background:#f8f9fa; border-radius: 12px; }
+    .history { max-height: 300px; overflow-y: auto; }
+    .entry { padding: 10px; border-bottom: 1px solid #eee; }
+    canvas { margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌈 Your Mood Tracker</h1>
+
+    <div class="card">
+      <h2>How are you feeling right now?</h2>
+      <div class="mood-buttons">
+        <button class="mood-btn happy" data-mood="happy">😊 Happy</button>
+        <button class="mood-btn calm" data-mood="calm">😌 Calm</button>
+        <button class="mood-btn neutral" data-mood="neutral">😐 Neutral</button>
+        <button class="mood-btn sad" data-mood="sad">😢 Sad</button>
+        <button class="mood-btn angry" data-mood="angry">😤 Angry</button>
+        <button class="mood-btn anxious" data-mood="anxious">😰 Anxious</button>
+      </div>
+
+      <textarea id="notes" placeholder="What’s on your mind? (optional)"></textarea>
+      <br><br>
+      <button class="primary" onclick="logMood()">💾 Log This Mood</button>
+    </div>
+
+    <div class="card">
+      <h2>📊 Your Mood Over Time</h2>
+      <canvas id="moodChart"></canvas>
+    </div>
+
+    <div class="card">
+      <h2>🧘 Self-Care Tip for You</h2>
+      <div class="tips" id="tip"></div>
+    </div>
+
+    <div class="card">
+      <h2>🎮 Quick Mood-Boost Games</h2>
+      <div class="games">
+        <button class="primary" onclick="playGratitude()">🙏 3 Things I'm Grateful For</button>
+        <button class="primary" onclick="playBreathing()">🫁 4-7-8 Breathing</button>
+        <button class="primary" onclick="playCompliment()">💝 Give Yourself a Compliment</button>
+        <button class="primary" onclick="playDance()">🕺 30-Second Dance Party</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📜 Recent Entries</h2>
+      <div class="history" id="history"></div>
+    </div>
+  </div>
+
+  <script>
+    const moods = {
+      happy: "😊", calm: "😌", neutral: "😐",
+      sad: "😢", angry: "😤", anxious: "😰"
+    };
+
+    const tips = {
+      happy: "You’re glowing! Spread the joy — text someone you love ❤️",
+      calm: "Beautiful energy. Maybe journal or meditate to keep this peace.",
+      neutral: "Perfectly okay to feel neutral. Try a small act of kindness for a boost.",
+      sad: "It’s okay to not be okay. Wrap yourself in a blanket and watch something comforting.",
+      angry: "Let’s release that. Try punching a pillow or writing everything out then tearing the paper.",
+      anxious: "You’re safe. Try grounding: name 5 things you see, 4 you can touch, 3 you hear, 2 you smell, 1 you taste."
+    };
+
+    let entries = JSON.parse(localStorage.getItem("moodEntries")) || [];
+    let chart;
+
+    function updateChart() {
+      const labels = entries.slice(-14).map(e => new Date(e.date).toLocaleDateString());
+      const data = entries.slice(-14).map(e => ({
+        happy: 5, calm: 4, neutral: 3, sad: 2, angry: 1, anxious: 0
+      }[e.mood]));
+
+      if (chart) chart.destroy();
+      chart = new Chart(document.getElementById("moodChart"), {
+        type: "line",
+        data: {
+          labels: labels.length ? labels : ["Today"],
+          datasets: [{
+            label: "Mood Score",
+            data: data.length ? data : [3],
+            borderColor: "#6c5ce7",
+            backgroundColor: "rgba(108, 92, 231, 0.2)",
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          scales: { y: { min: 0, max: 5, ticks: { stepSize: 1 } } },
+          plugins: { legend: { display: false } }
+        }
+      });
+    }
+
+    function updateHistory() {
+      const hist = document.getElementById("history");
+      hist.innerHTML = entries.slice(-10).reverse().map(e => `
+        <div class="entry">
+          <strong>${moods[e.mood]} ${e.mood.charAt(0).toUpperCase() + e.mood.slice(1)}</strong> 
+          – ${new Date(e.date).toLocaleString()}
+          ${e.notes ? `<br><small>${e.notes}</small>` : ""}
+        </div>
+      `).join("");
+    }
+
+    function showTip(mood) {
+      document.getElementById("tip").innerHTML = `<strong>${moods[mood]} Feeling ${mood}?</strong><br>${tips[mood]}`;
+    }
+
+    let selectedMood = null;
+    document.querySelectorAll("[data-mood]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("[data-mood]").forEach(b => b.style.opacity = "0.6");
+        btn.style.opacity = "1";
+        selectedMood = btn.dataset.mood;
+        showTip(selectedMood);
+      });
+    });
+
+    function logMood() {
+      if (!selectedMood) return alert("Please pick a mood first 😊");
+      const notes = document.getElementById("notes").value.trim();
+      entries.push({ mood: selectedMood, notes, date: new Date() });
+      localStorage.setItem("moodEntries", JSON.stringify(entries));
+      document.getElementById("notes").value = "";
+      selectedMood = null;
+      document.querySelectorAll("[data-mood]").forEach(b => b.style.opacity = "0.6");
+      updateChart();
+      updateHistory();
+      alert("Mood logged! 💜");
+    }
+
+    // Quick Mood Games
+    function playGratitude() {
+      const things = prompt("Name 3 things you’re grateful for today (one per line)").split("\n").filter(x=>x);
+      if (things.length) alert("Amazing! Gratitude rewires your brain for happiness 🌟");
+    }
+    function playBreathing() {
+      alert("Let’s do 4-7-8 breathing!\n\nInhale for 4 seconds...\nHold for 7...\nExhale for 8...\n\nRepeat 4 times. I’ll wait 😌");
+    }
+    function playCompliment() {
+      const comp = prompt("Give yourself a genuine compliment right now ❤️");
+      if (comp) alert(`"${comp}"\n\nYou deserve to hear that every day! ✨`);
+    }
+    function playDance() {
+      alert("🎶 30-SECOND DANCE PARTY STARTS... NOW! 🎶\nMove however feels good!");
+      setTimeout(() => alert("How do you feel now? 😄"), 30000);
+    }
+
+    // Init
+    updateChart();
+    updateHistory();
+    showTip("neutral");
+  </script>
+</body>
+</html>
