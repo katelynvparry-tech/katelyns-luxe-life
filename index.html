@@ -4,108 +4,177 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-site-verification" content="I8vtKow4xp4Lp2XptLoEaqJfIGATr0Cbbmy4BtgBMt0" />
-  
-  <title>Katelyn's Luxe life - You Deserve Luxury</title>
-  <meta name="description" content="Everything a modern woman needs for that luxury glow: dorm inspo, student app, cute games, aesthetics ♡">
-  
+ 
+  <title>Katelyn's Luxe Life - Elevated Everyday Luxury</title>
+  <meta name="description" content="Curated luxury for the modern woman: fashion finds, wellness tools, chic games, mood boards & more ♡">
+ 
   <!-- Google Programmable Search Engine -->
   <script async src="https://cse.google.com/cse.js?cx=e034be13cfdca4837"></script>
-  
+ 
   <style>
-    body {font-family: 'Georgia', serif; background: #ffeef8; color: #ff6bc1; margin: 0; padding: 20px; text-align: center;}
-    h1 {font-size: 3em; margin: 30px 0; color: #ff1493;}
-    p.tagline {font-style: italic; color: #db7093; margin-bottom: 30px;}
-
-    /* Pink Search Bar */
+    :root {
+      --gold: #d4af37;
+      --rose: #e8a0b0;
+      --sage: #a8c4a8;
+      --lavender: #d8c0e0;
+      --cream: #f9f5f0;
+      --text: #6b5b4b;
+    }
+    body {
+      font-family: 'Georgia', serif;
+      background: var(--cream);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 3.2em;
+      margin: 30px 0;
+      background: linear-gradient(to right, var(--gold), var(--rose));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    p.tagline {
+      font-style: italic;
+      color: #8b7a6b;
+      margin-bottom: 30px;
+      font-size: 1.3em;
+    }
+    /* Luxe Search Bar */
     .gcse-searchbox-only {max-width: 600px; margin: 30px auto;}
-    .gsc-input {font-size: 1.2em !important; padding: 14px !important; border-radius: 50px !important;}
-    .gsc-search-button {background: #ff1493 !important; border-radius: 50px !important; padding: 12px 30px !important;}
-
-    /* Hide Google branding */
+    .gsc-input {
+      font-size: 1.2em !important;
+      padding: 14px !important;
+      border-radius: 50px !important;
+      border: 3px solid var(--rose);
+    }
+    .gsc-search-button {
+      background: linear-gradient(to right, var(--gold), var(--rose)) !important;
+      border-radius: 50px !important;
+      padding: 12px 30px !important;
+    }
     .gsc-branding, .gcsc-branding {display: none !important;}
-
+    
     /* Visual reverse search */
     #visual-search {margin: 50px auto; max-width: 500px;}
-    #upload-btn {background:#ff69b4; color:white; border:none; padding:12px 24px; border-radius:50px; cursor:pointer; font-size:1.1em;}
-    #results img {width:120px; border-radius:12px; margin:8px; box-shadow:0 4px 15px rgba(255,105,180,0.4);}
-
-    .grid {display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:25px; margin:50px auto; max-width:1200px;}
-    .card {background:white; padding:25px; border-radius:20px; box-shadow:0 10px 30px rgba(255,105,180,0.2); transition:0.3s;}
-    .card:hover {transform:scale(1.05);}
-    .card a {text-decoration:none; color:#ff1493; font-size:1.6em; font-weight:bold;}
-    footer {margin:80px 0 20px; color:#ff8ccd;}
+    #upload-btn {
+      background: linear-gradient(to right, var(--sage), var(--lavender));
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 1.1em;
+      box-shadow: 0 4px 15px rgba(168,196,168,0.3);
+    }
+    #results img {width:120px; border-radius:12px; margin:8px; box-shadow:0 4px 15px rgba(212,175,55,0.3);}
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin: 50px auto;
+      max-width: 1200px;
+    }
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      transition: 0.3s;
+    }
+    .card:hover {transform: scale(1.05);}
+    .card a {
+      text-decoration: none;
+      font-size: 1.7em;
+      font-weight: bold;
+      background: linear-gradient(to right, var(--gold), var(--rose));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .card:nth-child(1) {border-top: 6px solid var(--gold);}
+    .card:nth-child(2) {border-top: 6px solid var(--rose);}
+    .card:nth-child(3) {border-top: 6px solid var(--sage);}
+    .card:nth-child(4) {border-top: 6px solid var(--lavender);}
+    
+    footer {
+      background: linear-gradient(to bottom, var(--rose), var(--lavender));
+      color: white;
+      padding: 50px 20px;
+      margin-top: 80px;
+      font-size: 1.1em;
+      border-top: 10px solid var(--gold);
+    }
   </style>
 </head>
-
 <body>
   <h1>Katelyn's Luxe Life</h1>
   <p class="tagline">Everything a modern woman needs for that luxury glow</p>
-
+  
   <!-- Text Search Bar -->
   <div class="gcse-searchbox-only" data-resultsUrl="https://katelynvparry-tech.github.io/katelyns-campus-queens/search-results.html"></div>
-
+  
   <!-- Visual / Reverse Image Search -->
   <div id="visual-search">
     <h3>Snap or Upload a Photo to Search</h3>
     <input type="file" id="imageUpload" accept="image/*" style="display:none;">
     <button id="upload-btn" onclick="document.getElementById('imageUpload').click()">
-      Upload Pink Inspo!
+      Upload Luxe Inspo!
     </button>
     <div id="results"></div>
   </div>
-
+  
   <div class="grid">
-    <div class="card"><a href="katelyn_app.html"> Kate's Student App</a><p>Schedule, mood tracker, to-do & more</p></div>
-    <div class="card"><a href="testsite.html">Girl Games Hub</a><p>Chess Blackjack Tic-Tac-Toe</p></div>
-    <div class="card"><a href="dorm3.html"> luxe Shopping Essentials</a><p>Cute Amazon finds + room inspo</p></div>
-    <div class="card"><a href="aesthetic.html"> Aesthetic Vault</a><p>Mood boards & wallpapers</p></div>
+    <div class="card"><a href="katelyn_app.html">Katelyn's Daily Toolkit</a><p>Schedule, mood tracker, to-do & more</p></div>
+    <div class="card"><a href="testsite.html">Chic Games Lounge</a><p>Chess, Blackjack, Tic-Tac-Toe</p></div>
+    <div class="card"><a href="dorm3.html">Luxe Shopping Essentials</a><p>Must-have finds + style inspo</p></div>
+    <div class="card"><a href="aesthetic.html">Luxe Aesthetic Vault</a><p>Mood boards & wallpapers</p></div>
   </div>
-<footer style="text-align: center; padding: 50px 20px; background: linear-gradient(to bottom, #ff69b4, #ff1493); color: white; margin-top: 80px; font-size: 1.1em; border-top: 8px solid #ff8ccd;">
+
+  <footer>
     <p style="margin: 15px 0; font-weight: bold; font-size: 1.3em;">♡ Connect With Katelyn ♡</p>
-    
+   
     <p style="margin: 20px 0;">
         <strong>Fashion & Style:</strong> <a href="https://instagram.com/katelyn__chic_style" style="color: white; text-decoration: underline;">@katelyn__chic_style</a><br>
         <strong>Food Critic:</strong> <a href="https://instagram.com/katelyn_foodcritic" style="color: white; text-decoration: underline;">@katelyn_foodcritic</a><br>
         <strong>Poetry & Motivation:</strong> <a href="https://instagram.com/katelyn_motvation" style="color: white; text-decoration: underline;">@katelyn_motvation</a><br>
         <strong>Family Vibes:</strong> <a href="https://instagram.com/koko_parry" style="color: white; text-decoration: underline;">@koko_parry</a>
     </p>
-    
+   
     <p style="margin: 20px 0;">
         <strong>YouTube:</strong> <a href="https://www.youtube.com/@Katelyn.pparry2005" style="color: white; text-decoration: underline;">@Katelyn.pparry2005</a> (78 videos ♡)
     </p>
-    
+   
     <p style="margin: 20px 0;">
         <strong>Collabs & DMs:</strong> (954) 760-0320<br>
         <strong>Email:</strong> katelyn@campusqueens.com
     </p>
-    
+   
     <hr style="border: 1px dashed white; margin: 30px auto; width: 50%;">
-    
+   
     <p style="margin: 20px 0;">
         <a href="index.html" style="color: white; text-decoration: none; margin: 0 15px; font-weight: bold;">🏠 Home</a> |
         <a href="katelyn_app.html" style="color: white; text-decoration: none; margin: 0 15px; font-weight: bold;">📱 CampusKit App</a> |
         <a href="testsite.html" style="color: white; text-decoration: none; margin: 0 15px; font-weight: bold;">🎮 Girl Games</a> |
-        <a href="dorm3.html" style="color: white; text-decoration: none; margin: 0 15px; font-weight: bold;">🛍️ Dorm Shopping</a> |
-        <a href="aesthetic.html" style="color: white; text-decoration: none; margin: 0 15px; font-weight: bold;">💖 Pink Aesthetics</a>
+        <a href="dorm3.html" style="color: white; text-decoration: none; margin: 0 15px; font-weight: bold;">🛍️ Luxe Essentials</a> |
+        <a href="aesthetic.html" style="color: white; text-decoration: none; margin: 0 15px; font-weight: bold;">💖 Luxe Aesthetics</a>
     </p>
-    
+   
     <p style="font-size: 0.9em; margin-top: 30px;">Made with endless ♡ by Katelyn | Class of 2028</p>
-</footer>
-  <footer>Made with ♡ by Katelyn • Class of 2028</footer>
+  </footer>
 
-  <!-- Reverse Image Search Script (no API key needed!) -->
+  <!-- Reverse Image Search Script -->
   <script>
     document.getElementById('imageUpload').addEventListener('change', function(e) {
       const file = e.target.files[0];
       if (!file) return;
-
       const reader = new FileReader();
       reader.onload = function(ev) {
         const imgDataUrl = ev.target.result;
         const googleUrl = `https://www.google.com/searchbyimage?image_url=${encodeURIComponent(imgDataUrl)}`;
         window.open(googleUrl, '_blank');
         
-        // Optional: show thumbnail preview
         document.getElementById('results').innerHTML = `
           <p>Searching your photo on Google...</p>
           <img src="${imgDataUrl}" alt="Your uploaded inspo">
