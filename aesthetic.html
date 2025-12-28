@@ -3,43 +3,98 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kate’s Aesthetic Picks ♡ 2025</title>
+  <title>Katelyn's Luxe Aesthetic Vault ♡ - Elevated Everyday Luxury</title>
   <style>
-    body {margin:0; font-family:'Segoe UI',sans-serif; background:#fdf2f8 url('https://thumbs.dreamstime.com/b/soft-pink-marble-showcases-gold-veining-luxurious-pattern-wallpaper-texture-intricate-smooth-polished-surface-370527400.jpg') repeat; background-size: cover; color:#333;}
-    .hero-container {position:relative; width:100%; height:60vh; overflow:hidden;}
-    .hero {position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 1.5s ease;}
-    .hero.active {opacity:1;}
-    .moodboard {display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; padding:40px 20px; background:rgba(255,255,255,0.75); border-radius:20px; margin:20px auto; max-width:1400px;}
-    .moodboard img {width:100%; height:auto; border-radius:15px; box-shadow:0 8px 25px rgba(236,72,153,.2); transition:.3s;}
-    .moodboard img:hover {transform:scale(1.05);}
-    h1 {text-align:center; color:#ec4899; padding:20px 20px 10px; font-size:2.5em;}
-    .sub {text-align:center; font-size:1.2em; color:#a78bfa; margin-bottom:20px;}
-    .grid {display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px; padding:0 20px; max-width:1200px; margin:auto;}
-    .item {background:white; border-radius:20px; overflow:hidden; box-shadow:0 8px 25px rgba(236,72,153,.15); text-align:center; padding:15px; transition:.3s;}
-    .item:hover {transform:scale(1.05);}
-    .item img {width:100%; height:280px; object-fit:cover; border-radius:15px;}
-    .name {font-size:1.1em; margin:10px 0 5px; color:#be185d;}
-    .price {font-size:1.4em; color:#ec4899; font-weight:bold; margin:5px 0;}
-    .btn {background:#ec4899; color:white; padding:10px 20px; border-radius:25px; text-decoration:none; font-weight:bold; display:block; margin-top:10px; font-size:0.9em;}
-    .btn:hover {background:#be185d;}
-    .disc {text-align:center; padding:40px; color:#a78bfa; font-size:0.85em; margin-top:40px;}
+    :root {
+      --gold: #d4af37;
+      --rose: #e8a0b0;
+      --sage: #a8c4a8;
+      --lavender: #d8c0e0;
+      --cream: #f9f5f0;
+      --text: #6b5b4b;
+    }
+    body {
+      font-family: 'Georgia', serif;
+      background: var(--cream);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 3.2em;
+      margin: 40px 0 10px;
+      background: linear-gradient(to right, var(--gold), var(--rose));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    p.sub {
+      font-style: italic;
+      font-size: 1.4em;
+      color: #8b7a6b;
+      max-width: 900px;
+      margin: 0 auto 50px;
+    }
+    .hero-container {
+      position: relative;
+      width: 100%;
+      height: 70vh;
+      overflow: hidden;
+      border-radius: 20px;
+      margin: 20px auto;
+      max-width: 1400px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    .hero {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1.8s ease;
+    }
+    .hero.active { opacity: 1; }
+    .moodboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      padding: 40px;
+      background: white;
+      border-radius: 20px;
+      margin: 40px auto;
+      max-width: 1400px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+    .moodboard img {
+      width: 100%;
+      height: auto;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(212,175,55,0.2);
+      transition: 0.3s;
+    }
+    .moodboard img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 40px rgba(212,175,55,0.3);
+    }
+    .disc {
+      text-align: center;
+      padding: 50px 20px;
+      color: #8b7a6b;
+      font-size: 1.1em;
+      font-style: italic;
+    }
   </style>
 </head>
 <body>
-
   <div class="hero-container" id="heroContainer"></div>
 
-  <h1>Kate’s Aesthetic Picks ♡</h1>
+  <h1>Katelyn's Luxe Aesthetic Vault ♡</h1>
   <p class="sub">Golden divine oracle queen mood board — goddess statues, chess queens, perfumes, pomegranates, succulents, mermaids, dream bedrooms, jewelry & more. Refresh for endless new inspo ♕✨</p>
 
   <div class="moodboard" id="moodboard"></div>
 
-  <div class="grid">
-    <!-- Paste your 20 product items here -->
-  </div>
-
   <div class="disc">
-    ♡ Curated vibes only — affiliate links mean I earn a tiny commission if you love it too (at no extra cost!). Refresh for fresh divine magic ♡
+    ♡ Curated vibes only — refresh for fresh divine magic ♡
   </div>
 
   <script>
@@ -50,69 +105,54 @@
       "https://thumbs.dreamstime.com/b/greek-goddess-aphrodite-depicted-digital-artwork-statue-offered-as-stock-greek-goddess-aphrodite-depicted-365584933.jpg",
       "https://indonesiaexpat.id/wp-content/uploads/2025/02/3d-rendering-statue-with-flowers.jpg",
       "https://i.etsystatic.com/12061794/r/il/48e310/2281236527/il_fullxfull.2281236527_904y.jpg",
-
       // Bastet statues
       "https://i.ebayimg.com/images/g/KQYAAOSw-wtknRyz/s-l1200.jpg",
       "https://i.etsystatic.com/24513741/c/803/637/32/251/il/cf57f5/5507997552/il_340x270.5507997552_gubh.jpg",
       "https://i.ebayimg.com/images/g/CNAAAOSwOTRnfZ~0/s-l1200.jpg",
-
       // Medusa statues
       "https://i.etsystatic.com/13933039/r/il/d8df97/5934750712/il_fullxfull.5934750712_cwbh.jpg",
       "https://i.etsystatic.com/53505305/r/il/274842/6251482553/il_fullxfull.6251482553_gros.jpg",
-
       // Persephone statues
       "https://i.etsystatic.com/13953711/c/1140/906/0/0/il/fedfde/3752129863/il_340x270.3752129863_l6ky.jpg",
       "https://m.media-amazon.com/images/I/61vM6+hdfnL.jpg",
-
       // Golden chess queens
       "https://i.etsystatic.com/19721251/r/il/09f609/5495538689/il_570xN.5495538689_i9dp.jpg",
       "https://thumbs.dreamstime.com/b/high-end-marble-chess-set-gold-pieces-elegant-angle-shot-luxurious-white-board-opposing-sides-highly-detailed-408756737.jpg",
       "https://thumbs.dreamstime.com/b/gold-glass-chess-pieces-board-closeup-406431187.jpg",
-
       // Perfume bottles
       "https://media.istockphoto.com/id/2172836783/photo/a-chic-bottle-with-a-gold-cap-of-cosmetic-perfume-on-an-abstract-marble-background-top-view.jpg?s=170667a&w=is&k=20&c=sf5D5RZ5Tr-J_I20AnLUzH2IgA-TVUZM35doCh5U7nc=",
       "https://www.shutterstock.com/image-photo/luxury-perfume-bottle-on-marble-260nw-2606663609.jpg",
       "https://thumbs.dreamstime.com/b/luxurious-clear-glass-perfume-bottle-gold-cap-elegant-marble-display-surrounded-fresh-green-leaves-description-389652792.jpg",
-
       // Pomegranates & fruits
       "https://t3.ftcdn.net/jpg/16/60/01/86/360_F_1660018623_YQ3FO2htj65aBeHy3OYzK3HBCCRP9yZW.jpg",
       "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh88bRr_NzA0H3U_Qv0owFQml7XCngX0uUtoa9Mvj-Ia-JVCC31qmrizFgLrMxp5SK8hzDobPjwegv5p6yFHiHO3FRfE-_jENvSzOD6ecfSOQBNpOQscThLBqCShI2uRk__ADO4_QcIIRE/s1600/PC081393.JPG",
-
       // Succulents
       "https://c8.alamy.com/comp/2PHJW6B/cactus-and-succulents-collection-in-small-decorative-ceramic-flowerpots-arranged-on-a-marble-stand-2PHJW6B.jpg",
       "https://i.etsystatic.com/31725365/r/il/75dd53/5070390967/il_fullxfull.5070390967_9r5k.jpg",
       "https://bloomscape.com/wp-content/uploads/2021/07/Succulents-scaled.jpg?ver=559429",
-
       // Mermaid tails
       "https://i.etsystatic.com/9313816/r/il/017eb8/2265305937/il_fullxfull.2265305937_4kau.jpg",
       "https://happywall-img-gallery.imgix.net/53341/mermaid-glitter-scales-2a-roll.jpg?w=1400&auto=format&q=40",
-
       // Dream bedrooms
       "https://m.media-amazon.com/images/S/aplus-media-library-service-media/f703c0f9-528b-4324-9bcf-623fb8eccf14.__CR0,0,1940,1200_PT0_SX970_V1___.jpg",
       "https://basichomediy.com/wp-content/uploads/2023/02/pink-princess-bedroom-ideas-with-canopy-1024x683.png",
-
       // Gold jewelry
       "https://media.istockphoto.com/id/1331089160/photo/different-elegant-bijouterie-and-plate-on-white-marble-table-flat-lay.jpg?s=612x612&w=0&k=20&c=3WOGBkSwU9hfJD-x43wMEBITuc0NrUD6E8x1l0BYQOA=",
       "https://imageretouchinglab.com/wp-content/uploads/2024/06/10.-Rose-Gold-Flower-Jewelry-1024x687.webp",
-
       // Belly dance fabrics
       "https://i.ebayimg.com/images/g/U~AAAOSw~YZi~PuP/s-l400.jpg",
       "https://m.media-amazon.com/images/S/aplus-media-library-service-media/69804b1d-2e1b-47af-bb5d-64b7ff8e81cd.__CR100,0,1600,1200_PT0_SX600_V1___.jpg",
-
       // Steampunk gears
       "https://thumbs.dreamstime.com/z/dive-mesmerizing-world-intricate-mechanical-artistry-captivating-steampunk-gears-background-detailed-387326290.jpg",
       "https://i.etsystatic.com/8763581/r/il/9a6e0a/1022087060/il_fullxfull.1022087060_l50i.jpg",
-
       // Exotic flowers
       "https://rosehausco.com/cdn/shop/files/Pink_Collection.jpg?v=1753942606&width=3840",
       "https://cdn.shopify.com/s/files/1/2176/7751/files/Modern_silk_flowers_on_a_marble_table.jpg?v=1759893164",
-
       // Pink-gold marble textures
       "https://thumbs.dreamstime.com/b/abstract-pink-gold-swirling-marble-texture-glitter-accents-generative-ai-image-369831919.jpg",
       "https://everwallpaper.com/cdn/shop/products/1069.jpg?v=1658824666",
       "https://png.pngtree.com/background/20250522/original/pngtree-abstract-pink-gold-marble-background-with-glitter-swirls-for-stylish-texture-picture-image_16566477.jpg",
       "https://thumbs.dreamstime.com/b/elegant-swirling-pink-gold-marble-texture-liquid-paint-effect-perfect-sophisticated-wallpaper-designs-elegant-327777952.jpg"
-      // Add more if you want – this pool is already huge!
     ];
 
     function shuffle(array) {
@@ -125,13 +165,12 @@
 
     const shuffled = shuffle([...images]);
     const moodImages = shuffled.slice(0, Math.floor(Math.random() * 7) + 12); // 12–18 images
-
     const moodboard = document.getElementById('moodboard');
     moodImages.forEach(src => {
       const img = document.createElement('img');
       img.src = src;
       img.alt = "Golden Divine Oracle Queen Aesthetic";
-      img.loading = "lazy"; // Faster loading
+      img.loading = "lazy";
       moodboard.appendChild(img);
     });
 
@@ -152,6 +191,5 @@
       heroes[current].classList.add('active');
     }, 8000);
   </script>
-
 </body>
 </html>
