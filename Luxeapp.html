@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luxe Lens - Lo-Fi Wireframes Phase 1</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    .gradient-text {
+      background: linear-gradient(to right, #d4af37, #e8a0b0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-amber-50 via-rose-50 to-purple-50 p-8">
+  
+  <!-- Header -->
+  <div class="max-w-7xl mx-auto mb-8">
+    <div class="text-center mb-4">
+      <div class="inline-flex items-center gap-3 mb-2">
+        <svg class="w-12 h-12 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
+        </svg>
+        <h1 class="text-5xl font-serif gradient-text">Luxe Lens</h1>
+        <svg class="w-12 h-12 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+        </svg>
+      </div>
+      <p class="text-xl text-gray-600 italic">Smart Mirror Experience - Lo-Fi Wireframes Phase 1</p>
+      <p class="text-sm text-gray-500 mt-2">Innovative AR/VR Mirror Interface for Luxury Lifestyle</p>
+    </div>
+
+    <!-- Navigation Tree -->
+    <div class="bg-white rounded-2xl p-6 shadow-lg mb-8">
+      <h2 class="text-2xl font-bold mb-4 text-center text-gray-800">Page Tree Navigation</h2>
+      <div class="flex flex-wrap justify-center gap-3" id="navigation">
+        <button onclick="showPage('home')" class="nav-btn px-6 py-3 rounded-full font-semibold transition-all">Home</button>
+        <button onclick="showPage('login')" class="nav-btn px-6 py-3 rounded-full font-semibold transition-all">Login</button>
+        <button onclick="showPage('profile')" class="nav-btn px-6 py-3 rounded-full font-semibold transition-all">Profile</button>
+        <button onclick="showPage('virtualtryon')" class="nav-btn px-6 py-3 rounded-full font-semibold transition-all">Virtual Try-On</button>
+        <button onclick="showPage('moodtracker')" class="nav-btn px-6 py-3 rounded-full font-semibold transition-all">Mood Tracker</button>
+        <button onclick="showPage('luxerecs')" class="nav-btn px-6 py-3 rounded-full font-semibold transition-all">Luxe Recommendations</button>
+        <button onclick="showPage('wellness')" class="nav-btn px-6 py-3 rounded-full font-semibold transition-all">Wellness Coach</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lo-Fi Wireframe Content -->
+  <div class="max-w-6xl mx-auto" id="content">
+    <!-- Pages will be loaded here -->
+  </div>
+
+  <!-- Link Tree Diagram -->
+  <div class="max-w-7xl mx-auto mt-12 bg-white rounded-2xl p-8 shadow-lg">
+    <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Link Tree Structure</h2>
+    <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-8">
+      <div class="flex flex-col items-center">
+        <!-- Home Node -->
+        <div class="bg-gradient-to-r from-amber-400 to-rose-400 text-white px-8 py-4 rounded-2xl font-bold text-xl shadow-lg mb-8">
+          HOME PAGE
+        </div>
+
+        <!-- Branches -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl mb-8">
+          <!-- Login Branch -->
+          <div class="flex flex-col items-center">
+            <div class="w-1 h-12 bg-gray-400"></div>
+            <div class="bg-rose-300 px-6 py-3 rounded-xl font-bold shadow-md mb-4">LOGIN PAGE</div>
+            <div class="w-1 h-8 bg-gray-400"></div>
+            <div class="bg-rose-200 px-4 py-2 rounded-lg text-sm">Face Recognition</div>
+            <div class="bg-rose-200 px-4 py-2 rounded-lg text-sm mt-2">Voice Login</div>
+          </div>
+
+          <!-- Profile Branch -->
+          <div class="flex flex-col items-center">
+            <div class="w-1 h-12 bg-gray-400"></div>
+            <div class="bg-purple-300 px-6 py-3 rounded-xl font-bold shadow-md mb-4">PROFILE PAGE</div>
+            <div class="w-1 h-8 bg-gray-400"></div>
+            <div class="bg-purple-200 px-4 py-2 rounded-lg text-sm">Style Preferences</div>
+            <div class="bg-purple-200 px-4 py-2 rounded-lg text-sm mt-2">Skincare Profile</div>
+            <div class="bg-purple-200 px-4 py-2 rounded-lg text-sm mt-2">Shopping History</div>
+          </div>
+
+          <!-- Sub-pages Branch -->
+          <div class="flex flex-col items-center">
+            <div class="w-1 h-12 bg-gray-400"></div>
+            <div class="bg-amber-300 px-6 py-3 rounded-xl font-bold shadow-md mb-4">SUB-PAGES</div>
+            <div class="w-1 h-8 bg-gray-400"></div>
+            <div class="space-y-2">
+              <div class="bg-green-200 px-4 py-2 rounded-lg text-sm font-semibold">Virtual Try-On</div>
+              <div class="bg-blue-200 px-4 py-2 rounded-lg text-sm font-semibold">Mood Tracker</div>
+              <div class="bg-pink-200 px-4 py-2 rounded-lg text-sm font-semibold">Luxe Recommendations</div>
+              <div class="bg-teal-200 px-4 py-2 rounded-lg text-sm font-semibold">Wellness Coach</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Flow Description -->
+        <div class="bg-white rounded-xl p-6 shadow-md max-w-2xl">
+          <h3 class="font-bold text-lg mb-3 text-center">Navigation Flow</h3>
+          <ul class="text-sm space-y-2 text-gray-700">
+            <li><strong>Home →</strong> Access all main features and navigate to any page</li>
+            <li><strong>Login →</strong> Multiple authentication methods (email, face, voice)</li>
+            <li><strong>Profile →</strong> Manage preferences, view stats, access sub-settings</li>
+            <li><strong>Sub-Pages →</strong> Each feature (Try-On, Mood, Recs, Wellness) accessible from home</li>
+            <li><strong>Cross-linking:</strong> All pages have "Back to Home" navigation</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Page Templates
+    const pages = {
+      home: `
+        <div class="bg-white rounded-3xl p-8 shadow-xl border-4 border-amber-200">
+          <div class="text-center mb-8">
+            <div class="w-32 h-32 bg-gradient-to-br from-amber-100 to-rose-100 rounded-full mx-auto mb-4 flex items-center justify-center border-4 border-amber-300">
+              <svg class="w-16 h-16 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
+              </svg>
+            </div>
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">LUXE LENS LOGO</h2>
+            <p class="text-gray-600 italic">Your Personal Luxury Mirror</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div onclick="showPage('virtualtryon')" class="border-4 border-rose-300 rounded-2xl p-8 cursor-pointer hover:bg-rose-50 transition-all">
+              <div class="w-16 h-16 bg-rose-200 rounded-full mx-auto mb-4"></div>
+              <h3 class="text-xl font-bold text-center mb-2">VIRTUAL TRY-ON</h3>
+              <p class="text-sm text-gray-600 text-center">Try makeup, outfits, accessories</p>
+            </div>
+
+            <div onclick="showPage('moodtracker')" class="border-4 border-purple-300 rounded-2xl p-8 cursor-pointer hover:bg-purple-50 transition-all">
+              <div class="w-16 h-16 bg-purple-200 rounded-full mx-auto mb-4"></div>
+              <h3 class="text-xl font-bold text-center mb-2">MOOD TRACKER</h3>
+              <p class="text-sm text-gray-600 text-center">Daily check-in & reflection</p>
+            </div>
+
+            <div onclick="showPage('luxerecs')" class="border-4 border-amber-300 rounded-2xl p-8 cursor-pointer hover:bg-amber-50 transition-all">
+              <div class="w-16 h-16 bg-amber-200 rounded-full mx-auto mb-4"></div>
+              <h3 class="text-xl font-bold text-center mb-2">LUXE PICKS</h3>
+              <p class="text-sm text-gray-600 text-center">Personalized recommendations</p>
+            </div>
+
+            <div onclick="showPage('wellness')" class="border-4 border-green-300 rounded-2xl p-8 cursor-pointer hover:bg-green-50 transition-all">
+              <div class="w-16 h-16 bg-green-200 rounded-full mx-auto mb-4"></div>
+              <h3 class="text-xl font-bold text-center mb-2">WELLNESS COACH</h3>
+              <p class="text-sm text-gray-600 text-center">Posture, skincare, self-care</p>
+            </div>
+          </div>
+
+          <div class="flex gap-4 mt-8">
+            <button onclick="showPage('profile')" class="flex-1 border-2 border-gray-400 rounded-full py-4 font-bold hover:bg-gray-100">MY PROFILE</button>
+            <button class="flex-1 border-2 border-gray-400 rounded-full py-4 font-bold hover:bg-gray-100">SETTINGS</button>
+          </div>
+        </div>
+      `,
+
+      login: `
+        <div class="bg-white rounded-3xl p-12 shadow-xl border-4 border-rose-200 max-w-md mx-auto">
+          <div class="text-center mb-8">
+            <div class="w-24 h-24 bg-gradient-to-br from-amber-100 to-rose-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+              <svg class="w-12 h-12 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+              </svg>
+            </div>
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">WELCOME BACK</h2>
+            <p class="text-gray-600">Sign in to your Luxe Lens</p>
+          </div>
+
+          <div class="space-y-4 mb-6">
+            <div class="border-3 border-gray-300 rounded-xl p-4 bg-gray-50">
+              <p class="text-sm text-gray-500 mb-1">Email Address</p>
+              <div class="h-8 bg-white border-2 border-gray-300 rounded"></div>
+            </div>
+            <div class="border-3 border-gray-300 rounded-xl p-4 bg-gray-50">
+              <p class="text-sm text-gray-500 mb-1">Password</p>
+              <div class="h-8 bg-white border-2 border-gray-300 rounded"></div>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <button onclick="showPage('home')" class="w-full bg-gradient-to-r from-amber-500 to-rose-500 text-white rounded-full py-4 font-bold hover:shadow-lg transition-all">SIGN IN</button>
+            <button class="w-full border-2 border-gray-400 rounded-full py-4 font-bold hover:bg-gray-100">FACE RECOGNITION LOGIN</button>
+            <button class="w-full border-2 border-gray-400 rounded-full py-4 font-bold hover:bg-gray-100">VOICE LOGIN</button>
+          </div>
+
+          <div class="text-center mt-6">
+            <a href="#" class="text-sm text-gray-500 underline">Forgot Password?</a>
+            <p class="text-sm text-gray-500 mt-2">New user? <a href="#" class="text-rose-600 font-semibold">Create Account</a></p>
+          </div>
+        </div>
+      `,
+
+      profile: `
+        <div class="bg-white rounded-3xl p-8 shadow-xl border-4 border-purple-200">
+          <div class="flex flex-col md:flex-row items-start gap-6 mb-8">
+            <div class="w-32 h-32 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full border-4 border-purple-300"></div>
+            <div class="flex-1">
+              <h2 class="text-3xl font-bold text-gray-800 mb-2">USER NAME</h2>
+              <p class="text-gray-600 mb-4">email@example.com</p>
+              <div class="flex gap-3">
+                <button class="px-6 py-2 border-2 border-gray-400 rounded-full font-bold hover:bg-gray-100">EDIT PROFILE</button>
+                <button class="px-6 py-2 border-2 border-gray-400 rounded-full font-bold hover:bg-gray-100">PREFERENCES</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="border-3 border-amber-300 rounded-xl p-6 text-center bg-amber-50">
+              <div class="text-3xl font-bold text-amber-600 mb-2">47</div>
+              <p class="text-sm text-gray-600">Try-Ons This Month</p>
+            </div>
+            <div class="border-3 border-rose-300 rounded-xl p-6 text-center bg-rose-50">
+              <div class="text-3xl font-bold text-rose-600 mb-2">12</div>
+              <p class="text-sm text-gray-600">Saved Looks</p>
+            </div>
+            <div class="border-3 border-purple-300 rounded-xl p-6 text-center bg-purple-50">
+              <div class="text-3xl font-bold text-purple-600 mb-2">85%</div>
+              <p class="text-sm text-gray-600">Wellness Score</p>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <div class="border-2 border-gray-300 rounded-xl p-6 hover:bg-gray-50 cursor-pointer">
+              <h3 class="font-bold text-lg mb-2">STYLE PREFERENCES</h3>
+              <p class="text-sm text-gray-600">Manage your fashion & beauty preferences</p>
+            </div>
+            <div class="border-2 border-gray-300 rounded-xl p-6 hover:bg-gray-50 cursor-pointer">
+              <h3 class="font-bold text-lg mb-2">SKINCARE PROFILE</h3>
+              <p class="text-sm text-gray-600">Track your skin type & routines</p>
+            </div>
+            <div class="border-2 border-gray-300 rounded-xl p-6 hover:bg-gray-50 cursor-pointer">
+              <h3 class="font-bold text-lg mb-2">SHOPPING HISTORY</h3>
+              <p class="text-sm text-gray-600">View recommended purchases</p>
+            </div>
+          </div>
+
+          <button onclick="showPage('home')" class="w-full mt-6 border-2 border-gray-400 rounded-full py-3 font-bold hover:bg-gray-100">BACK TO HOME</button>
+        </div>
+      `,
+
+      virtualtryon: `
+        <div class="bg-white rounded-3xl p-8 shadow-xl border-4 border-rose-200">
+          <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">VIRTUAL TRY-ON</h2>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="md:col-span-2 border-4 border-gray-400 rounded-2xl aspect-[3/4] bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+              <div class="text-center">
+                <div class="w-32 h-32 bg-gray-300 rounded-full mx-auto mb-4"></div>
+                <p class="text-2xl font-bold text-gray-600">LIVE MIRROR VIEW</p>
+                <p class="text-gray-500">AR Camera Feed</p>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <div class="border-3 border-rose-300 rounded-xl p-4 bg-rose-50 cursor-pointer hover:bg-rose-100">
+                <div class="w-12 h-12 bg-rose-300 rounded-full mb-2"></div>
+                <h3 class="font-bold">MAKEUP</h3>
+                <p class="text-xs text-gray-600">Lipstick, eyeshadow, blush</p>
+              </div>
+              <div class="border-3 border-purple-300 rounded-xl p-4 bg-purple-50 cursor-pointer hover:bg-purple-100">
+                <div class="w-12 h-12 bg-purple-300 rounded-full mb-2"></div>
+                <h3 class="font-bold">OUTFITS</h3>
+                <p class="text-xs text-gray-600">Dresses, tops, sets</p>
+              </div>
+              <div class="border-3 border-amber-300 rounded-xl p-4 bg-amber-50 cursor-pointer hover:bg-amber-100">
+                <div class="w-12 h-12 bg-amber-300 rounded-full mb-2"></div>
+                <h3 class="font-bold">ACCESSORIES</h3>
+                <p class="text-xs text-gray-600">Jewelry, bags, glasses</p>
+              </div>
+              <div class="border-3 border-green-300 rounded-xl p-4 bg-green-50 cursor-pointer hover:bg-green-100">
+                <div class="w-12 h-12 bg-green-300 rounded-full mb-2"></div>
+                <h3 class="font-bold">HAIR</h3>
+                <p class="text-xs text-gray-600">Colors, styles, wigs</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 border-2 border-gray-300 rounded-xl p-4 bg-gray-50">
+            <p class="text-sm font-bold mb-3">PRODUCT CAROUSEL</p>
+            <div class="flex gap-3 overflow-x-auto">
+              <div class="min-w-24 h-24 bg-gray-300 rounded-lg border-2 border-gray-400"></div>
+              <div class="min-w-24 h-24 bg-gray-300 rounded-lg border-2 border-gray-400"></div>
+              <div class="min-w-24 h-24 bg-gray-300 rounded-lg border-2 border-gray-400"></div>
+              <div class="min-w-24 h-24 bg-gray-300 rounded-lg border-2 border-gray-400"></div>
+              <div class="min-w-24 h-24 bg-gray-300 rounded-lg border-2 border-gray-400"></div>
+              <div class="min-w-24 h-24 bg-gray-300 rounded-lg border-2 border-gray-400"></div>
+            </div>
+          </div>
+
+          <div class="flex gap-4 mt-6">
+            <button class="flex-1 bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-full py-4 font-bold">SAVE LOOK</button>
+            <button class="flex-1 border-2 border-gray-400 rounded-full py-4 font-bold">SHARE</button>
+            <button onclick="showPage('home')" class="flex-1 border-2 border-gray-400 rounded-full py-4 font-bold">BACK</button>
+          </div>
+        </div>
+      `,
+
+      moodtracker: `
+        <div class="bg-white rounded-3xl p-8 shadow-xl border-4 border-purple-200">
+          <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">MOOD TRACKER</h2>
+          
+          <div class="border-3 border-purple-300 rounded-2xl p-6 bg-purple-50 mb-6">
+            <h3 class="text-xl font-bold mb-4 text-center">How are you feeling today?</h3>
+            <div class="flex justify-around mb-4">
+              <div class="w-16 h-16 border-3 border-purple-400 rounded-full flex items-center justify-center text-3xl cursor-pointer hover:bg-purple-200">😊</div>
+              <div class="w-16 h-16 border-3 border-purple-400 rounded-full flex items-center justify-center text-3xl cursor-pointer hover:bg-purple-200">😌</div>
+              <div class="w-16 h-16 border-3 border-purple-400 rounded-full flex items-center justify-center text-3xl cursor-pointer hover:bg-purple-200">😐</div>
+              <div class="w-16 h-16 border-3 border-purple-400 rounded-full flex items-center justify-center text-3xl cursor-pointer hover:bg-purple-200">😔</div>
+              <div class="w-16 h-16 border-3 border-purple-400 rounded-full flex items-center justify-center text-3xl cursor-pointer hover:bg-purple-200">😢</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="border-2 border-rose-300 rounded-xl p-4 bg-rose-50">
+              <h4 class="font-bold mb-2">ENERGY LEVEL</h4>
+              <div class="h-8 bg-gray-200 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-rose-400 to-pink-500" style="width: 75%"></div>
+              </div>
+            </div>
+            <div class="border-2 border-amber-300 rounded-xl p-4 bg-amber-50">
+              <h4 class="font-bold mb-2">STRESS LEVEL</h4>
+              <div class="h-8 bg-gray-200 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-amber-400 to-orange-500" style="width: 40%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="border-2 border-gray-300 rounded-xl p-6 bg-gray-50 mb-6">
+            <h3 class="font-bold mb-4">MOOD CALENDAR</h3>
+            <div class="grid grid-cols-7 gap-2">
+              ${Array(28).fill(0).map(() => '<div class="aspect-square border-2 border-gray-300 rounded bg-white"></div>').join('')}
+            </div>
+          </div>
+
+          <div class="border-2 border-purple-300 rounded-xl p-4 bg-purple-50 mb-6">
+            <h4 class="font-bold mb-2">TODAY'S REFLECTION</h4>
+            <div class="h-24 bg-white border-2 border-gray-300 rounded p-2">
+              <p class="text-xs text-gray-400">Write your thoughts here...</p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <button class="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full py-4 font-bold">SAVE ENTRY</button>
+            <button onclick="showPage('home')" class="flex-1 border-2 border-gray-400 rounded-full py-4 font-bold">BACK</button>
+          </div>
+        </div>
+      `,
+
+      luxerecs: `
+        <div class="bg-white rounded-3xl p-8 shadow-xl border-4 border-amber-200">
+          <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">LUXE RECOMMENDATIONS</h2>
+          
+          <div class="bg-gradient-to-r from-amber-100 to-rose-100 border-3 border-amber-300 rounded-2xl p-6 mb-6 text-center">
+            <svg class="w-12 h-12 text-amber-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+            </svg>
+            <p class="font-bold text-lg">AI-Powered Personalized Picks</p>
+            <p class="text-sm text-gray-600">Based on your style, mood & preferences</p>
+          </div>
+
+          <div class="space-y-4 mb-6">
+            <div class="border-2 border-rose-300 rounded-xl p-4 bg-rose-50">
+              <h3 class="font-bold mb-3 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                TODAY'S OUTFIT SUGGESTION
+              </h3>
+              <div class="grid grid-cols-3 gap-2">
+                <div class="aspect-square bg-gray-300 rounded border-2 border-rose-400"></div>
+                <div class="aspect-square bg-gray-300 rounded border-2 border-rose-400"></div>
+                <div class="aspect-square bg-gray-300 rounded border-2 border-rose-400"></div>
+              </div>
+            </div>
+
+            <div class="border-2 border-purple-300 rounded-xl p-4 bg-purple-50">
+              <h3 class="font-bold mb-3 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                SKINCARE ROUTINE
+              </h3>
+              <div class="grid grid-cols-4 gap-2">
+                <div class="aspect-square bg-gray-300 rounded border-2 border-purple-400"></div>
+                <div class="aspect-square bg-gray-300 rounded border-2 border-purple-400"></div>
+                <div class="aspect-square bg-gray-300 rounded border-2 border-purple-400"></div>
+                <div class="aspect-square bg-gray-300 rounded border-2 border-purple-400"></div>
+              </div>
+            </div>
+
+            <div class="border-2 border-amber-300 rounded-xl p-4 bg-amber-50">
+              <h3 class="font-bold mb-3 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                TRENDING LUXE PICKS
+              </h3>
+              <div class="space-y-2">
+                <div class="flex gap-3 p-2 bg-white border-2 border-gray-300 rounded">
+                  <div class="w-12 h-12 bg-gray-300 rounded"></div>
+                  <div class="flex-1">
+                    <p class="font-semibold text-sm">Designer Bag Collection</p>
+                    <p class="text-xs text-gray-500">$$$</p>
+                  </div>
+                </div>
+                <div class="flex gap-3 p-2 bg-white border-2 border-gray-300 rounded">
+                  <div class="w-12 h-12 bg-gray-300 rounded"></div>
+                  <div class="flex-1">
+                    <p class="font-semibold text-sm">Luxury Fragrance Set</p>
+                    <p class="text-xs text-gray-500">$$$</p>
+                  </div>
+                </div>
+                <div class="flex gap-3 p-2 bg-white border-2 border-gray-300 rounded">
+                  <div class="w-12 h-12 bg-gray-300 rounded"></div>
+                  <div class="flex-1">
+                    <p class="font-semibold text-sm">Silk Pillowcase Set</p>
+                    <p class="text-xs text-gray-500">$$$</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <button class="flex-1 bg-gradient-to-r from-amber-500 to-rose-500 text-white rounded-full py-4 font-bold">CUSTOMIZE PREFERENCES</button>
+            <button onclick="showPage('home')" class="flex-1 border-2 border-gray-400 rounded-full py-4 font-bold">BACK</button>
+          </div>
+        </div>
+      `,
+
+      wellness: `
+        <div class="bg-white rounded-3xl p-8 shadow-xl border-4 border-green-200">
+          <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">WELLNESS COACH</h2>
+          
+          <div class="border-4 border-green-400 rounded-2xl p-6 bg-green-50 mb-6">
+            <h3 class="font-bold text-xl mb-4 text-center">POSTURE ANALYSIS</h3>
+            <div class="aspect-video bg-gradient-to-br from-green-100 to-blue-100 rounded-xl flex items-center justify-center border-2 border-green-300">
+              <div class="text-center">
+                <div class="w-24 h-48 bg-green-300 rounded-full mx-auto mb-2"></div>
+                <p class="font-bold text-green-700">Real-time Skeleton Tracking</p>
+              </div>
+            </div>
+            <div class="mt-4 p-3 bg-white rounded-lg border-2 border-green-300">
+              <p class="text-sm font-bold text-green-700">✓ Good posture detected</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="border-2 border-blue-300 rounded-xl p-4 bg-blue-50 text-center">
+              <div class="text-2xl font-bold text-blue-600 mb-1">8/8</div>
+              <p class="text-xs text-gray-600">Glasses of Water</p>
+            </div>
+            <div class="border-2 border-purple-300 rounded-xl p-4 bg-purple-50 text-center">
+              <div class="text-2xl font-bold text-purple-600 mb-1">7.5h</div>
+              <p class="text-xs text-gray-600">Sleep Last Night</p>
+            </div>
+            <div class="border-2 border-rose-300 rounded-xl p-4 bg-rose-50 text-center">
+              <div class="text-2xl font-bold text-rose-600 mb-1">15min</div>
+              <p class="text-xs text-gray-600">Self-Care Time</p>
+            </div>
+          </div>
+
+          <div class="border-2 border-gray-300 rounded-xl p-6 bg-gray-50 mb-6">
+            <h3 class="font-bold mb-4">TODAY'S WELLNESS GOALS</h3>
+            <div class="space-y-2">
+              <div class="flex items-center gap-3 p-3 bg-white rounded-lg border-2 border-gray-300">
+                <div class="w-6 h-6 rounded border-2 bg-green-500 border-green-600"></div>
+                <p class="flex-1 line-through text-gray-400">Morning skincare routine</p>
+              </div>
+              <div class="flex items-center gap-3 p-3 bg-white rounded-lg border-2 border-gray-300">
+                <div class="w-6 h-6 rounded border-2 bg-green-500 border-green-600"></div>
+                <p class="flex-1 line-through text-gray-400">10-minute meditation</p>
+              </div>
+              <div class="flex items-center gap-3 p-3 bg-white rounded-lg border-2 border-gray-300">
+                <div class="w-6 h-6 rounded border-2 border-gray-400"></div>
+                <p class="flex-1 font-semibold">Stretch break</p>
+              </div>
+              <div class="flex items-center gap-3 p-3 bg-white rounded-lg border-2 border-gray-300">
+                <div class="w-6 h-6 rounded border-2 border-gray-400"></div>
+                <p class="flex-1 font-semibold">Evening self-care</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="border-2 border-purple-300 rounded-xl p-4 bg-purple-50 mb-6">
+            <h4 class="font-bold mb-3">GUIDED ACTIVITIES</h4>
+            <div class="grid grid-cols-2 gap-2">
+              <button class="border-2 border-purple-400 rounded-lg py-3 font-semibold hover:bg-purple-100">🧘 Meditation</button>
+              <button class="border-2 border-purple-400 rounded-lg py-3 font-semibold hover:bg-purple-100">💆 Face Massage</button>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <button class="flex-1 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-full py-4 font-bold">START SESSION</button>
+            <button onclick="showPage('home')" class="flex-1 border-2 border-gray-400 rounded-full py-4 font-bold">BACK</button>
+          </div>
+        </div>
+      `
+    };
+
+    let currentPage = 'home';
+
+    function showPage(pageName) {
+      currentPage = pageName;
+      document.getElementById('content').innerHTML = pages[pageName];
+      updateNavButtons();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateNavButtons() {
+      const buttons = document.querySelectorAll('.nav-btn');
+      buttons.forEach((btn, index) => {
+        const pageNames = ['home', 'login', 'profile', 'virtualtryon', 'moodtracker', 'luxerecs', 'wellness'];
+        if (pageNames[index] === currentPage) {
+          btn.className = 'nav-btn px-6 py-3 rounded-full font-semibold transition-all bg-gradient-to-r from-amber-500 to-rose-500 text-white shadow-lg';
+        } else {
+          btn.className = 'nav-btn px-6 py-3 rounded-full font-semibold transition-all bg-gray-100 text-gray-700 hover:bg-gray-200';
+        }
+      });
+    }
+
+    // Initialize
+    showPage('home');
+  </script>
+</body>
+</html>
