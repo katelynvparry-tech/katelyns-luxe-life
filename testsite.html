@@ -49,6 +49,131 @@
 </style>
 </head>
 <body>
+
+<!-- ====================== KATELYN'S ROYAL LUXE TRIPLE SEARCH ====================== -->
+<div style="
+    max-width: 780px; 
+    margin: 50px auto; 
+    padding: 45px 35px; 
+    background: linear-gradient(145deg, #a5d8ff, #7fb8ff, #c3b4ff);
+    border-radius: 32px; 
+    border: 1px solid rgba(255, 105, 180, 0.5); 
+    box-shadow: 0 25px 60px rgba(255, 105, 180, 0.3);
+    text-align: center;
+    font-family: 'Inter', system-ui, sans-serif;
+    position: relative;
+    overflow: hidden;
+">
+    <!-- subtle royal shine overlay -->
+    <div style="
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 70%;
+        height: 70%;
+        background: linear-gradient(120deg, transparent, rgba(255,255,255,0.45), transparent);
+        transform: rotate(25deg);
+        pointer-events: none;
+    "></div>
+
+    <h2 style="margin:0 0 10px; font-size:2.8rem; color:#ff69b4; text-shadow:0 3px 15px rgba(255,105,180,0.5);">
+        ✨ Royal Luxe Search Hub
+    </h2>
+    <p style="margin:0 0 35px; font-size:1.3rem; color:#ff69b4; opacity:0.95;">
+        Pinterest • Spotify • YouTube — elevated inspiration
+    </p>
+
+    <!-- Search Inputs -->
+    <div style="display:flex; flex-wrap:wrap; gap:18px; justify-content:center; max-width:680px; margin:0 auto;">
+
+        <!-- Pinterest -->
+        <div style="flex:1; min-width:280px;">
+            <div style="font-size:0.95rem; color:#ff1493; margin-bottom:8px; text-align:left; font-weight:600;">📌 Pinterest</div>
+            <div style="position:relative;">
+                <input id="pin-input" type="text" placeholder="old money aesthetic" 
+                       style="width:100%; padding:16px 20px; font-size:1.1rem; border:none; border-radius:50px; background:#ffffff; color:#1e4a9e; box-shadow:0 8px 25px rgba(255,105,180,0.25); outline:none;">
+                <button onclick="searchPin()" 
+                        style="position:absolute; right:6px; top:6px; width:48px; height:48px; background:#ff69b4; color:white; border:none; border-radius:50%; font-size:1.6rem; cursor:pointer;">🔍</button>
+            </div>
+        </div>
+
+        <!-- Spotify -->
+        <div style="flex:1; min-width:280px;">
+            <div style="font-size:0.95rem; color:#ff1493; margin-bottom:8px; text-align:left; font-weight:600;">🎵 Spotify</div>
+            <div style="position:relative;">
+                <input id="spot-input" type="text" placeholder="dark academia playlist" 
+                       style="width:100%; padding:16px 20px; font-size:1.1rem; border:none; border-radius:50px; background:#ffffff; color:#1e4a9e; box-shadow:0 8px 25px rgba(255,105,180,0.25); outline:none;">
+                <button onclick="searchSpot()" 
+                        style="position:absolute; right:6px; top:6px; width:48px; height:48px; background:#1DB954; color:white; border:none; border-radius:50%; font-size:1.6rem; cursor:pointer;">🔍</button>
+            </div>
+        </div>
+
+        <!-- YouTube -->
+        <div style="flex:1; min-width:280px;">
+            <div style="font-size:0.95rem; color:#ff1493; margin-bottom:8px; text-align:left; font-weight:600;">▶️ YouTube</div>
+            <div style="position:relative;">
+                <input id="yt-input" type="text" placeholder="luxury morning routine" 
+                       style="width:100%; padding:16px 20px; font-size:1.1rem; border:none; border-radius:50px; background:#ffffff; color:#1e4a9e; box-shadow:0 8px 25px rgba(255,105,180,0.25); outline:none;">
+                <button onclick="searchYT()" 
+                        style="position:absolute; right:6px; top:6px; width:48px; height:48px; background:#FF0000; color:white; border:none; border-radius:50%; font-size:1.6rem; cursor:pointer;">🔍</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Quick Luxe Buttons -->
+    <div style="margin-top:32px; font-size:0.95rem; color:#ff69b4; font-weight:500;">
+        Quick royal vibes: 
+        <span onclick="quickAll(this)" style="cursor:pointer; text-decoration:underline; margin:0 9px; color:#ff1493;">old money aesthetic</span> • 
+        <span onclick="quickAll(this)" style="cursor:pointer; text-decoration:underline; margin:0 9px; color:#ff1493;">quiet luxury</span> • 
+        <span onclick="quickAll(this)" style="cursor:pointer; text-decoration:underline; margin:0 9px; color:#ff1493;">dark academia playlist</span> • 
+        <span onclick="quickAll(this)" style="cursor:pointer; text-decoration:underline; margin:0 9px; color:#ff1493;">luxury morning routine</span>
+    </div>
+</div>
+
+<script>
+// Pinterest
+function searchPin() {
+    const q = document.getElementById('pin-input').value.trim();
+    if (q) window.open(`https://www.pinterest.com/search/pins/?q=${encodeURIComponent(q)}`, '_blank');
+}
+
+// Spotify
+function searchSpot() {
+    const q = document.getElementById('spot-input').value.trim();
+    if (q) window.open(`https://open.spotify.com/search/${encodeURIComponent(q)}`, '_blank');
+}
+
+// YouTube
+function searchYT() {
+    const q = document.getElementById('yt-input').value.trim();
+    if (q) window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`, '_blank');
+}
+
+// Quick fill for all three
+function quickAll(el) {
+    const term = el.textContent.trim();
+    document.getElementById('pin-input').value = term;
+    document.getElementById('spot-input').value = term;
+    document.getElementById('yt-input').value = term;
+}
+
+// Enter key support
+document.addEventListener('DOMContentLoaded', () => {
+    const inputs = ['pin-input','spot-input','yt-input'];
+    inputs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('keypress', e => { if(e.key==='Enter') {
+            if(id==='pin-input') searchPin();
+            else if(id==='spot-input') searchSpot();
+            else if(id==='yt-input') searchYT();
+        }});
+    });
+});
+</script>
+<!-- ====================== END ROYAL LUXE TRIPLE SEARCH ====================== -->  
+  
+  
 <h1>GirlGames ♟️💕</h1>
 <p class="subtitle">All your fave games in one pink place!</p>
 
@@ -606,130 +731,7 @@ function shootLoop() {
         shootCtx.beginPath(); shootCtx.arc(t.x, t.y, t.r, 0, Math.PI*2); shootCtx.fill();
     });
     requestAnimationFrame(shootLoop);
-}
-
-<!-- ====================== KATELYN'S ROYAL LUXE TRIPLE SEARCH ====================== -->
-<div style="
-    max-width: 780px; 
-    margin: 50px auto; 
-    padding: 45px 35px; 
-    background: linear-gradient(145deg, #a5d8ff, #7fb8ff, #c3b4ff);
-    border-radius: 32px; 
-    border: 1px solid rgba(255, 105, 180, 0.5); 
-    box-shadow: 0 25px 60px rgba(255, 105, 180, 0.3);
-    text-align: center;
-    font-family: 'Inter', system-ui, sans-serif;
-    position: relative;
-    overflow: hidden;
-">
-    <!-- subtle royal shine overlay -->
-    <div style="
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 70%;
-        height: 70%;
-        background: linear-gradient(120deg, transparent, rgba(255,255,255,0.45), transparent);
-        transform: rotate(25deg);
-        pointer-events: none;
-    "></div>
-
-    <h2 style="margin:0 0 10px; font-size:2.8rem; color:#ff69b4; text-shadow:0 3px 15px rgba(255,105,180,0.5);">
-        ✨ Royal Luxe Search Hub
-    </h2>
-    <p style="margin:0 0 35px; font-size:1.3rem; color:#ff69b4; opacity:0.95;">
-        Pinterest • Spotify • YouTube — elevated inspiration
-    </p>
-
-    <!-- Search Inputs -->
-    <div style="display:flex; flex-wrap:wrap; gap:18px; justify-content:center; max-width:680px; margin:0 auto;">
-
-        <!-- Pinterest -->
-        <div style="flex:1; min-width:280px;">
-            <div style="font-size:0.95rem; color:#ff1493; margin-bottom:8px; text-align:left; font-weight:600;">📌 Pinterest</div>
-            <div style="position:relative;">
-                <input id="pin-input" type="text" placeholder="old money aesthetic" 
-                       style="width:100%; padding:16px 20px; font-size:1.1rem; border:none; border-radius:50px; background:#ffffff; color:#1e4a9e; box-shadow:0 8px 25px rgba(255,105,180,0.25); outline:none;">
-                <button onclick="searchPin()" 
-                        style="position:absolute; right:6px; top:6px; width:48px; height:48px; background:#ff69b4; color:white; border:none; border-radius:50%; font-size:1.6rem; cursor:pointer;">🔍</button>
-            </div>
-        </div>
-
-        <!-- Spotify -->
-        <div style="flex:1; min-width:280px;">
-            <div style="font-size:0.95rem; color:#ff1493; margin-bottom:8px; text-align:left; font-weight:600;">🎵 Spotify</div>
-            <div style="position:relative;">
-                <input id="spot-input" type="text" placeholder="dark academia playlist" 
-                       style="width:100%; padding:16px 20px; font-size:1.1rem; border:none; border-radius:50px; background:#ffffff; color:#1e4a9e; box-shadow:0 8px 25px rgba(255,105,180,0.25); outline:none;">
-                <button onclick="searchSpot()" 
-                        style="position:absolute; right:6px; top:6px; width:48px; height:48px; background:#1DB954; color:white; border:none; border-radius:50%; font-size:1.6rem; cursor:pointer;">🔍</button>
-            </div>
-        </div>
-
-        <!-- YouTube -->
-        <div style="flex:1; min-width:280px;">
-            <div style="font-size:0.95rem; color:#ff1493; margin-bottom:8px; text-align:left; font-weight:600;">▶️ YouTube</div>
-            <div style="position:relative;">
-                <input id="yt-input" type="text" placeholder="luxury morning routine" 
-                       style="width:100%; padding:16px 20px; font-size:1.1rem; border:none; border-radius:50px; background:#ffffff; color:#1e4a9e; box-shadow:0 8px 25px rgba(255,105,180,0.25); outline:none;">
-                <button onclick="searchYT()" 
-                        style="position:absolute; right:6px; top:6px; width:48px; height:48px; background:#FF0000; color:white; border:none; border-radius:50%; font-size:1.6rem; cursor:pointer;">🔍</button>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Quick Luxe Buttons -->
-    <div style="margin-top:32px; font-size:0.95rem; color:#ff69b4; font-weight:500;">
-        Quick royal vibes: 
-        <span onclick="quickAll(this)" style="cursor:pointer; text-decoration:underline; margin:0 9px; color:#ff1493;">old money aesthetic</span> • 
-        <span onclick="quickAll(this)" style="cursor:pointer; text-decoration:underline; margin:0 9px; color:#ff1493;">quiet luxury</span> • 
-        <span onclick="quickAll(this)" style="cursor:pointer; text-decoration:underline; margin:0 9px; color:#ff1493;">dark academia playlist</span> • 
-        <span onclick="quickAll(this)" style="cursor:pointer; text-decoration:underline; margin:0 9px; color:#ff1493;">luxury morning routine</span>
-    </div>
-</div>
-
-<script>
-// Pinterest
-function searchPin() {
-    const q = document.getElementById('pin-input').value.trim();
-    if (q) window.open(`https://www.pinterest.com/search/pins/?q=${encodeURIComponent(q)}`, '_blank');
-}
-
-// Spotify
-function searchSpot() {
-    const q = document.getElementById('spot-input').value.trim();
-    if (q) window.open(`https://open.spotify.com/search/${encodeURIComponent(q)}`, '_blank');
-}
-
-// YouTube
-function searchYT() {
-    const q = document.getElementById('yt-input').value.trim();
-    if (q) window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`, '_blank');
-}
-
-// Quick fill for all three
-function quickAll(el) {
-    const term = el.textContent.trim();
-    document.getElementById('pin-input').value = term;
-    document.getElementById('spot-input').value = term;
-    document.getElementById('yt-input').value = term;
-}
-
-// Enter key support
-document.addEventListener('DOMContentLoaded', () => {
-    const inputs = ['pin-input','spot-input','yt-input'];
-    inputs.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.addEventListener('keypress', e => { if(e.key==='Enter') {
-            if(id==='pin-input') searchPin();
-            else if(id==='spot-input') searchSpot();
-            else if(id==='yt-input') searchYT();
-        }});
-    });
-});
-</script>
-<!-- ====================== END ROYAL LUXE TRIPLE SEARCH ====================== -->  
+} 
   
   <a href="https://katelynvparry-tech.github.io/katelyns-luxe-life/" class="back-btn">
   ← Back to Katelyn's Luxe Life
