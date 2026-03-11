@@ -44,6 +44,8 @@
     .item {
       background: white;
       border-radius: 20px;
+      display: flex;           /* Becomes a flex container */
+      flex-direction: column;  /* Stacks content vertically */      
       overflow: hidden;
       box-shadow: 0 10px 30px rgba(0,0,0,0.08);
       transition: 0.3s;
@@ -58,6 +60,7 @@
     }
     .item h3 {
       font-size: 1.4em;
+      min-height: 3em;
       margin: 15px 0 10px;
       color: var(--text);
     }
