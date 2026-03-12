@@ -40,8 +40,6 @@
 </div>  
   
     <!-- Navigation Tree -->
-    <div class="bg-white rounded-2xl p-6 shadow-lg mb-8">
-      <h2 class="text-2xl font-bold mb-4 text-center text-gray-800">Page Tree Navigation</h2>
 <div class="max-w-7xl mx-auto px-6 mb-10">
     <div class="bg-white/70 backdrop-blur-xl rounded-3xl shadow-xl p-2 flex flex-wrap gap-2">      
       <div class="flex flex-wrap justify-center gap-3" id="navigation">
@@ -127,46 +125,57 @@
     // Page Templates
     const pages = {
       home: `
-        <div class="bg-white rounded-3xl p-8 shadow-xl border-4 border-amber-200">
-          <div class="text-center mb-8">
-            <div class="w-32 h-32 bg-gradient-to-br from-amber-100 to-rose-100 rounded-full mx-auto mb-4 flex items-center justify-center border-4 border-amber-300">
-              <svg class="w-16 h-16 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
-              </svg>
+        <div class="bg-white rounded-3xl mirror-frame p-10">
+          <div class="text-center mb-12">
+            <h2 class="text-4xl font-serif text-stone-800">Good morning, Sophia</h2>
+            <p class="text-stone-500 mt-2">Your mirror is ready • Wednesday, March 12</p>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div onclick="showPage('virtualtryon')" class="feature-card bg-gradient-to-br from-rose-50 to-pink-50 border border-rose-200 rounded-3xl p-8 cursor-pointer">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="text-2xl font-semibold text-rose-700">Virtual Try-On</h3>
+                  <p class="text-stone-600 mt-3 leading-tight">Instant AR makeup, outfits &amp; accessories</p>
+                </div>
+                <i class="fa-solid fa-magic text-5xl text-rose-300"></i>
+              </div>
             </div>
-            <h2 class="text-3xl font-bold text-gray-800 mb-2">LUXE LENS LOGO</h2>
-            <p class="text-gray-600 italic">Your Personal Luxury Mirror</p>
+
+            <div onclick="showPage('moodtracker')" class="feature-card bg-gradient-to-br from-purple-50 to-violet-50 border border-purple-200 rounded-3xl p-8 cursor-pointer">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="text-2xl font-semibold text-purple-700">Mood Tracker</h3>
+                  <p class="text-stone-600 mt-3 leading-tight">Daily reflection • Emotional wellness</p>
+                </div>
+                <i class="fa-solid fa-heart text-5xl text-purple-300"></i>
+              </div>
+            </div>
+
+            <div onclick="showPage('luxerecs')" class="feature-card bg-gradient-to-br from-amber-50 to-yellow-50 border border-amber-200 rounded-3xl p-8 cursor-pointer">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="text-2xl font-semibold text-amber-700">Luxe Picks</h3>
+                  <p class="text-stone-600 mt-3 leading-tight">AI-curated luxury recommendations</p>
+                </div>
+                <i class="fa-solid fa-crown text-5xl text-amber-300"></i>
+              </div>
+            </div>
+
+            <div onclick="showPage('wellness')" class="feature-card bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-3xl p-8 cursor-pointer">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="text-2xl font-semibold text-emerald-700">Wellness Coach</h3>
+                  <p class="text-stone-600 mt-3 leading-tight">Posture • Skincare • Mindful rituals</p>
+                </div>
+                <i class="fa-solid fa-leaf text-5xl text-emerald-300"></i>
+              </div>
+            </div>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div onclick="showPage('virtualtryon')" class="border-4 border-rose-300 rounded-2xl p-8 cursor-pointer hover:bg-rose-50 transition-all">
-              <div class="w-16 h-16 bg-rose-200 rounded-full mx-auto mb-4"></div>
-              <h3 class="text-xl font-bold text-center mb-2">VIRTUAL TRY-ON</h3>
-              <p class="text-sm text-gray-600 text-center">Try makeup, outfits, accessories</p>
-            </div>
-
-            <div onclick="showPage('moodtracker')" class="border-4 border-purple-300 rounded-2xl p-8 cursor-pointer hover:bg-purple-50 transition-all">
-              <div class="w-16 h-16 bg-purple-200 rounded-full mx-auto mb-4"></div>
-              <h3 class="text-xl font-bold text-center mb-2">MOOD TRACKER</h3>
-              <p class="text-sm text-gray-600 text-center">Daily check-in & reflection</p>
-            </div>
-
-            <div onclick="showPage('luxerecs')" class="border-4 border-amber-300 rounded-2xl p-8 cursor-pointer hover:bg-amber-50 transition-all">
-              <div class="w-16 h-16 bg-amber-200 rounded-full mx-auto mb-4"></div>
-              <h3 class="text-xl font-bold text-center mb-2">LUXE PICKS</h3>
-              <p class="text-sm text-gray-600 text-center">Personalized recommendations</p>
-            </div>
-
-            <div onclick="showPage('wellness')" class="border-4 border-green-300 rounded-2xl p-8 cursor-pointer hover:bg-green-50 transition-all">
-              <div class="w-16 h-16 bg-green-200 rounded-full mx-auto mb-4"></div>
-              <h3 class="text-xl font-bold text-center mb-2">WELLNESS COACH</h3>
-              <p class="text-sm text-gray-600 text-center">Posture, skincare, self-care</p>
-            </div>
-          </div>
-
-          <div class="flex gap-4 mt-8">
-            <button onclick="showPage('profile')" class="flex-1 border-2 border-gray-400 rounded-full py-4 font-bold hover:bg-gray-100">MY PROFILE</button>
-            <button class="flex-1 border-2 border-gray-400 rounded-full py-4 font-bold hover:bg-gray-100">SETTINGS</button>
+          <div class="flex gap-4 mt-10">
+            <button onclick="showPage('profile')" class="flex-1 bg-stone-900 text-white py-5 rounded-2xl font-semibold hover:bg-stone-800 transition">View My Profile</button>
+            <button onclick="showPage('login')" class="flex-1 border border-stone-300 py-5 rounded-2xl font-semibold hover:bg-stone-50 transition">Switch User</button>
           </div>
         </div>
       `,
