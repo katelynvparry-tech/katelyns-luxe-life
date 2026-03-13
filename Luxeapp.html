@@ -262,38 +262,35 @@
       `,
 
       virtualtryon: `
-        <div class="bg-white rounded-3xl p-8 shadow-xl border-4 border-rose-200">
-          <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">VIRTUAL TRY-ON</h2>
-          
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="md:col-span-2 border-4 border-gray-400 rounded-2xl aspect-[3/4] bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-              <div class="text-center">
-                <div class="w-32 h-32 bg-gray-300 rounded-full mx-auto mb-4"></div>
-                <p class="text-2xl font-bold text-gray-600">LIVE MIRROR VIEW</p>
-                <p class="text-gray-500">AR Camera Feed</p>
+        <div class="bg-white rounded-3xl mirror-frame p-10">
+          <h2 class="text-4xl font-serif text-center mb-8">Virtual Try-On</h2>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 aspect-[4/5] bg-gradient-to-br from-stone-900 to-black rounded-3xl flex items-center justify-center mirror-frame relative overflow-hidden">
+              <div class="text-center text-white">
+                <div class="w-40 h-40 mx-auto bg-white/10 backdrop-blur-xl rounded-3xl flex items-center justify-center mb-6 border border-white/30">
+                  <i class="fa-solid fa-camera text-6xl text-white/60"></i>
+                </div>
+                <p class="text-2xl font-medium">Live AR Mirror</p>
+                <p class="text-white/60 text-sm mt-1">Camera active • 4K • Real-time lighting</p>
+              </div>
+              <div class="absolute top-6 right-6 bg-black/70 text-white text-xs px-4 py-2 rounded-2xl flex items-center gap-2">
+                <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                LIVE
               </div>
             </div>
 
             <div class="space-y-4">
-              <div class="border-3 border-rose-300 rounded-xl p-4 bg-rose-50 cursor-pointer hover:bg-rose-100">
-                <div class="w-12 h-12 bg-rose-300 rounded-full mb-2"></div>
-                <h3 class="font-bold">MAKEUP</h3>
-                <p class="text-xs text-gray-600">Lipstick, eyeshadow, blush</p>
+              <div class="bg-rose-50 border border-rose-200 rounded-2xl p-6 cursor-pointer hover:bg-rose-100 transition">
+                <h4 class="font-semibold text-rose-700">Makeup Studio</h4>
+                <p class="text-xs text-stone-500 mt-1">Dior, Charlotte Tilbury, Pat McGrath</p>
               </div>
-              <div class="border-3 border-purple-300 rounded-xl p-4 bg-purple-50 cursor-pointer hover:bg-purple-100">
-                <div class="w-12 h-12 bg-purple-300 rounded-full mb-2"></div>
-                <h3 class="font-bold">OUTFITS</h3>
-                <p class="text-xs text-gray-600">Dresses, tops, sets</p>
+              <div class="bg-purple-50 border border-purple-200 rounded-2xl p-6 cursor-pointer hover:bg-purple-100 transition">
+                <h4 class="font-semibold text-purple-700">Wardrobe</h4>
+                <p class="text-xs text-stone-500 mt-1">Chanel, The Row, Zimmermann</p>
               </div>
-              <div class="border-3 border-amber-300 rounded-xl p-4 bg-amber-50 cursor-pointer hover:bg-amber-100">
-                <div class="w-12 h-12 bg-amber-300 rounded-full mb-2"></div>
-                <h3 class="font-bold">ACCESSORIES</h3>
-                <p class="text-xs text-gray-600">Jewelry, bags, glasses</p>
-              </div>
-              <div class="border-3 border-green-300 rounded-xl p-4 bg-green-50 cursor-pointer hover:bg-green-100">
-                <div class="w-12 h-12 bg-green-300 rounded-full mb-2"></div>
-                <h3 class="font-bold">HAIR</h3>
-                <p class="text-xs text-gray-600">Colors, styles, wigs</p>
+              <div class="bg-amber-50 border border-amber-200 rounded-2xl p-6 cursor-pointer hover:bg-amber-100 transition">
+                <h4 class="font-semibold text-amber-700">Jewelry &amp; Accessories</h4>
+                <p class="text-xs text-stone-500 mt-1">Cartier, Van Cleef, Bottega Veneta</p>
               </div>
             </div>
           </div>
