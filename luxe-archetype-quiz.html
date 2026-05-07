@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luxe Life Archetype Quiz • Katelyn's Luxe Life</title>
+  <style>
+    :root {
+      --gold: #d4af37;
+      --soft-gold: #f0d9a8;
+      --blush: #f5e6e8;
+      --dark: #2a2522;
+      --light: #f8f5f2;
+    }
+    
+    body {
+      font-family: 'Georgia', serif;
+      background: linear-gradient(135deg, #f8f5f2 0%, #f5e6e8 100%);
+      color: var(--dark);
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--dark);
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--gold);
+      font-style: italic;
+      margin-bottom: 40px;
+      font-size: 1.3rem;
+    }
+
+    .question {
+      margin-bottom: 35px;
+      display: none;
+    }
+
+    .question.active {
+      display: block;
+    }
+
+    .question h2 {
+      color: var(--dark);
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+    }
+
+    .option {
+      padding: 18px 22px;
+      margin: 12px 0;
+      background: var(--blush);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 2px solid transparent;
+    }
+
+    .option:hover {
+      background: white;
+      border-color: var(--gold);
+      transform: translateY(-3px);
+    }
+
+    .progress {
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--gold);
+      font-weight: bold;
+    }
+
+    button {
+      background: var(--dark);
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      font-size: 1.1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: var(--gold);
+      color: var(--dark);
+    }
+
+    .result {
+      text-align: center;
+      display: none;
+    }
+
+    .badge {
+      font-size: 4rem;
+      margin: 20px 0;
+    }
+
+    .share-btn {
+      background: var(--gold);
+      color: var(--dark);
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Luxe Life Archetype</h1>
+    <p class="subtitle">Which Luxe Girl Are You?</p>
+
+    <div id="progress" class="progress">Question <span id="current">1</span>/5</div>
+
+    <!-- Questions -->
+    <div id="q1" class="question active">
+      <h2>1. Your ideal morning looks like...</h2>
+      <div class="option" data-value="A">Structured & intentional with a planner and priorities</div>
+      <div class="option" data-value="B">Aesthetic and dreamy — mood board, soft music, beautiful visuals</div>
+      <div class="option" data-value="C">Playful and light — a quick chic game or fun energy boost</div>
+    </div>
+
+    <div id="q2" class="question">
+      <h2>2. When shopping, you focus most on...</h2>
+      <div class="option" data-value="A">Curated, high-quality essentials that elevate daily life</div>
+      <div class="option" data-value="D">Full lifestyle pieces (fashion, wellness, home)</div>
+    </div>
+
+    <div id="q3" class="question">
+      <h2>3. Your favorite way to find inspiration is...</h2>
+      <div class="option" data-value="E">Curated search engines for songs, videos & visuals</div>
+      <div class="option" data-value="B">Immersing in beautiful aesthetics and mood boards</div>
+    </div>
+
+    <div id="q4" class="question">
+      <h2>4. Evening wind-down for you is...</h2>
+      <div class="option" data-value="C">Playing elegant games with a glass of something nice</div>
+      <div class="option" data-value="B">Scrolling aesthetic content and planning pretty tomorrows</div>
+      <div class="option" data-value="A">Reviewing your day and preparing for a luxe tomorrow</div>
+    </div>
+
+    <div id="q5" class="question">
+      <h2>5. Your overall luxe philosophy is...</h2>
+      <div class="option" data-value="A">Structure + beauty = everyday luxury</div>
+      <div class="option" data-value="F">Holistic integration of beauty, wellness, and play</div>
+      <div class="option" data-value="B">Living in a constant state of visual elegance</div>
+    </div>
+
+    <div style="text-align: center; margin-top: 30px;">
+      <button id="nextBtn">Next Question →</button>
+    </div>
+
+    <!-- Result Section -->
+    <div id="result" class="result">
+      <h2>You are the...</h2>
+      <div id="badge" class="badge"></div>
+      <h1 id="archetype-title" style="color: var(--gold);"></h1>
+      <p id="description" style="font-size: 1.2rem; max-width: 600px; margin: 20px auto;"></p>
+      
+      <button class="share-btn" onclick="shareResult()">Share Your Archetype</button>
+      <br><br>
+      <button onclick="restartQuiz()">Take Quiz Again</button>
+    </div>
+  </div>
+
+  <script>
+    let currentQuestion = 1;
+    let scores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0 };
+
+    const questions = document.querySelectorAll('.question');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function selectOption(option) {
+      const value = option.getAttribute('data-value');
+      scores[value]++;
+
+      // Move to next question
+      if (currentQuestion < 5) {
+        questions[currentQuestion-1].classList.remove('active');
+        currentQuestion++;
+        questions[currentQuestion-1].classList.add('active');
+        document.getElementById('current').textContent = currentQuestion;
+      } else {
+        showResult();
+      }
+    }
+
+    // Add click listeners to all options
+    document.querySelectorAll('.option').forEach(option => {
+      option.addEventListener('click', () => selectOption(option));
+    });
+
+    function showResult() {
+      document.getElementById('progress').style.display = 'none';
+      nextBtn.style.display = 'none';
+      
+      const resultDiv = document.getElementById('result');
+      resultDiv.style.display = 'block';
+
+      let maxScore = Math.max(...Object.values(scores));
+      let archetype = '';
+
+      if (scores.A >= maxScore) {
+        archetype = "Daily Toolkit Girl";
+        document.getElementById('badge').innerHTML = "🗂️✨";
+        document.getElementById('description').innerHTML = "You are the <strong>Architect of Luxury</strong>. You turn structure and routines into elegant rituals. Organization is your form of self-love.";
+      } 
+      else if (scores.B >= maxScore) {
+        archetype = "Luxe Aesthetic Vault Girl";
+        document.getElementById('badge').innerHTML = "🌸🎨";
+        document.getElementById('description').innerHTML = "You are the <strong>Visionary Muse</strong>. Beauty and aesthetics are your love language. You curate moments that feel like art.";
+      } 
+      else if (scores.C >= maxScore) {
+        archetype = "Chic Games Lounge Girl";
+        document.getElementById('badge').innerHTML = "♟️🍸";
+        document.getElementById('description').innerHTML = "You are the <strong>Playful Sophisticate</strong>. You believe luxury should be fun, elegant, and never boring.";
+      } 
+      else if (scores.F >= maxScore || scores.D >= maxScore) {
+        archetype = "Luxe Life App Girl";
+        document.getElementById('badge').innerHTML = "💎🌟";
+        document.getElementById('description').innerHTML = "You are the <strong>Complete Elevated Woman</strong>. You want it all — beauty, wellness, style, play, and structure. You live the full luxe lifestyle.";
+      } 
+      else {
+        archetype = "Graphic Design Girl";
+        document.getElementById('badge').innerHTML = "✍️💫";
+        document.getElementById('description').innerHTML = "You are the <strong>Curator of Beauty</strong>. Your eye for design and aesthetics makes everything you touch feel luxurious.";
+      }
+
+      document.getElementById('archetype-title').textContent = archetype;
+    }
+
+    function shareResult() {
+      const text = `I just discovered I'm the ${document.getElementById('archetype-title').textContent} on Katelyn's Luxe Life! ✨`;
+      navigator.clipboard.writeText(text);
+      alert("Result copied! Share it on your stories 💖");
+    }
+
+    function restartQuiz() {
+      location.reload();
+    }
+  </script>
+</body>
+</html>
+

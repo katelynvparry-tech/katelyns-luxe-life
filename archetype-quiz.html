@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Luxe Archetype Quiz</title>
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      background: linear-gradient(135deg, #1a0f1f, #3d1f2b);
+      color: #f5e8d3;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 700px;
+      margin: 40px auto;
+      background: rgba(0,0,0,0.6);
+      padding: 40px;
+      border-radius: 20px;
+      border: 2px solid #d4af37;
+    }
+    h1 {
+      color: #ffd700;
+      font-size: 2.8em;
+    }
+    .question {
+      margin: 30px 0;
+      font-size: 1.3em;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    button {
+      background: #3d1f2b;
+      color: #f5e8d3;
+      border: 2px solid #d4af37;
+      padding: 15px;
+      font-size: 1.1em;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    button:hover {
+      background: #d4af37;
+      color: #1a0f1f;
+      transform: scale(1.03);
+    }
+    #result {
+      display: none;
+      margin-top: 40px;
+      padding: 30px;
+      background: rgba(212, 175, 55, 0.15);
+      border: 3px solid #d4af37;
+      border-radius: 20px;
+    }
+    .gold { color: #ffd700; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Katelyn's Luxe Life</h1>
+    <h2>Discover Your Pinterest Archetype ✨♕</h2>
+    <p><strong>Answer 8 questions based on your vibe</strong></p>
+
+    <div id="quiz">
+      <!-- Questions will be injected by JS -->
+    </div>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        q: "What’s your dream morning like?",
+        a: [
+          { text: "Golden sunlight, herbal tea, journaling with my oracle cards", score: {goddess: 3, oracle: 2} },
+          { text: "Luxury gym, then planning my next empire move", score: {queen: 3, luxe: 2} },
+          { text: "Dancing in my room or tending to my garden/plants", score: {muse: 3, goddess: 1} },
+          { text: "Scrolling Pinterest for new aesthetic ideas while sipping coffee", score: {oracle: 2, luxe: 2} }
+        ]
+      },
+      {
+        q: "Pick your signature symbol",
+        a: [
+          { text: "Golden crown or chess queen", score: {queen: 4} },
+          { text: "Star chart / crescent moon", score: {oracle: 4} },
+          { text: "Pomegranate or blooming rose", score: {goddess: 4} },
+          { text: "Perfume bottle or luxury car", score: {luxe: 4} }
+        ]
+      },
+      {
+        q: "Your ideal evening looks like...",
+        a: [
+          { text: "Sensual belly dancing or self-care ritual", score: {muse: 3, goddess: 2} },
+          { text: "Hosting an elegant dinner with deep conversations", score: {queen: 3} },
+          { text: "Mystical reading + manifesting under the stars", score: {oracle: 4} },
+          { text: "Luxury shopping or curating my next big vision board", score: {luxe: 3} }
+        ]
+      },
+      {
+        q: "What color palette speaks to your soul?",
+        a: [
+          { text: "Gold, cream, deep emerald, and burgundy", score: {goddess: 2, queen: 2} },
+          { text: "Soft blush, ivory, and celestial silver", score: {oracle: 3, muse: 1} },
+          { text: "Black, gold, and rich jewel tones", score: {luxe: 4} }
+        ]
+      },
+      {
+        q: "Your business/creative energy feels most like...",
+        a: [
+          { text: "Building a beautiful empire with strategy and grace", score: {queen: 3} },
+          { text: "Sharing mystical wisdom and inspiration", score: {oracle: 4} },
+          { text: "Creating sensory beauty and pleasure in the world", score: {goddess: 3, muse: 2} }
+        ]
+      }
+    ];
+
+    let scores = { goddess: 0, oracle: 0, queen: 0, luxe: 0, muse: 0 };
+    let currentQuestion = 0;
+
+    function renderQuestion() {
+      const quizDiv = document.getElementById('quiz');
+      quizDiv.innerHTML = `
+        <div class="question">
+          <h3>Question ${currentQuestion + 1} of ${questions.length}</h3>
+          <p>${questions[currentQuestion].q}</p>
+          <div class="options"></div>
+        </div>
+      `;
+
+      const optionsDiv = quizDiv.querySelector('.options');
+      questions[currentQuestion].a.forEach((option, i) => {
+        const btn = document.createElement('button');
+        btn.textContent = option.text;
+        btn.onclick = () => {
+          // Add scores
+          Object.keys(option.score).forEach(key => {
+            scores[key] = (scores[key] || 0) + option.score[key];
+          });
+          
+          currentQuestion++;
+          if (currentQuestion < questions.length) {
+            renderQuestion();
+          } else {
+            showResult();
+          }
+        };
+        optionsDiv.appendChild(btn);
+      });
+    }
+
+    function showResult() {
+      document.getElementById('quiz').style.display = 'none';
+      const resultDiv = document.getElementById('result');
+      resultDiv.style.display = 'block';
+
+      // Find highest score
+      let maxScore = 0;
+      let archetype = "Golden Goddess Queen";
+      let desc = "";
+
+      if (scores.oracle >= maxScore) {
+        maxScore = scores.oracle;
+        archetype = "Divine Oracle";
+        desc = "Mystical, intuitive, and deeply connected to the unseen. You guide yourself and others with ancient wisdom wrapped in modern luxury.";
+      }
+      if (scores.goddess > maxScore) {
+        maxScore = scores.goddess;
+        archetype = "Golden Goddess";
+        desc = "Sensual, abundant, and radiant. You embody fertile feminine energy — beauty, pleasure, and divine femininity.";
+      }
+      if (scores.queen > maxScore) {
+        maxScore = scores.queen;
+        archetype = "Regal Luxe Queen";
+        desc = "Strategic, powerful, and elegant. You build empires while staying soft and regal.";
+      }
+      if (scores.luxe > maxScore) {
+        maxScore = scores.luxe;
+        archetype = "Luxe Visionary";
+        desc = "You live for elevated aesthetics and turning your Pinterest dreams into reality.";
+      }
+      if (scores.muse > maxScore) {
+        maxScore = scores.muse;
+        archetype = "Sensual Muse";
+        desc = "Creative, expressive, and magnetic through movement and beauty.";
+      }
+
+      resultDiv.innerHTML = `
+        <h1 class="gold">You are the ${archetype} ♕</h1>
+        <p style="font-size:1.4em; margin:20px 0;">${desc}</p>
+        <p><strong>Your Pinterest perfectly matches this energy</strong></p>
+        <button onclick="location.reload()" style="margin-top:20px; padding:15px 30px; font-size:1.2em;">
+          Take Quiz Again
+        </button>
+      `;
+    }
+
+    // Start the quiz
+    renderQuestion();
+  </script>
+</body>
+</html>
+

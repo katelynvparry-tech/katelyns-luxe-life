@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Katelyn's Luxe Life • Archetype Quiz</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap');
+
+    :root {
+      --gold: #d4af87;
+      --soft-pink: #f8e8ee;
+      --cream: #fffaf0;
+      --dark: #2c1e1e;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #2c1e1e, #3f2a2a);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .quiz-container {
+      background: white;
+      color: var(--dark);
+      max-width: 480px;
+      width: 90%;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      margin: 20px auto;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--dark), #4a2f2f);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      margin: 0;
+    }
+
+    .header p {
+      opacity: 0.9;
+      margin: 8px 0 0;
+      font-size: 15px;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: var(--gold);
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    .content {
+      padding: 30px 25px;
+    }
+
+    .question {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 25px;
+      line-height: 1.4;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option {
+      padding: 16px 20px;
+      background: #f8f4ee;
+      border: 2px solid #eee;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 15px;
+    }
+
+    .option:hover {
+      border-color: var(--gold);
+      background: #fffaf0;
+    }
+
+    .option.selected {
+      border-color: var(--gold);
+      background: var(--soft-pink);
+      font-weight: 500;
+    }
+
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+    }
+
+    button {
+      padding: 14px 28px;
+      border: none;
+      border-radius: 50px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-next {
+      background: var(--dark);
+      color: white;
+    }
+
+    .btn-next:hover {
+      background: #1f1515;
+    }
+
+    .btn-restart {
+      background: transparent;
+      color: var(--dark);
+      border: 2px solid var(--dark);
+    }
+
+    .result {
+      text-align: center;
+      padding: 40px 25px;
+    }
+
+    .result h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      color: var(--dark);
+      margin: 0 0 10px;
+    }
+
+    .result .emoji {
+      font-size: 60px;
+      margin-bottom: 15px;
+    }
+
+    .result p {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #555;
+      margin: 15px 0 30px;
+    }
+
+    .recommendations {
+      background: #f8f4ee;
+      padding: 20px;
+      border-radius: 16px;
+      text-align: left;
+      margin: 25px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <div class="header">
+      <h1>Katelyn's Luxe Life</h1>
+      <p>Discover Your Archetype ✨</p>
+      <div class="progress-bar" id="progress"></div>
+    </div>
+
+    <div class="content" id="quiz-content">
+      <!-- Questions will be injected here by JS -->
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        q: "Your ideal morning ritual feels like…",
+        a: [
+          { text: "A quiet espresso in silk robe while journaling in soft sunlight.", type: "Muse" },
+          { text: "A bold power walk or workout followed by a statement outfit.", type: "Trailblazer" },
+          { text: "Slow self-care: face mask, fresh flowers, and dreamy music.", type: "Goddess" },
+          { text: "Curating the perfect mood board or planning your next adventure.", type: "Luminary" },
+          { text: "Timeless elegance—pilates, a tailored look, and a sense of calm control.", type: "Muse" }
+        ]
+      },
+      {
+        q: "Your go-to luxe outfit formula is…",
+        a: [
+          { text: "Crisp white shirt + tailored trousers + classic gold jewelry.", type: "Muse" },
+          { text: "Monochrome set with sharp shoulders and bold accessories.", type: "Trailblazer" },
+          { text: "Flowy silk dress or slip with delicate details and soft layers.", type: "Goddess" },
+          { text: "Unexpected mix: vintage blazer over designer denim with unique accents.", type: "Luminary" },
+          { text: "Elevated basics in neutral tones that always look expensive.", type: "Muse" }
+        ]
+      },
+      {
+        q: "When shopping for luxury pieces, you’re most drawn to…",
+        a: [
+          { text: "Timeless investment items that never go out of style.", type: "Muse" },
+          { text: "Statement pieces that make an entrance and express your vision.", type: "Trailblazer" },
+          { text: "Soft, sensual textures—cashmere, velvet, anything touchable.", type: "Goddess" },
+          { text: "Rare or eclectic finds with a story or artistic edge.", type: "Luminary" },
+          { text: "Clean, sophisticated designs with subtle branding.", type: "Muse" }
+        ]
+      },
+      {
+        q: "Your perfect weekend escape would be…",
+        a: [
+          { text: "A serene countryside estate with afternoon tea and gardens.", type: "Muse" },
+          { text: "A vibrant city getaway filled with art galleries and new experiences.", type: "Trailblazer" },
+          { text: "A luxurious spa retreat with rose petals and wellness rituals.", type: "Goddess" },
+          { text: "Exploring a hidden boutique hotel in an unexpected destination.", type: "Luminary" },
+          { text: "A chic coastal villa with elegant dinners and quiet luxury.", type: "Muse" }
+        ]
+      },
+      {
+        q: "In your home or personal space, you prioritize…",
+        a: [
+          { text: "Clean lines, neutral palettes, and timeless furniture.", type: "Muse" },
+          { text: "Bold art pieces and a space that inspires creativity.", type: "Trailblazer" },
+          { text: "Plush throws, candles, and romantic, cozy details.", type: "Goddess" },
+          { text: "Eclectic collections, plants, and global treasures.", type: "Luminary" },
+          { text: "Curated minimalism with high-quality, intentional pieces.", type: "Muse" }
+        ]
+      },
+      {
+        q: "Your signature scent or fragrance vibe is…",
+        a: [
+          { text: "Classic and refined (fresh linen, light florals, or musk).", type: "Muse" },
+          { text: "Bold and memorable (spicy, woody, or modern gourmand).", type: "Trailblazer" },
+          { text: "Soft and dreamy (vanilla, rose, or powdery florals).", type: "Goddess" },
+          { text: "Unique and layered (something niche or unexpected).", type: "Luminary" },
+          { text: "Elegant and understated (citrus, sandalwood, or clean luxury).", type: "Muse" }
+        ]
+      },
+      {
+        q: "When it comes to wellness and self-care, you love…",
+        a: [
+          { text: "Structured routines like yoga or meditation for inner poise.", type: "Muse" },
+          { text: "High-energy activities that fuel your ambition and glow.", type: "Trailblazer" },
+          { text: "Indulgent baths, skincare rituals, and emotional nurturing.", type: "Goddess" },
+          { text: "Creative practices like journaling, vision boarding, or dance.", type: "Luminary" },
+          { text: "Balanced, elevated habits that support long-term elegance.", type: "Muse" }
+        ]
+      },
+      {
+        q: "Your luxe life motto is closest to…",
+        a: [
+          { text: "“Grace is the ultimate luxury.”", type: "Muse" },
+          { text: "“Make every day a statement.”", type: "Trailblazer" },
+          { text: "“Indulge in the softness of life.”", type: "Goddess" },
+          { text: "“Curate beauty in the unexpected.”", type: "Luminary" },
+          { text: "“Simplicity, done exceptionally well.”", type: "Muse" }
+        ]
+      }
+    ];
+
+    const archetypes = {
+      "Muse": {
+        name: "The Timeless Muse",
+        emoji: "🌿",
+        desc: "You embody effortless elegance and quiet confidence. Your luxe life is all about curated simplicity, timeless pieces, and radiating poise in every detail.",
+        recs: "• Neutral elegance mood boards\n• Investment classics & soft tailoring\n• Mindful rituals for inner glow\n• Explore the Timeless Collection"
+      },
+      "Trailblazer": {
+        name: "The Chic Trailblazer",
+        emoji: "✨",
+        desc: "Confident and modern, you blend power with ambition. You make luxury feel sharp, empowering, and always on the move.",
+        recs: "• Bold monochrome looks\n• Structured blazers & gold accents\n• High-energy wellness routines\n• Unlock the Power Edit"
+      },
+      "Goddess": {
+        name: "The Soft Glow Goddess",
+        emoji: "🌸",
+        desc: "Romantic, sensual, and deeply nurturing to yourself. You crave plush textures, dreamy aesthetics, and indulgent self-care.",
+        recs: "• Romantic florals & silk layers\n• Luxe skincare & bath rituals\n• Soft glow mood boards\n• Open the Goddess Sanctuary"
+      },
+      "Luminary": {
+        name: "The Eclectic Luminary",
+        emoji: "🌍",
+        desc: "Free-spirited and artistic, you curate unexpected beauty. Your luxe life feels like a beautiful global adventure.",
+        recs: "• Eclectic vintage + high-end mixes\n• Creative vision boarding\n• Unique global finds\n• Discover the Wanderlust Vault"
+      }
+    };
+
+    let currentQuestion = 0;
+    let scores = { Muse: 0, Trailblazer: 0, Goddess: 0, Luminary: 0 };
+
+    function renderQuestion() {
+      const content = document.getElementById('quiz-content');
+      const q = questions[currentQuestion];
+      let html = `
+        <div class="question">${currentQuestion + 1}. ${q.q}</div>
+        <div class="options" id="options">
+      `;
+
+      q.a.forEach((option, index) => {
+        html += `
+          <div class="option" data-type="${option.type}" data-index="${index}">
+            ${option.text}
+          </div>
+        `;
+      });
+
+      html += `</div>`;
+      html += `
+        <div class="nav-buttons">
+          ${currentQuestion > 0 ? `<button class="btn-restart" onclick="restartQuiz()">Restart</button>` : ''}
+          <button class="btn-next" id="next-btn" style="display:none;" onclick="nextQuestion()">Next</button>
+        </div>
+      `;
+
+      content.innerHTML = html;
+
+      // Add click listeners
+      document.querySelectorAll('.option').forEach(opt => {
+        opt.addEventListener('click', () => {
+          document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+          opt.classList.add('selected');
+          document.getElementById('next-btn').style.display = 'block';
+        });
+      });
+
+      // Update progress
+      document.getElementById('progress').style.width = `${((currentQuestion) / questions.length) * 100}%`;
+    }
+
+    function nextQuestion() {
+      const selected = document.querySelector('.option.selected');
+      if (!selected) return;
+
+      const type = selected.getAttribute('data-type');
+      scores[type]++;
+
+      currentQuestion++;
+
+      if (currentQuestion < questions.length) {
+        renderQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      let maxScore = 0;
+      let winner = "Muse";
+
+      Object.keys(scores).forEach(key => {
+        if (scores[key] > maxScore) {
+          maxScore = scores[key];
+          winner = key;
+        }
+      });
+
+      const arch = archetypes[winner];
+      const content = document.getElementById('quiz-content');
+
+      content.innerHTML = `
+        <div class="result">
+          <div class="emoji">${arch.emoji}</div>
+          <h2>${arch.name}</h2>
+          <p>${arch.desc}</p>
+          
+          <div class="recommendations">
+            <strong>Your Katelyn's Luxe Life Recommendations:</strong><br>
+            <pre style="white-space: pre-wrap; font-family: inherit; margin-top: 10px;">${arch.recs}</pre>
+          </div>
+
+          <button class="btn-next" onclick="restartQuiz()" style="width:100%; background: var(--gold); color: #2c1e1e; font-size: 16px;">
+            Take Quiz Again
+          </button>
+        </div>
+      `;
+    }
+
+    function restartQuiz() {
+      currentQuestion = 0;
+      scores = { Muse: 0, Trailblazer: 0, Goddess: 0, Luminary: 0 };
+      renderQuestion();
+    }
+
+    // Start the quiz
+    renderQuestion();
+  </script>
+</body>
+</html>
+
+

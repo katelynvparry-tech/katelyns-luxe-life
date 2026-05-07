@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Luxe Archetype Quiz ♕</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Great+Vibes&display=swap');
+
+    body {
+      font-family: 'Georgia', serif;
+      background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), 
+                  url('https://images.unsplash.com/photo-1610030469983-c8129e8c0f8f') center/cover no-repeat fixed;
+      color: #f5e8d3;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 720px;
+      margin: 30px auto;
+      background: rgba(26, 15, 31, 0.85);
+      padding: 40px 30px;
+      border-radius: 25px;
+      border: 3px solid #d4af37;
+      box-shadow: 0 0 40px rgba(212, 175, 55, 0.4);
+    }
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      color: #ffd700;
+      font-size: 3.5em;
+      margin: 10px 0;
+      text-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+    }
+    h2 {
+      color: #f8c1d9;
+      font-size: 1.6em;
+    }
+    .header-img {
+      width: 100%;
+      max-height: 220px;
+      object-fit: cover;
+      border-radius: 20px;
+      margin-bottom: 25px;
+      border: 3px solid #d4af37;
+    }
+    .question {
+      margin: 35px 0;
+      font-size: 1.35em;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 25px;
+    }
+    button {
+      background: linear-gradient(135deg, #3d1f2b, #6b2d4a);
+      color: #f5e8d3;
+      border: 2px solid #d4af37;
+      padding: 18px;
+      font-size: 1.15em;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.4s;
+      text-align: left;
+    }
+    button:hover {
+      background: linear-gradient(135deg, #ffd700, #f8c1d9);
+      color: #1a0f1f;
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 10px 25px rgba(212, 175, 55, 0.5);
+    }
+    #result {
+      display: none;
+      margin-top: 40px;
+      padding: 35px;
+      background: rgba(212, 175, 55, 0.12);
+      border: 4px solid #d4af37;
+      border-radius: 25px;
+    }
+    .gold { color: #ffd700; }
+    .result-image {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 20px;
+      margin: 20px 0;
+      border: 3px solid #d4af37;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="https://images.unsplash.com/photo-1610030469983-c8129e8c0f8f" class="header-img" alt="Luxe Aesthetic">
+    
+    <h1>Katelyn's Luxe Life</h1>
+    <h2>Discover Your Pinterest Archetype ✨♕</h2>
+
+    <div id="quiz"></div>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        q: "What’s your dream morning like?",
+        a: [
+          { text: "Golden sunlight, herbal tea & oracle cards", score: {goddess: 3, oracle: 2} },
+          { text: "Luxury workout then planning my empire", score: {queen: 3, luxe: 2} },
+          { text: "Dancing or tending to my sacred garden", score: {muse: 3, goddess: 2} },
+          { text: "Pinterest scrolling with my morning coffee", score: {luxe: 3, oracle: 1} }
+        ]
+      },
+      {
+        q: "Pick your signature symbol",
+        a: [
+          { text: "Golden Crown or Chess Queen", score: {queen: 4} },
+          { text: "Crescent Moon & Stars", score: {oracle: 4} },
+          { text: "Pomegranate or Blooming Rose", score: {goddess: 4} },
+          { text: "Perfume Bottle & Luxury Details", score: {luxe: 4} }
+        ]
+      },
+      {
+        q: "Your ideal evening feels like...",
+        a: [
+          { text: "Sensual belly dancing or self-care ritual", score: {muse: 3, goddess: 2} },
+          { text: "Elegant dinner with meaningful conversation", score: {queen: 3} },
+          { text: "Tarot/oracle reading under moonlight", score: {oracle: 4} },
+          { text: "Curating my next luxe vision board", score: {luxe: 3} }
+        ]
+      },
+      {
+        q: "What color palette speaks to your soul?",
+        a: [
+          { text: "Gold, Cream, Emerald & Burgundy", score: {goddess: 3, queen: 2} },
+          { text: "Blush, Ivory & Celestial Silver", score: {oracle: 3, muse: 2} },
+          { text: "Black, Gold & Deep Jewel Tones", score: {luxe: 4, queen: 1} }
+        ]
+      },
+      {
+        q: "Your creative/business energy feels like...",
+        a: [
+          { text: "Building a beautiful feminine empire", score: {queen: 4} },
+          { text: "Sharing mystical wisdom & inspiration", score: {oracle: 4} },
+          { text: "Creating beauty, pleasure & sensuality", score: {goddess: 4, muse: 2} }
+        ]
+      }
+    ];
+
+    let scores = { goddess: 0, oracle: 0, queen: 0, luxe: 0, muse: 0 };
+    let currentQuestion = 0;
+
+    function renderQuestion() {
+      const quizDiv = document.getElementById('quiz');
+      quizDiv.innerHTML = `
+        <div class="question">
+          <h3 style="color:#d4af37;">Question ${currentQuestion + 1} of ${questions.length}</h3>
+          <p>${questions[currentQuestion].q}</p>
+          <div class="options"></div>
+        </div>
+      `;
+
+      const optionsDiv = quizDiv.querySelector('.options');
+      questions[currentQuestion].a.forEach(option => {
+        const btn = document.createElement('button');
+        btn.textContent = option.text;
+        btn.onclick = () => {
+          Object.keys(option.score).forEach(key => {
+            scores[key] = (scores[key] || 0) + option.score[key];
+          });
+          
+          currentQuestion++;
+          if (currentQuestion < questions.length) {
+            renderQuestion();
+          } else {
+            showResult();
+          }
+        };
+        optionsDiv.appendChild(btn);
+      });
+    }
+
+    function showResult() {
+      document.getElementById('quiz').style.display = 'none';
+      const resultDiv = document.getElementById('result');
+      resultDiv.style.display = 'block';
+
+      let maxScore = 0;
+      let archetype = "Golden Goddess Queen";
+      let desc = "";
+      let imgUrl = "https://images.unsplash.com/photo-1610030469983-c8129e8c0f8f";
+
+      if (scores.oracle > maxScore) {
+        maxScore = scores.oracle;
+        archetype = "Divine Oracle Queen";
+        desc = "Mystical, intuitive, and deeply spiritual. You move through life with ancient wisdom and modern elegance.";
+        imgUrl = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4";
+      }
+      if (scores.goddess > maxScore) {
+        maxScore = scores.goddess;
+        archetype = "Golden Goddess";
+        desc = "Radiant, sensual, and abundant. You embody divine feminine beauty and pleasure.";
+        imgUrl = "https://images.unsplash.com/photo-1610030469983-c8129e8c0f8f";
+      }
+      if (scores.queen > maxScore) {
+        maxScore = scores.queen;
+        archetype = "Regal Luxe Queen";
+        desc = "Powerful, strategic, and graceful. You build your empire while staying soft and royal.";
+        imgUrl = "https://images.unsplash.com/photo-1582791694770-c6c3f7a5e3f3";
+      }
+      if (scores.luxe > maxScore) {
+        maxScore = scores.luxe;
+        archetype = "Luxe Visionary";
+        desc = "You turn Pinterest dreams into a luxurious reality with impeccable taste.";
+        imgUrl = "https://images.unsplash.com/photo-1610030469983-c8129e8c0f8f";
+      }
+
+      resultDiv.innerHTML = `
+        <h1 class="gold">You are the ${archetype} ♕</h1>
+        <img src="${imgUrl}" class="result-image" alt="${archetype}">
+        <p style="font-size:1.45em; line-height:1.5;">${desc}</p>
+        <p style="margin:20px 0; font-style:italic;">This matches your Pinterest aesthetic perfectly ✨</p>
+        <button onclick="location.reload()" style="padding:16px 40px; font-size:1.2em; margin-top:15px;">
+          Take Quiz Again
+        </button>
+      `;
+    }
+
+    // Start quiz
+    renderQuestion();
+  </script>
+</body>
+</html>
+
+
+
+
