@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Luxe Cutie Mark Archetype ♕</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Great+Vibes&display=swap');
+
+    body {
+      font-family: 'Georgia', serif;
+      background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
+                  url('https://images.unsplash.com/photo-1610030469983-c8129e8c0f8f') center/cover fixed;
+      color: #f5e8d3;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 750px;
+      margin: 30px auto;
+      background: rgba(26, 15, 31, 0.9);
+      padding: 40px 30px;
+      border-radius: 30px;
+      border: 4px solid #d4af37;
+      box-shadow: 0 0 50px rgba(212, 175, 55, 0.5);
+    }
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      color: #ffd700;
+      font-size: 3.8em;
+      margin: 10px 0;
+    }
+    .header-img {
+      width: 100%;
+      max-height: 240px;
+      object-fit: cover;
+      border-radius: 20px;
+      margin: 20px 0;
+      border: 3px solid #d4af37;
+    }
+    .question {
+      margin: 40px 0;
+      font-size: 1.4em;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 25px;
+    }
+    button {
+      background: linear-gradient(135deg, #3d1f2b, #6b2d4a);
+      color: #f5e8d3;
+      border: 2px solid #d4af37;
+      padding: 18px 20px;
+      font-size: 1.15em;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.4s;
+      text-align: left;
+    }
+    button:hover {
+      background: linear-gradient(135deg, #ffd700, #f8c1d9);
+      color: #1a0f1f;
+      transform: scale(1.04);
+      box-shadow: 0 15px 30px rgba(212, 175, 55, 0.6);
+    }
+    #result {
+      display: none;
+      margin-top: 40px;
+      padding: 40px;
+      background: rgba(212, 175, 55, 0.15);
+      border: 4px solid #d4af37;
+      border-radius: 25px;
+    }
+    .cutie-mark {
+      font-size: 4.5em;
+      margin: 15px 0;
+    }
+    .result-image {
+      width: 100%;
+      max-height: 320px;
+      object-fit: cover;
+      border-radius: 20px;
+      margin: 25px 0;
+      border: 4px solid #d4af37;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="https://images.unsplash.com/photo-1610030469983-c8129e8c0f8f" class="header-img" alt="Golden Goddess">
+    
+    <h1>Your Luxe Cutie Mark</h1>
+    <h2>Discover Your Sacred Archetype Symbol ♕</h2>
+
+    <div id="quiz"></div>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        q: "What lights up your soul the most?",
+        a: [
+          { text: "Mystical wisdom, stars, and spiritual connection", score: {oracle: 3, moon: 2} },
+          { text: "Luxury, beauty, and creating an elegant life", score: {luxe: 3, queen: 2} },
+          { text: "Sensuality, dance, and feminine pleasure", score: {goddess: 4, muse: 2} },
+          { text: "Building power, success, and my own empire", score: {queen: 4} }
+        ]
+      },
+      {
+        q: "Choose your favorite sacred symbol",
+        a: [
+          { text: "Golden Crown or Chess Queen", score: {queen: 4} },
+          { text: "Crescent Moon & Stars", score: {oracle: 4} },
+          { text: "Blooming Rose or Pomegranate", score: {goddess: 4} },
+          { text: "Golden Lotus or Phoenix", score: {luxe: 3, goddess: 2} }
+        ]
+      },
+      {
+        q: "Your ideal self-care ritual is...",
+        a: [
+          { text: "Belly dancing or sensual movement", score: {muse: 4, goddess: 2} },
+          { text: "Tarot reading + journaling under moonlight", score: {oracle: 4} },
+          { text: "Luxury bath with oils, candles & music", score: {luxe: 3, goddess: 2} },
+          { text: "Planning my next big move while dressed elegantly", score: {queen: 4} }
+        ]
+      },
+      {
+        q: "What kind of energy do you want to radiate?",
+        a: [
+          { text: "Mysterious, intuitive & magical", score: {oracle: 4} },
+          { text: "Regal, powerful & graceful", score: {queen: 4} },
+          { text: "Radiant, sensual & abundant", score: {goddess: 4} },
+          { text: "Chic, elegant & inspiring", score: {luxe: 4, muse: 1} }
+        ]
+      },
+      {
+        q: "Pick your dream aesthetic",
+        a: [
+          { text: "Celestial & Mystical (stars, gold, deep purple)", score: {oracle: 3} },
+          { text: "Dark Romantic Luxury (black, gold, velvet)", score: {luxe: 3, queen: 2} },
+          { text: "Soft Golden Goddess (cream, rose, florals)", score: {goddess: 4} },
+          { text: "Empowered Queen (bold jewel tones + crowns)", score: {queen: 4} }
+        ]
+      }
+    ];
+
+    let scores = { goddess: 0, oracle: 0, queen: 0, luxe: 0, muse: 0 };
+    let currentQuestion = 0;
+
+    function renderQuestion() {
+      const quizDiv = document.getElementById('quiz');
+      quizDiv.innerHTML = `
+        <div class="question">
+          <h3 style="color:#ffd700;">Question ${currentQuestion + 1} of ${questions.length}</h3>
+          <p>${questions[currentQuestion].q}</p>
+          <div class="options"></div>
+        </div>
+      `;
+
+      const optionsDiv = quizDiv.querySelector('.options');
+      questions[currentQuestion].a.forEach(option => {
+        const btn = document.createElement('button');
+        btn.textContent = option.text;
+        btn.onclick = () => {
+          Object.keys(option.score).forEach(key => {
+            scores[key] = (scores[key] || 0) + option.score[key];
+          });
+          currentQuestion++;
+          if (currentQuestion < questions.length) {
+            renderQuestion();
+          } else {
+            showResult();
+          }
+        };
+        optionsDiv.appendChild(btn);
+      });
+    }
+
+    function showResult() {
+      document.getElementById('quiz').style.display = 'none';
+      const resultDiv = document.getElementById('result');
+      resultDiv.style.display = 'block';
+
+      let maxScore = 0;
+      let title = "Golden Goddess";
+      let symbol = "🌹";
+      let desc = "";
+      let img = "https://images.unsplash.com/photo-1610030469983-c8129e8c0f8f";
+
+      if (scores.queen > maxScore) { 
+        maxScore = scores.queen; 
+        title = "Regal Luxe Queen"; 
+        symbol = "♕"; 
+        desc = "You are a powerful, strategic, and elegant ruler. Your cutie mark is the Golden Chess Queen.";
+        img = "https://images.unsplash.com/photo-1582791694770-c6c3f7a5e3f3";
+      }
+      if (scores.oracle > maxScore) { 
+        maxScore = scores.oracle; 
+        title = "Celestial Oracle Priestess"; 
+        symbol = "🌙"; 
+        desc = "Mystical and deeply intuitive. Your cutie mark is the Crescent Moon surrounded by stars.";
+        img = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4";
+      }
+      if (scores.goddess > maxScore) { 
+        maxScore = scores.goddess; 
+        title = "Golden Rose Goddess"; 
+        symbol = "🌹"; 
+        desc = "Radiant, sensual, and abundant. Your cutie mark is the blooming Golden Rose.";
+        img = "https://images.unsplash.com/photo-1610030469983-c8129e8c0f8f";
+      }
+      if (scores.luxe > maxScore) { 
+        maxScore = scores.luxe; 
+        title = "Luxe Visionary Empress"; 
+        symbol = "✨"; 
+        desc = "You turn dreams into luxurious reality. Your cutie mark is the Golden Crown with jewels.";
+      }
+      if (scores.muse > maxScore) { 
+        maxScore = scores.muse; 
+        title = "Sensual Muse Dancer"; 
+        symbol = "💃"; 
+        desc = "Expressive, magnetic, and full of life. Your cutie mark is the Golden Serpent of dance.";
+      }
+
+      resultDiv.innerHTML = `
+        <h1>Your Cutie Mark Archetype</h1>
+        <div class="cutie-mark">${symbol}</div>
+        <h2 class="gold">${title}</h2>
+        <img src="${img}" class="result-image">
+        <p style="font-size:1.5em; line-height:1.6;">${desc}</p>
+        <p style="margin:25px 0; font-style:italic;">This perfectly reflects your Pinterest energy ✨</p>
+        <button onclick="location.reload()" style="padding:16px 45px; font-size:1.2em;">
+          Discover Again
+        </button>
+      `;
+    }
+
+    renderQuestion();
+  </script>
+</body>
+</html>
+
