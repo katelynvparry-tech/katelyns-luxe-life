@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Renewed • How to Be a Good Friend</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap');
+        
+        body { font-family: 'Inter', system_ui, sans-serif; }
+        .heading-font { font-family: 'Playfair Display', serif; }
+
+        .book-image {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .book-image:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
+    </style>
+</head>
+<body class="bg-zinc-50 text-zinc-800">
+
+    <!-- Header -->
+    <header class="bg-white border-b sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <!-- Renewed Logo -->
+                <img src="/attachments/image.png" alt="Renewed Logo" class="h-11 w-auto">
+            </div>
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+                <a href="#" class="hover:text-emerald-700 transition-colors">Books</a>
+                <a href="#" class="hover:text-emerald-700 transition-colors">Coaching</a>
+                <a href="#" class="hover:text-emerald-700 transition-colors">Workshops</a>
+                <a href="#" class="hover:text-emerald-700 transition-colors">Community</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-6 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+            <!-- Book Cover -->
+            <div class="flex justify-center lg:justify-end">
+                <div class="bg-white p-10 rounded-3xl shadow-xl">
+                    <img src="/attachments/3.JPG" 
+                         alt="How to Be a Good Friend" 
+                         class="book-image w-full max-w-lg rounded-2xl shadow-2xl">
+                </div>
+            </div>
+
+            <!-- Product Information -->
+            <div>
+                <div class="flex items-center gap-2 text-emerald-600 mb-4">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span class="uppercase tracking-widest text-sm font-medium">Self-Help • Friendship</span>
+                </div>
+
+                <h1 class="text-5xl lg:text-6xl heading-font font-bold leading-none text-zinc-900">
+                    How to Be a Good Friend
+                </h1>
+                <p class="text-2xl text-zinc-600 mt-3">
+                    Attracting &amp; Nurturing The Right People
+                </p>
+
+                <div class="mt-8 flex items-center gap-6">
+                    <div class="flex text-3xl text-amber-500">
+                        ★★★★☆
+                    </div>
+                    <div class="text-sm">
+                        <span class="font-semibold text-lg">4.8</span><br>
+                        <span class="text-zinc-500">237 reviews</span>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <span class="text-5xl font-bold">$19.99</span>
+                    <span class="ml-4 text-zinc-400 line-through">$27.99</span>
+                </div>
+
+                <p class="mt-6 text-zinc-600 leading-relaxed max-w-md">
+                    A practical guide for building emotionally intelligent, meaningful friendships that last.
+                </p>
+
+                <div class="mt-10 flex items-center gap-4">
+                    <div class="flex-1 bg-emerald-700 hover:bg-emerald-800 transition-all text-white font-semibold py-5 rounded-2xl text-center cursor-pointer text-lg"
+                         onclick="addToCart()">
+                        <i class="fa-solid fa-cart-plus mr-2"></i> ADD TO CART
+                    </div>
+                    <button onclick="addToWishlist()" 
+                            class="px-8 py-5 border-2 border-zinc-300 hover:border-emerald-600 rounded-2xl transition-colors">
+                        <i class="fa-solid fa-heart text-2xl"></i>
+                    </button>
+                </div>
+
+                <div class="mt-12 text-sm grid grid-cols-3 gap-4">
+                    <div>
+                        <p class="font-medium">Author</p>
+                        <p class="text-zinc-600">Elizabeth M. Bethel</p>
+                    </div>
+                    <div>
+                        <p class="font-medium">Pages</p>
+                        <p class="text-zinc-600">248</p>
+                    </div>
+                    <div>
+                        <p class="font-medium">Format</p>
+                        <p class="text-zinc-600">Paperback + eBook</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Simple Footer -->
+    <footer class="bg-zinc-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <img src="/attachments/image.png" alt="Renewed" class="h-12 mx-auto mb-4 opacity-80">
+            <p class="text-zinc-400">Heart and Mind Coaching • Transform Your Inner World</p>
+        </div>
+    </footer>
+
+    <script>
+        function addToCart() {
+            alert("✅ Book added to cart! Thank you for choosing Renewed.");
+        }
+        function addToWishlist() {
+            alert("❤️ Saved to wishlist");
+        }
+    </script>
+</body>
+</html>
+
