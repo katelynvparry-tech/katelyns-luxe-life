@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Katelyn's Luxe Essentials ♡ - Elevated Everyday Luxury</title>
+  <style>
+    :root {
+      --gold: #d4af37;
+      --rose: #e8a0b0;
+      --sage: #a8c4a8;
+      --lavender: #d8c0e0;
+      --cream: #f9f5f0;
+      --text: #6b5b4b;
+    }
+/* 1. Sleek Custom Scrollbar */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--cream); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }    
+    
+    body {
+      font-family: 'Georgia', serif;
+      background: var(--cream);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+/* 2. Sticky Glassmorphism Header */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(249, 245, 240, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-size: 0.9em;
+  }
+    h1 {
+      font-size: 3em;
+      margin: 40px 0 10px;
+      background: linear-gradient(to right, var(--gold), var(--rose));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    p.sub {
+      font-style: italic;
+      font-size: 1.4em;
+      color: #8b7a6b;
+      margin-bottom: 40px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      max-width: 1300px;
+      margin: auto;
+    }
+    .item {
+      background: white;
+      border-radius: 20px;
+      display: flex;           /* Becomes a flex container */
+      flex-direction: column;  /* Stacks content vertically */      
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      transition: 0.3s;
+      border-top: 6px solid var(--gold);
+    }
+    .item:hover {  transform: translateY(-10px);     
+     }
+
+    
+    .item img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      border-radius: 15px 15px 0 0;
+    }
+    .item h3 {
+      font-size: 1.4em;
+      min-height: 3em;
+      margin: 15px 0 10px;
+      color: var(--text);
+    }
+    .price {
+      font-size: 1.6em;
+      color: var(--rose);
+      font-weight: bold;
+      margin: 0 10px; /* Pushes the price and button to the bottom */
+    }
+    .btn {
+      background: linear-gradient(to right, var(--gold), var(--rose));
+      color: white;
+      padding: 15px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: bold;
+      display: block;
+      margin: 10px;
+      transition: 0.3s;
+    }
+    .btn:hover { transform: scale(1.05); }
+    .disc {
+      text-align: center;
+      padding: 50px;
+      color: #8b7a6b;
+      font-size: 1em;
+      font-style: italic;
+    }
+    .item:nth-child(4n+1) { border-top-color: var(--gold); }
+    .item:nth-child(4n+2) { border-top-color: var(--rose); }
+    .item:nth-child(4n+3) { border-top-color: var(--sage); }
+    .item:nth-child(4n+4) { border-top-color: var(--lavender); }
+    .item:nth-child(4n+5) { border-top-color: var(--gold); }
+    .item:nth-child(4n+6) { border-top-color: var(--rose); }
+    .item:nth-child(4n+7) { border-top-color: var(--sage); }
+    .item:nth-child(4n+8) { border-top-color: var(--lavender); } 
+  </style>
+</head>
+<body>
+<header>KATELYN'S LUXE ESSENTIALS</header>  
+  
+  <h1>Katelyn's Luxe Essentials ♡</h1>
+  <p class="sub">Curated must-haves for that elevated glow — all Prime, affordable, and absolutely gorgeous</p>
+  <div class="grid">
+    <!-- Item 1 -->
+    <div class="item">
+      <img src="https://m.media-amazon.com/images/I/81NgPDu-vJL._AC_SX679_.jpg" alt="Butterfly Curtain Lights">
+      <h3>Butterfly Curtain Lights</h3>
+      <div class="price">$19.99</div>
+      <a href="https://www.amazon.com/Butterfly-Curtain-Butterflies-Twinkle-Bedroom/dp/B0CQXPDGTF?tag=katesaesthe08-20" class="btn" target="_blank">Add to Cart ♡</a>
+    </div>
+
+Body 
+    <!-- Jetland Cabinet Hardware Handle Pull -->
+    <div class="item">
+      <img src="https://m.media-amazon.com/images/I/7159zG4x0LL._AC_SL1500_.jpg" alt="Jetland Cabinet Hardware Handle Pull">
+      <h3>Jetland Cabinet Hardware Handle Pull</h3>
+      <div class="price">$13.99</div>
+      <a href="https://amzn.to/4rQcwC1" class="btn" target="_blank">Add to Cart ♡</a>
+    </div>     
+
+         <!-- CTRL ALT DEL Motivational Wall Art -->
+    <div class="item">
+      <img src="https://m.media-amazon.com/images/I/615nBEgMDQL._AC_SL1500_.jpg" alt="CTRL ALT DEL Motivational Wall Art">
+      <h3>CTRL ALT DEL Motivational Wall Art</h3>
+      <div class="price">$9.99</div>
+      <a href="https://amzn.to/4t3RCAY" class="btn" target="_blank">Add to Cart ♡</a>
+    </div>   
+
+       <!-- Versace Palazzo Empire Collection Luxury Womens Watch Timepiece -->
+    <div class="item">
+      <img src="https://m.media-amazon.com/images/I/71IRqcq3OpL._AC_SY695_.jpg" alt="Versace Palazzo Empire Collection Luxury Womens Watch Timepiece">
+      <h3>Versace Palazzo Empire Collection Luxury Womens Watch Timepiece</h3>
+      <div class="price">$459.99</div>
+      <a href="https://amzn.to/4caPmBT" class="btn" target="_blank">Add to Cart ♡</a>
+    </div>   
+  </div>  
+  
+  <a href="https://katelynvparry-tech.github.io/katelyns-luxe-life/" class="back-btn">
+  ← Back to Katelyn's Luxe Life
+</a>  
+  <div class="disc">
+    ♡ All links are Amazon affiliate links (tag: katesaesthe08-20) — I earn a small commission at no cost to you. Thank you for supporting the luxe life!
+  </div>
+</body>
+</html>
+
