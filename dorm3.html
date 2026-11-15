@@ -5,6 +5,83 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Katelyn's Luxe Essentials ♡ - Elevated Everyday Luxury</title>
   <style>
+html {
+  scroll-behavior: smooth;
+}
+
+.top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(249, 245, 240, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+  padding: 12px 0 0;
+  text-align: center;
+}
+
+.brand {
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  font-size: 0.85em;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 15px 14px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.tabs a {
+  text-decoration: none;
+  color: var(--text);
+  font-size: 0.92em;
+  padding: 8px 16px;
+  border-radius: 50px;
+  background: white;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.tabs a:hover {
+  background: linear-gradient(to right, var(--gold), var(--rose));
+  color: white;
+  border-color: transparent;
+  transform: translateY(-2px);
+}
+
+.category {
+  scroll-margin-top: 110px;
+  max-width: 1300px;
+  margin: 0 auto 60px;
+  padding: 0 20px;
+  text-align: left;
+}
+
+.category h2 {
+  font-size: 1.7em;
+  color: var(--text);
+  border-bottom: 2px solid var(--gold);
+  padding-bottom: 10px;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 600px) {
+  .tabs a {
+    font-size: 0.82em;
+    padding: 7px 12px;
+  }
+  .category {
+    scroll-margin-top: 140px;
+  }
+}
     :root {
       --gold: #d4af37;
       --rose: #e8a0b0;
