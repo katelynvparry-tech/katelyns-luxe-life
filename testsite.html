@@ -2,622 +2,316 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>GirlGames ♟️💕</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chic Games Lounge | Katelyn's Luxe Life</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #ff9ece, #ff69b4);
-    color: #fff;
-    text-align: center;
-    padding: 20px;
-    min-height: 100vh;
+  :root {
+    --blush: #f8c8d8;
+    --rose: #e8a0b8;
+    --deep-rose: #c45c7a;
+    --cream: #fdf6f0;
+    --gold: #d4a574;
+    --gold-light: #e8c9a0;
+    --dark: #1a1218;
   }
-  h1 { font-size: 3.5rem; margin: 20px 0 10px; text-shadow: 0 3px 10px rgba(0,0,0,0.4); }
-  p.subtitle { font-size: 1.3rem; margin-bottom: 40px; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; max-width: 1200px; margin: auto; }
-  .card { background: #fff; color: #333; border-radius: 20px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: .3s; }
-  .card:hover { transform: scale(1.05); }
-  .card h3 { font-size: 1.7rem; color: #ff69b4; margin: 0 0 10px; }
-  .btn { background: #ff69b4; color: #fff; border: none; padding: 15px; border-radius: 50px; font-size: 1.2rem; cursor: pointer; width: 100%; margin-top: 10px; transition: .3s; }
-  .btn:hover { background: #ff1493; }
-  .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 999; }
-  .modal-content { background: #fff; color: #333; border-radius: 20px; padding: 30px; max-width: 90%; max-height: 90vh; overflow: auto; position: relative; text-align: center; }
-  .close { position: absolute; top: 10px; right: 20px; font-size: 2.8rem; color: #ff69b4; cursor: pointer; }
-  canvas { border: 4px solid #fff; border-radius: 15px; display: block; margin: 20px auto; }
-  .ttt-grid { display: grid; grid-template-columns: repeat(3, 100px); gap: 8px; margin: 20px auto; justify-content: center; }
-  .ttt-cell { width: 100px; height: 100px; background: #ffe4f0; border: 4px solid #ff69b4; border-radius: 15px; font-size: 3rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-  .bj-cards { font-size: 2.5rem; margin: 15px; min-height: 60px; }
-  #chessBoard { display: grid; grid-template-columns: repeat(8, 60px); grid-template-rows: repeat(8, 60px); border: 6px solid #ff69b4; border-radius: 15px; box-shadow: 0 0 20px rgba(0,0,0,0.4); margin: 20px auto; }
-  .chess-square { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 48px; user-select: none; cursor: pointer; }
-  .chess-light { background: #ffecd2; }
-  .chess-dark { background: #ff9ece; }
-  .chess-selected { box-shadow: 0 0 15px 8px #ffff00 inset; }
-  .chess-possible { background: rgba(144, 238, 144, 0.6) !important; }
-  .chess-capture { background: rgba(255, 99, 132, 0.6) !important; }
-  #chessStatus { font-size: 1.6rem; color: #ff69b4; margin: 15px 0; }
-  #chessThinking { font-style: italic; color: #ff1493; margin: 10px 0; }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Outfit', system-ui, sans-serif;
+    background: 
+      radial-gradient(ellipse 120% 80% at 20% 10%, rgba(232, 160, 184, 0.25) 0%, transparent 50%),
+      radial-gradient(ellipse 100% 60% at 80% 90%, rgba(196, 92, 122, 0.2) 0%, transparent 45%),
+      radial-gradient(ellipse 80% 50% at 50% 50%, rgba(212, 165, 116, 0.08) 0%, transparent 60%),
+      linear-gradient(165deg, #2a1a24 0%, #1a1218 40%, #120d12 100%);
+    color: var(--cream);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 50px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .back-link {
+    color: var(--gold-light);
+    text-decoration: none;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+    opacity: 0.85;
+    transition: opacity 0.2s;
+  }
+  .back-link:hover { opacity: 1; }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+  }
+  .nav-links a {
+    color: var(--blush);
+    text-decoration: none;
+    font-size: 0.88rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.8;
+    transition: all 0.2s;
+  }
+  .nav-links a:hover {
+    opacity: 1;
+    color: var(--gold-light);
+  }
+
+  .hero {
+    text-align: center;
+    margin-bottom: 55px;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.78rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 6vw, 4.2rem);
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 12px;
+    text-shadow: 0 4px 30px rgba(0,0,0,0.4);
+  }
+
+  h1 span {
+    color: var(--rose);
+  }
+
+  .hero-sub {
+    font-size: 1.15rem;
+    font-weight: 300;
+    color: rgba(253, 246, 240, 0.75);
+    max-width: 460px;
+    margin: 0 auto;
+  }
+
+  /* ===== GAME CARDS (matching your .item style) ===== */
+  .games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-bottom: 50px;
+  }
+
+  .item {
+    background: rgba(255, 250, 248, 0.94);
+    border-radius: 18px;
+    padding: 30px 24px 26px;
+    text-align: center;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.22);
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .item:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 20px 45px rgba(196, 92, 122, 0.22);
+  }
+
+  .game-icon {
+    font-size: 2.7rem;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .item h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #3a2a32;
+    margin-bottom: 6px;
+  }
+
+  .item p {
+    font-size: 0.9rem;
+    color: #7a5a66;
+    margin-bottom: 18px;
+  }
+
+  .item .btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #c45c7a, #a84868);
+    color: white;
+    padding: 11px 26px;
+    border-radius: 50px;
+    font-size: 0.92rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.25s;
+    box-shadow: 0 4px 14px rgba(196, 92, 122, 0.3);
+  }
+
+  .item .btn:hover {
+    background: linear-gradient(135deg, #d46a88, #b85474);
+    box-shadow: 0 6px 20px rgba(196, 92, 122, 0.4);
+  }
+
+  /* ===== EMPIRE STRIP ===== */
+  .empire-strip {
+    background: linear-gradient(135deg, rgba(253,246,240,0.08), rgba(232,160,184,0.12));
+    border: 1px solid rgba(232, 160, 184, 0.2);
+    border-radius: 18px;
+    padding: 28px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    backdrop-filter: blur(8px);
+  }
+
+  .empire-text h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.55rem;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 4px;
+  }
+
+  .empire-text p {
+    font-size: 0.92rem;
+    color: rgba(253,246,240,0.7);
+    font-weight: 300;
+  }
+
+  .empire-btn {
+    background: transparent;
+    border: 1.5px solid var(--gold);
+    color: var(--gold-light);
+    padding: 12px 26px;
+    border-radius: 50px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    transition: all 0.25s;
+  }
+
+  .empire-btn:hover {
+    background: var(--gold);
+    color: var(--dark);
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 60px;
+    font-size: 0.8rem;
+    color: rgba(253,246,240,0.4);
+    letter-spacing: 0.06em;
+  }
+
   @media (max-width: 600px) {
-    h1 { font-size: 2.5rem; }
-    #chessBoard { grid-template-columns: repeat(8, 45px); grid-template-rows: repeat(8, 45px); }
-    .chess-square { font-size: 36px; }
-    .ttt-grid { grid-template-columns: repeat(3, 80px); }
-    .ttt-cell { width: 80px; height: 80px; font-size: 2.5rem; }
+    .container { padding: 28px 16px 60px; }
+    .empire-strip { flex-direction: column; text-align: center; }
   }
 </style>
 </head>
 <body>
-  
-<div class="grid">
-    <div class="card"><a href="you-spot4.html">Luxe Search Engines </a><p>Songs,Videos,Inspo</p></div>
-  </div>
-
-  
-  
-<h1>GirlGames ♟️💕</h1>
-<p class="subtitle">All your fave games in one pink place!</p>
-
-<div class="grid">
-  <div class="card"><h3>♟️ Chess</h3><button class="btn" onclick="openM('chess')">Play vs AI</button></div>
-  <div class="card"><h3>✗ Tic-Tac-Toe</h3><button class="btn" onclick="openM('ttt')">Play</button></div>
-  <div class="card"><h3>🃏 Blackjack</h3><button class="btn" onclick="openM('bj')">Play 21</button></div>
-  <div class="card"><h3>🏌️ Golf Putt</h3><button class="btn" onclick="openM('golf')">Putt</button></div>
-  <div class="card"><h3>🔫 Shooting Range</h3><button class="btn" onclick="openM('shoot')">Shoot</button></div>
-</div>
-
-<!-- Chess Modal -->
-<div id="chess" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeM('chess')">&times;</span>
-    <h2 style="color:#ff69b4;">Chess vs AI ♟️</h2>
-    <p>You play as White – AI plays as Black</p>
-    <div id="chessBoard"></div>
-    <div id="chessStatus">White to move</div>
-    <div id="chessThinking"></div>
-    <button class="btn" onclick="resetChess()">New Game</button>
-  </div>
-</div>
-
-<!-- Other modals unchanged -->
-<div id="ttt" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeM('ttt')">&times;</span>
-    <h2>Tic-Tac-Toe</h2>
-    <div id="tttGrid" class="ttt-grid"></div>
-    <p id="tttStatus" style="font-size:1.5rem;color:#ff69b4;margin:20px">X goes first</p>
-    <button class="btn" onclick="resetTTT()">New Game</button>
-  </div>
-</div>
-
-<div id="bj" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeM('bj')">&times;</span>
-    <h2>Blackjack</h2>
-    <div class="bj-cards" id="dealerCards"></div><p>Dealer: <span id="dealerScore">?</span></p>
-    <div class="bj-cards" id="playerCards"></div><p>You: <span id="playerScore">0</span></p>
-    <div style="margin:20px">
-      <button class="btn" onclick="deal()">Deal</button>
-      <button class="btn" id="hitBtn" style="display:none" onclick="hit()">Hit</button>
-      <button class="btn" id="standBtn" style="display:none" onclick="stand()">Stand</button>
+  <div class="container">
+    <div class="top-bar">
+      <a href="https://katelynvparry-tech.github.io/katelyns-luxe-life/" class="back-link">← Katelyn's Luxe Life</a>
+      <nav class="nav-links">
+        <a href="luxe-media-hub.html">Music & Inspo</a>
+        <a href="https://katelynvparry-tech.github.io/katelyns-luxe-life/">Home</a>
+      </nav>
     </div>
-    <p id="bjmsg" style="font-size:1.5rem;color:#ff69b4"></p>
+
+    <header class="hero">
+      <div class="hero-eyebrow">Private Lounge</div>
+      <h1>Chic Games <span>Lounge</span></h1>
+      <p class="hero-sub">A soft, elevated space for your favorite games. Dim lights. Soft seats. Pure vibe.</p>
+    </header>
+
+    <div class="games-grid">
+
+      <!-- Chess -->
+      <div class="item">
+        <div class="game-icon">♟️</div>
+        <h3>Chess</h3>
+        <p>Play vs AI • Classic strategy</p>
+        <a href="chess.html" class="btn">Enter Table ♡</a>
+      </div>
+
+      <!-- Tic-Tac-Toe -->
+      <div class="item">
+        <div class="game-icon">✕</div>
+        <h3>Tic-Tac-Toe</h3>
+        <p>Quick rounds • Classic fun</p>
+        <a href="tic-tac-toe.html" class="btn">Play Now ♡</a>
+      </div>
+
+      <!-- Blackjack -->
+      <div class="item">
+        <div class="game-icon">🃏</div>
+        <h3>Blackjack</h3>
+        <p>21 • Feel the table</p>
+        <a href="blackjack.html" class="btn">Sit Down ♡</a>
+      </div>
+
+      <!-- Golf Putt -->
+      <div class="item">
+        <div class="game-icon">🏌️</div>
+        <h3>Golf Putt</h3>
+        <p>Precision & calm focus</p>
+        <a href="golf-putt.html" class="btn">Take a Shot ♡</a>
+      </div>
+
+      <!-- Shooting Range -->
+      <div class="item">
+        <div class="game-icon">🎯</div>
+        <h3>Shooting Range</h3>
+        <p>Quick aim practice</p>
+        <a href="shooting-range.html" class="btn">Enter Range ♡</a>
+      </div>
+
+    </div>
+
+    <div class="empire-strip">
+      <div class="empire-text">
+        <h2>Music & Inspiration</h2>
+        <p>Curated playlists, aesthetic searches & elevated vibes for the empire.</p>
+      </div>
+      <a href="luxe-media-hub.html" class="empire-btn">Open Media Hub →</a>
+    </div>
+
+    <footer>
+      Katelyn's Luxe Life · Class of 2028
+    </footer>
   </div>
-</div>
-
-<div id="golf" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeM('golf')">&times;</span>
-    <h2>Golf Putt</h2>
-    <canvas id="golfCanvas" width="450" height="300"></canvas>
-    <p id="golfmsg" style="font-size:1.4rem">Click & drag the ball → release to putt</p>
-  </div>
-</div>
-
-<div id="shoot" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeM('shoot')">&times;</span>
-    <h2>Shooting Range</h2>
-    <canvas id="shootCanvas" width="450" height="350" style="background:#87CEEB"></canvas>
-    <p id="shootmsg" style="font-size:1.4rem">Score: 0</p>
-  </div>
-</div>
-
-<script>
-// Modal controls
-function openM(id) {
-  document.getElementById(id).style.display = 'flex';
-  if (id === 'chess') resetChess();
-  if (id === 'ttt') startTTT();
-  if (id === 'bj') resetBJ();
-  if (id === 'golf') startGolf();
-  if (id === 'shoot') startShoot();
-}
-function closeM(id) { document.getElementById(id).style.display = 'none'; }
-window.onclick = e => { if (e.target.classList.contains('modal')) closeM(e.target.id); };
-
-/* ====== CUSTOM CHESS (your full code with pink styling) ====== */
-const pieces = {
-    K: '♔', Q: '♕', R: '♖', B: '♗', N: '♘', P: '♙',
-    k: '♚', q: '♛', r: '♜', b: '♝', n: '♞', p: '♟'
-};
-const pieceValues = { P: 100, N: 320, B: 330, R: 500, Q: 900, K: 20000 };
-const pst = {
-    P: [0,0,0,0,0,0,0,0, 50,50,50,50,50,50,50,50, 10,10,20,30,30,20,10,10, 5,5,10,25,25,10,5,5, 0,0,0,20,20,0,0,0, 5,-5,-10,0,0,-10,-5,5, 5,10,10,-20,-20,10,10,5, 0,0,0,0,0,0,0,0],
-    N: [-50,-40,-30,-30,-30,-30,-40,-50, -40,-20,0,0,0,0,-20,-40, -30,0,10,15,15,10,0,-30, -30,5,15,20,20,15,5,-30, -30,0,15,20,20,15,0,-30, -30,5,10,15,15,10,5,-30, -40,-20,0,5,5,0,-20,-40, -50,-40,-30,-30,-30,-30,-40,-50],
-};
-let board = [];
-let turn = 'w';
-let selected = null;
-let enPassant = null;
-let castling = { w: { k: true, q: true }, b: { k: true, q: true } };
-let aiThinking = false;
-
-function copyBoard(b) { return b.map(row => row.slice()); }
-
-function renderChessBoard() {
-    const boardEl = document.getElementById('chessBoard');
-    boardEl.innerHTML = '';
-    for (let row = 0; row < 8; row++) {
-        for (let col = 0; col < 8; col++) {
-            const square = document.createElement('div');
-            square.className = `chess-square ${(row + col) % 2 === 0 ? 'chess-light' : 'chess-dark'}`;
-            square.dataset.row = row;
-            square.dataset.col = col;
-            const piece = board[row][col];
-            if (piece) square.innerHTML = pieces[piece];
-            square.onclick = () => handleChessClick(row, col);
-            boardEl.appendChild(square);
-        }
-    }
-}
-
-function handleChessClick(row, col) {
-    if (aiThinking || turn !== 'w') return;
-    const piece = board[row][col];
-    const color = piece ? (piece === piece.toUpperCase() ? 'w' : 'b') : null;
-    if (selected) {
-        if (selected.row === row && selected.col === col) {
-            clearChessHighlights();
-            selected = null;
-            return;
-        }
-        if (isValidMove(selected.row, selected.col, row, col)) {
-            makeMove(selected.row, selected.col, row, col);
-            clearChessHighlights();
-            selected = null;
-            turn = 'b';
-            updateChessStatus();
-            if (!isGameOver()) aiMove();
-        } else {
-            clearChessHighlights();
-            selected = null;
-            if (color === 'w') selectPiece(row, col);
-        }
-    } else {
-        if (color === 'w') selectPiece(row, col);
-    }
-}
-
-function selectPiece(row, col) {
-    selected = { row, col };
-    highlightSelected(row, col);
-    highlightPossibleMoves(row, col);
-}
-
-function highlightSelected(row, col) {
-    document.querySelectorAll('.chess-square').forEach(sq => {
-        if (sq.dataset.row == row && sq.dataset.col == col) sq.classList.add('chess-selected');
-    });
-}
-
-function highlightPossibleMoves(row, col) {
-    for (let r = 0; r < 8; r++) {
-        for (let c = 0; c < 8; c++) {
-            if (isValidMove(row, col, r, c)) {
-                const sq = document.querySelector(`.chess-square[data-row="${r}"][data-col="${c}"]`);
-                if (board[r][c]) sq.classList.add('chess-capture');
-                else sq.classList.add('chess-possible');
-            }
-        }
-    }
-}
-
-function clearChessHighlights() {
-    document.querySelectorAll('.chess-square').forEach(sq => {
-        sq.classList.remove('chess-selected', 'chess-possible', 'chess-capture');
-    });
-}
-
-function makeMove(fromRow, fromCol, toRow, toCol, promo = null) {
-    const piece = board[fromRow][fromCol];
-    const color = getColor(piece);
-    if ((piece === 'P' && toRow === 0) || (piece === 'p' && toRow === 7)) {
-        board[toRow][toCol] = promo || (color === 'w' ? 'Q' : 'q');
-    } else {
-        board[toRow][toCol] = piece;
-    }
-    board[fromRow][fromCol] = null;
-
-    if (piece.toLowerCase() === 'k' && Math.abs(toCol - fromCol) === 2) {
-        const rookCol = toCol > fromCol ? 7 : 0;
-        const rookNewCol = toCol > fromCol ? 5 : 3;
-        board[fromRow][rookNewCol] = board[fromRow][rookCol];
-        board[fromRow][rookCol] = null;
-    }
-
-    if (enPassant && toRow === enPassant.row && toCol === enPassant.col) {
-        board[fromRow][toCol] = null;
-    }
-    enPassant = null;
-    if (piece.toLowerCase() === 'p' && Math.abs(fromRow - toRow) === 2) {
-        enPassant = { row: (fromRow + toRow)/2, col: fromCol };
-    }
-
-    if (piece.toLowerCase() === 'k') castling[color] = { k: false, q: false };
-    if (piece.toLowerCase() === 'r') {
-        if (fromCol === 0) castling[color].q = false;
-        if (fromCol === 7) castling[color].k = false;
-    }
-
-    renderChessBoard();
-}
-
-function getColor(p) { return p === p.toUpperCase() ? 'w' : 'b'; }
-
-function isValidMove(fromRow, fromCol, toRow, toCol) {
-    const piece = board[fromRow][fromCol];
-    if (!piece) return false;
-    const target = board[toRow][toCol];
-    if (target && getColor(piece) === getColor(target)) return false;
-    const dr = toRow - fromRow;
-    const dc = toCol - fromCol;
-    const absDr = Math.abs(dr);
-    const absDc = Math.abs(dc);
-    switch (piece.toLowerCase()) {
-        case 'p':
-            const dir = piece === 'P' ? -1 : 1;
-            const startRow = piece === 'P' ? 6 : 1;
-            if (dc === 0 && !target) {
-                if (dr === dir) return true;
-                if (fromRow === startRow && dr === 2*dir && !board[fromRow + dir][fromCol]) return true;
-            }
-            if (Math.abs(dc) === 1 && dr === dir && (target || (enPassant && toRow === enPassant.row && toCol === enPassant.col))) return true;
-            return false;
-        case 'r':
-            if (dr !== 0 && dc !== 0) return false;
-            return isPathClear(fromRow, fromCol, toRow, toCol);
-        case 'n':
-            return (absDr === 2 && absDc === 1) || (absDr === 1 && absDc === 2);
-        case 'b':
-            if (absDr !== absDc) return false;
-            return isPathClear(fromRow, fromCol, toRow, toCol);
-        case 'q':
-            if (absDr !== absDc && dr !== 0 && dc !== 0) return false;
-            return isPathClear(fromRow, fromCol, toRow, toCol);
-        case 'k':
-            if (absDr <= 1 && absDc <= 1) return true;
-            if (dr === 0 && absDc === 2 && fromCol === 4 && fromRow === (piece === 'K' ? 7 : 0)) {
-                const side = dc > 0 ? 'k' : 'q';
-                if (!castling[getColor(piece)][side]) return false;
-                if (isInCheck(getColor(piece))) return false;
-                const rookCol = dc > 0 ? 7 : 0;
-                if (!board[fromRow][rookCol] || board[fromRow][rookCol].toLowerCase() !== 'r') return false;
-                return isPathClear(fromRow, fromCol, fromRow, dc > 0 ? 6 : 2) && !wouldBeInCheckAfterCastling(fromRow, fromCol, toCol);
-            }
-            return false;
-    }
-    return false;
-}
-
-function isPathClear(fr, fc, tr, tc) {
-    const dr = Math.sign(tr - fr);
-    const dc = Math.sign(tc - fc);
-    let r = fr + dr;
-    let c = fc + dc;
-    while (r !== tr || c !== tc) {
-        if (board[r][c]) return false;
-        r += dr;
-        c += dc;
-    }
-    return true;
-}
-
-function wouldBeInCheckAfterCastling(row, kingCol, toCol) {
-    const passCol = toCol > kingCol ? 5 : 3;
-    return isSquareAttacked(row, kingCol, getColor(board[row][kingCol] === 'K' ? 'w' : 'b')) ||
-           isSquareAttacked(row, passCol, getColor(board[row][kingCol] === 'K' ? 'w' : 'b')) ||
-           isSquareAttacked(row, toCol, getColor(board[row][kingCol] === 'K' ? 'w' : 'b'));
-}
-
-function isSquareAttacked(row, col, color) {
-    for (let r = 0; r < 8; r++) {
-        for (let c = 0; c < 8; c++) {
-            const p = board[r][c];
-            if (p && getColor(p) !== color && isValidMove(r, c, row, col)) return true;
-        }
-    }
-    return false;
-}
-
-function isInCheck(color) {
-    let kingRow, kingCol;
-    for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
-        const p = board[r][c];
-        if (p && p.toLowerCase() === 'k' && getColor(p) === color) { kingRow = r; kingCol = c; }
-    }
-    return isSquareAttacked(kingRow, kingCol, color);
-}
-
-function generateMoves(color) {
-    const moves = [];
-    for (let fr = 0; fr < 8; fr++) {
-        for (let fc = 0; fc < 8; fc++) {
-            const p = board[fr][fc];
-            if (p && getColor(p) === color) {
-                for (let tr = 0; tr < 8; tr++) {
-                    for (let tc = 0; tc < 8; tc++) {
-                        if (isValidMove(fr, fc, tr, tc)) {
-                            const backupBoard = copyBoard(board);
-                            const backupEnPassant = enPassant;
-                            const backupCastling = JSON.parse(JSON.stringify(castling));
-                            makeMove(fr, fc, tr, tc);
-                            const inCheck = isInCheck(color);
-                            board = backupBoard;
-                            enPassant = backupEnPassant;
-                            castling = backupCastling;
-                            if (!inCheck) moves.push({fromRow: fr, fromCol: fc, toRow: tr, toCol: tc});
-                        }
-                    }
-                }
-            }
-        }
-    }
-    return moves;
-}
-
-function evaluate() {
-    let score = 0;
-    for (let r = 0; r < 8; r++) {
-        for (let c = 0; c < 8; c++) {
-            const p = board[r][c];
-            if (p) {
-                const val = pieceValues[p.toUpperCase()];
-                const pstVal = (pst[p.toUpperCase()] ? pst[p.toUpperCase()][r*8 + c] : 0);
-                score += (getColor(p) === 'w' ? val + pstVal : -(val + pstVal));
-            }
-        }
-    }
-    return score;
-}
-
-function minimax(depth, alpha, beta, maximizing) {
-    if (depth === 0) return evaluate();
-    const color = maximizing ? 'b' : 'w';
-    const moves = generateMoves(color);
-    if (moves.length === 0) {
-        if (isInCheck(color)) return maximizing ? 999999 : -999999;
-        return 0;
-    }
-    let bestMove = null;
-    let bestEval = maximizing ? -Infinity : Infinity;
-    for (const move of moves) {
-        const backupBoard = copyBoard(board);
-        const backupEnPassant = enPassant;
-        const backupCastling = JSON.parse(JSON.stringify(castling));
-        makeMove(move.fromRow, move.fromCol, move.toRow, move.toCol);
-        const eval = minimax(depth - 1, alpha, beta, !maximizing);
-        board = backupBoard;
-        enPassant = backupEnPassant;
-        castling = backupCastling;
-        if (maximizing && eval > bestEval) { bestEval = eval; bestMove = move; }
-        else if (!maximizing && eval < bestEval) { bestEval = eval; bestMove = move; }
-        if (maximizing) alpha = Math.max(alpha, eval);
-        else beta = Math.min(beta, eval);
-        if (beta <= alpha) break;
-    }
-    if (depth === 3) return { eval: bestEval, move: bestMove };
-    return bestEval;
-}
-
-function aiMove() {
-    aiThinking = true;
-    document.getElementById('chessThinking').innerText = 'AI thinking deeply... ♡';
-    setTimeout(() => {
-        const result = minimax(3, -Infinity, Infinity, true);
-        if (result.move) {
-            makeMove(result.move.fromRow, result.move.fromCol, result.move.toRow, result.move.toCol, 'q'); // always promote to queen
-            turn = 'w';
-            updateChessStatus();
-        }
-        aiThinking = false;
-        document.getElementById('chessThinking').innerText = '';
-        if (isGameOver()) updateChessStatus();
-    }, 100);
-}
-
-function isGameOver() {
-    const moves = generateMoves(turn);
-    return moves.length === 0;
-}
-
-function updateChessStatus() {
-    let status = `${turn === 'w' ? 'White' : 'Black'} to move`;
-    if (isInCheck(turn)) status += ' (in check)';
-    if (isGameOver()) {
-        status = isInCheck(turn) ? `${turn === 'w' ? 'Black' : 'White'} wins! Checkmate! 🎉` : 'Draw - Stalemate.';
-    }
-    document.getElementById('chessStatus').innerText = status;
-}
-
-function resetChess() {
-    board = [
-        ['r','n','b','q','k','b','n','r'],
-        ['p','p','p','p','p','p','p','p'],
-        [null,null,null,null,null,null,null,null],
-        [null,null,null,null,null,null,null,null],
-        [null,null,null,null,null,null,null,null],
-        [null,null,null,null,null,null,null,null],
-        ['P','P','P','P','P','P','P','P'],
-        ['R','N','B','Q','K','B','N','R']
-    ];
-    turn = 'w';
-    selected = null;
-    enPassant = null;
-    castling = { w: { k: true, q: true }, b: { k: true, q: true } };
-    aiThinking = false;
-    document.getElementById('chessThinking').innerText = '';
-    renderChessBoard();
-    updateChessStatus();
-}
-
-/* ====== BLACKJACK (fixed and working) ====== */
-let deck = [], player = [], dealer = [];
-function resetBJ() {
-    deck = []; player = []; dealer = [];
-    const suits = ['♥','♦','♣','♠'], ranks = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
-    for (const s of suits) for (const r of ranks) deck.push(r + s);
-    for (let i = deck.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [deck[i], deck[j]] = [deck[j], deck[i]];
-    }
-    document.getElementById('dealerCards').innerHTML = '';
-    document.getElementById('playerCards').innerHTML = '';
-    document.getElementById('dealerScore').textContent = '?';
-    document.getElementById('playerScore').textContent = '0';
-    document.getElementById('bjmsg').textContent = '';
-    document.getElementById('hitBtn').style.display = 'none';
-    document.getElementById('standBtn').style.display = 'none';
-}
-function deal() {
-    player = [deck.pop(), deck.pop()];
-    dealer = [deck.pop(), deck.pop()];
-    showCards();
-    document.getElementById('hitBtn').style.display = 'inline';
-    document.getElementById('standBtn').style.display = 'inline';
-    if (calc(player) === 21) { document.getElementById('bjmsg').textContent = 'Blackjack! You win! ♡'; endBJ(); }
-}
-function showCards(fullDealer = false) {
-    document.getElementById('playerCards').innerHTML = player.join(' ');
-    document.getElementById('playerScore').textContent = calc(player);
-    const d = fullDealer ? dealer : [dealer[0], '🂠'];
-    document.getElementById('dealerCards').innerHTML = d.join(' ');
-    document.getElementById('dealerScore').textContent = fullDealer ? calc(dealer) : '?';
-}
-function calc(hand) {
-    let score = 0, aces = 0;
-    for (const c of hand) {
-        const v = c.slice(0, -1);
-        if (v === 'A') { aces++; score += 11; }
-        else if (['J','Q','K'].includes(v)) score += 10;
-        else score += parseInt(v);
-    }
-    while (score > 21 && aces--) score -= 10;
-    return score;
-}
-function hit() {
-    player.push(deck.pop());
-    showCards();
-    if (calc(player) > 21) { document.getElementById('bjmsg').textContent = 'Bust! Dealer wins'; endBJ(); }
-}
-function stand() {
-    while (calc(dealer) < 17) dealer.push(deck.pop());
-    showCards(true);
-    const p = calc(player), d = calc(dealer);
-    let msg = p > 21 ? 'Bust! Dealer wins' :
-              d > 21 || p > d ? 'You win! ♡' :
-              p < d ? 'Dealer wins' : 'Push!';
-    document.getElementById('bjmsg').textContent = msg;
-    endBJ();
-}
-function endBJ() {
-    document.getElementById('hitBtn').style.display = 'none';
-    document.getElementById('standBtn').style.display = 'none';
-}
-
-/* ====== TIC-TAC-TOE ====== */
-let ttt = Array(9).fill(''), current = 'X';
-function startTTT() {
-    const grid = document.getElementById('tttGrid');
-    grid.innerHTML = '';
-    for (let i = 0; i < 9; i++) {
-        const cell = document.createElement('div');
-        cell.className = 'ttt-cell';
-        cell.onclick = () => playTTT(i);
-        grid.appendChild(cell);
-    }
-    document.getElementById('tttStatus').textContent = "X goes first";
-}
-function playTTT(i) {
-    if (ttt[i] || checkWin()) return;
-    ttt[i] = current;
-    document.querySelectorAll('.ttt-cell')[i].textContent = current;
-    if (checkWin()) document.getElementById('tttStatus').textContent = current + ' wins! ♡';
-    else if (ttt.every(c => c)) document.getElementById('tttStatus').textContent = 'Draw!';
-    else {
-        current = current === 'X' ? 'O' : 'X';
-        document.getElementById('tttStatus').textContent = current + "'s turn";
-    }
-}
-function checkWin() {
-    const lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-    return lines.some(l => l.every(i => ttt[i] === current));
-}
-function resetTTT() { ttt.fill(''); current = 'X'; startTTT(); }
-
-/* ====== GOLF & SHOOTING (unchanged, working) ====== */
-let golfCtx, ball = {x:60,y:150,r:10}, hole = {x:380,y:150,r:15}, vx=0, vy=0, strokes=0, dragging=false;
-function startGolf() {
-    const canvas = document.getElementById('golfCanvas');
-    golfCtx = canvas.getContext('2d');
-    ball = {x:60,y:150,r:10}; vx=0; vy=0; strokes=0; dragging=false;
-    document.getElementById('golfmsg').textContent = 'Click & drag ball → release to putt';
-    canvas.onmousedown = e => { const r = canvas.getBoundingClientRect(); if (Math.hypot(e.clientX-r.left-ball.x, e.clientY-r.top-ball.y) < 30) dragging = true; };
-    canvas.onmousemove = e => { if (dragging) { const r = canvas.getBoundingClientRect(); ball.x = e.clientX - r.left; ball.y = e.clientY - r.top; } };
-    canvas.onmouseup = e => { if (dragging) { const r = canvas.getBoundingClientRect(); vx = (60 - (e.clientX - r.left)) / 12; vy = (150 - (e.clientY - r.top)) / 12; strokes++; dragging = false; document.getElementById('golfmsg').textContent = `Strokes: ${strokes}`; } };
-    requestAnimationFrame(golfLoop);
-}
-function golfLoop() {
-    golfCtx.clearRect(0,0,450,300);
-    golfCtx.fillStyle = '#228B22'; golfCtx.fillRect(0,0,450,300);
-    golfCtx.fillStyle = '#000'; golfCtx.beginPath(); golfCtx.arc(hole.x, hole.y, hole.r, 0, Math.PI*2); golfCtx.fill();
-    golfCtx.fillStyle = '#fff'; golfCtx.beginPath(); golfCtx.arc(ball.x, ball.y, ball.r, 0, Math.PI*2); golfCtx.fill();
-    ball.x += vx; ball.y += vy; vx *= 0.97; vy *= 0.97;
-    if (Math.hypot(ball.x - hole.x, ball.y - hole.y) < hole.r + ball.r) { alert(`Hole in ${strokes} strokes! 🎉`); startGolf(); }
-    requestAnimationFrame(golfLoop);
-}
-
-let shootCtx, score = 0, targets = [];
-function startShoot() {
-    const canvas = document.getElementById('shootCanvas');
-    shootCtx = canvas.getContext('2d');
-    score = 0; targets = [];
-    document.getElementById('shootmsg').textContent = 'Score: 0';
-    setInterval(() => targets.push({x: Math.random()*400 + 25, y: Math.random()*300 + 25, r: 20 + Math.random()*20}), 1200);
-    canvas.onclick = e => {
-        const r = canvas.getBoundingClientRect();
-        const x = e.clientX - r.left, y = e.clientY - r.top;
-        targets = targets.filter(t => {
-            if (Math.hypot(x - t.x, y - t.y) < t.r) { score++; document.getElementById('shootmsg').textContent = `Score: ${score}`; return false; }
-            return true;
-        });
-    };
-    requestAnimationFrame(shootLoop);
-}
-function shootLoop() {
-    shootCtx.clearRect(0,0,450,350);
-    shootCtx.fillStyle = '#87CEEB'; shootCtx.fillRect(0,0,450,350);
-    targets.forEach(t => {
-        shootCtx.fillStyle = '#ff1744';
-        shootCtx.beginPath(); shootCtx.arc(t.x, t.y, t.r, 0, Math.PI*2); shootCtx.fill();
-    });
-    requestAnimationFrame(shootLoop);
-} 
-  
-  <a href="https://katelynvparry-tech.github.io/katelyns-luxe-life/" class="back-btn">
-  ← Back to Katelyn's Luxe Life
-</a>
-</script>
 </body>
 </html>
