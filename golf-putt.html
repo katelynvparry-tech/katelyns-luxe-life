@@ -1,134 +1,412 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Golf Putt | Chic Games Lounge</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Outfit:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+
 <style>
-  :root { --rose:#e8a0b8; --gold:#d4a574; --cream:#fdf6f0; }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    font-family: 'Outfit', system-ui, sans-serif;
-    background: linear-gradient(165deg, #2a1a24 0%, #1a1218 50%, #120d12 100%);
-    color: var(--cream);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 28px 16px 50px;
-  }
-  .top { width:100%; max-width:500px; margin-bottom:20px; }
-  .back { color: var(--gold); text-decoration:none; font-size:0.9rem; opacity:0.85; }
-  .back:hover { opacity:1; }
-  h1 { font-family:'Cormorant Garamond',serif; font-size:2.4rem; text-align:center; margin-bottom:6px; }
-  .sub { text-align:center; color:rgba(253,246,240,0.65); margin-bottom:24px; font-size:0.95rem; }
-  canvas {
-    border-radius: 16px;
-    box-shadow: 0 12px 36px rgba(0,0,0,0.35);
-    max-width: 100%;
-    background: #1a5c2e;
-  }
-  #golfmsg {
-    margin-top: 18px;
-    font-size: 1.1rem;
-    color: var(--rose);
-    text-align: center;
-  }
-  .hint { font-size:0.85rem; color:rgba(253,246,240,0.5); margin-top:8px; text-align:center; }
+:root {
+  --rose:#e8a0b8;
+  --gold:#d4a574;
+  --cream:#fdf6f0;
+}
+* {margin:0;padding:0;box-sizing:border-box}
+body {
+  font-family:'Outfit',sans-serif;
+  background:linear-gradient(165deg,#2a1a24,#1a1218 55%,#120d12);
+  color:var(--cream);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:25px 14px 45px;
+}
+.top {width:100%;max-width:600px;margin-bottom:15px}
+.back {color:var(--gold);text-decoration:none}
+h1 {
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.8rem;text-align:center;
+}
+.sub {
+  text-align:center;
+  color:#d8c5ca;
+  margin-bottom:20px;
+}
+.game {
+  width:100%;max-width:600px;
+}
+.stats {
+  display:flex;justify-content:space-between;
+  gap:10px;margin-bottom:12px;
+}
+.stat {
+  flex:1;text-align:center;
+  background:#35232f;
+  border:1px solid #70505e;
+  border-radius:12px;padding:10px 5px;
+}
+.stat small {
+  display:block;color:var(--gold);
+  font-size:.72rem;text-transform:uppercase;
+}
+.stat strong {font-size:1.2rem}
+.canvas-wrap {
+  position:relative;
+  width:100%;
+  border-radius:18px;
+  overflow:hidden;
+  border:2px solid var(--gold);
+  box-shadow:0 12px 40px #0008;
+}
+canvas {
+  display:block;width:100%;height:auto;
+  touch-action:none;
+  cursor:crosshair;
+}
+#message {
+  text-align:center;color:var(--rose);
+  margin:16px 0 8px;font-size:1.05rem;
+  min-height:25px;
+}
+.hint {
+  text-align:center;font-size:.82rem;
+  color:#b9a5ad;margin-bottom:16px;
+}
+.power-wrap {
+  background:#35232f;border-radius:20px;
+  height:12px;overflow:hidden;
+  border:1px solid #765467;
+}
+#power {
+  height:100%;width:0%;
+  background:linear-gradient(90deg,#e8a0b8,#d4a574);
+  transition:width .04s;
+}
+.power-label {
+  display:flex;justify-content:space-between;
+  font-size:.78rem;color:#cbb8bf;
+  margin:8px 2px 18px;
+}
+button {
+  background:linear-gradient(135deg,#e8a0b8,#d4a574);
+  border:none;border-radius:25px;
+  padding:12px 26px;
+  font-family:inherit;font-weight:600;
+  color:#271722;cursor:pointer;
+  font-size:.95rem;
+}
+button:hover {filter:brightness(1.1)}
+.buttons {display:flex;justify-content:center;gap:12px}
 </style>
 </head>
+
 <body>
-  <div class="top">
-    <a href="chic-games-lounge.html" class="back">← Back to Lounge</a>
+<div class="top">
+  <a class="back" href="chic-games-lounge.html">← Back to Lounge</a>
+</div>
+
+<h1>Golf Putt</h1>
+<p class="sub">A little luxury on the green ✨</p>
+
+<div class="game">
+  <div class="stats">
+    <div class="stat"><small>Strokes</small><strong id="strokes">0</strong></div>
+    <div class="stat"><small>Hole</small><strong>1</strong></div>
+    <div class="stat"><small>Par</small><strong>2</strong></div>
   </div>
-  <h1>Golf Putt</h1>
-  <p class="sub">Click & drag the ball, then release to putt</p>
-  <canvas id="golfCanvas" width="450" height="300"></canvas>
-  <p id="golfmsg">Click & drag the ball → release to putt</p>
-  <p class="hint">Aim for the hole. Soft touches work best.</p>
+
+  <div class="canvas-wrap">
+    <canvas id="golfCanvas" width="600" height="400"></canvas>
+  </div>
+
+  <p id="message">Drag backward from the ball to aim!</p>
+  <p class="hint">Pull back to aim and build power. Release to putt.</p>
+
+  <div class="power-wrap"><div id="power"></div></div>
+  <div class="power-label">
+    <span>PUTTING POWER</span>
+    <span id="powerText">0%</span>
+  </div>
+
+  <div class="buttons">
+    <button onclick="resetGame()">↻ Restart Hole</button>
+  </div>
+</div>
 
 <script>
-  let golfCtx, ball = {x:60,y:150,r:10}, hole = {x:380,y:150,r:15}, vx=0, vy=0, strokes=0, dragging=false;
-  function startGolf() {
-    const canvas = document.getElementById('golfCanvas');
-    golfCtx = canvas.getContext('2d');
-    ball = {x:60,y:150,r:10}; vx=0; vy=0; strokes=0; dragging=false;
-    document.getElementById('golfmsg').textContent = 'Click & drag ball → release to putt';
-    canvas.onmousedown = e => {
-      const r = canvas.getBoundingClientRect();
-      if (Math.hypot(e.clientX-r.left-ball.x, e.clientY-r.top-ball.y) < 30) dragging = true;
-    };
-    canvas.onmousemove = e => {
-      if (dragging) {
-        const r = canvas.getBoundingClientRect();
-        ball.x = e.clientX - r.left;
-        ball.y = e.clientY - r.top;
-      }
-    };
-    canvas.onmouseup = e => {
-      if (dragging) {
-        const r = canvas.getBoundingClientRect();
-        vx = (60 - (e.clientX - r.left)) / 12;
-        vy = (150 - (e.clientY - r.top)) / 12;
-        strokes++;
-        dragging = false;
-        document.getElementById('golfmsg').textContent = `Strokes: ${strokes}`;
-      }
-    };
-    // Touch support
-    canvas.ontouchstart = e => {
-      e.preventDefault();
-      const t = e.touches[0];
-      const r = canvas.getBoundingClientRect();
-      if (Math.hypot(t.clientX-r.left-ball.x, t.clientY-r.top-ball.y) < 35) dragging = true;
-    };
-    canvas.ontouchmove = e => {
-      e.preventDefault();
-      if (dragging) {
-        const t = e.touches[0];
-        const r = canvas.getBoundingClientRect();
-        ball.x = t.clientX - r.left;
-        ball.y = t.clientY - r.top;
-      }
-    };
-    canvas.ontouchend = e => {
-      if (dragging) {
-        vx = (60 - ball.x) / 12;
-        vy = (150 - ball.y) / 12;
-        strokes++;
-        dragging = false;
-        document.getElementById('golfmsg').textContent = `Strokes: ${strokes}`;
-      }
-    };
-    requestAnimationFrame(golfLoop);
-  }
-  function golfLoop() {
-    golfCtx.clearRect(0,0,450,300);
-    golfCtx.fillStyle = '#228B22';
-    golfCtx.fillRect(0,0,450,300);
-    golfCtx.fillStyle = '#0d2e14';
-    golfCtx.beginPath(); golfCtx.arc(hole.x, hole.y, hole.r, 0, Math.PI*2); golfCtx.fill();
-    golfCtx.fillStyle = '#fff';
-    golfCtx.beginPath(); golfCtx.arc(ball.x, ball.y, ball.r, 0, Math.PI*2); golfCtx.fill();
-    golfCtx.fillStyle = 'rgba(0,0,0,0.15)';
-    golfCtx.beginPath(); golfCtx.ellipse(ball.x+2, ball.y+4, ball.r*0.9, ball.r*0.4, 0, 0, Math.PI*2); golfCtx.fill();
+const canvas = document.getElementById("golfCanvas");
+const ctx = canvas.getContext("2d");
 
-    ball.x += vx; ball.y += vy;
-    vx *= 0.97; vy *= 0.97;
-    if (Math.hypot(ball.x - hole.x, ball.y - hole.y) < hole.r + ball.r - 2) {
-      document.getElementById('golfmsg').textContent = `Hole in ${strokes}! 🎉`;
-      setTimeout(startGolf, 1400);
-      return;
-    }
-    if (ball.x < 10) { ball.x = 10; vx *= -0.5; }
-    if (ball.x > 440) { ball.x = 440; vx *= -0.5; }
-    if (ball.y < 10) { ball.y = 10; vy *= -0.5; }
-    if (ball.y > 290) { ball.y = 290; vy *= -0.5; }
-    requestAnimationFrame(golfLoop);
+const W=600,H=400;
+let ball={x:85,y:200,r:11};
+let hole={x:510,y:200,r:17};
+let vx=0,vy=0;
+let dragging=false;
+let moving=false;
+let strokes=0;
+let sunk=false;
+let aim={x:0,y:0};
+let lastTime=0;
+
+const sand = {x:340,y:95,w:100,h:75};
+const water = {x:280,y:280,rx:100,ry:37};
+
+function resetGame(){
+  ball={x:85,y:200,r:11};
+  vx=vy=0;
+  strokes=0;
+  dragging=moving=sunk=false;
+  document.getElementById("strokes").textContent=0;
+  document.getElementById("message").textContent=
+    "Drag backward from the ball to aim!";
+  updatePower(0);
+  draw();
+}
+
+function updatePower(p){
+  let pct=Math.round(p);
+  document.getElementById("power").style.width=pct+"%";
+  document.getElementById("powerText").textContent=pct+"%";
+}
+
+function pointerPosition(e){
+  const r=canvas.getBoundingClientRect();
+  return {
+    x:(e.clientX-r.left)*W/r.width,
+    y:(e.clientY-r.top)*H/r.height
+  };
+}
+
+canvas.addEventListener("pointerdown",e=>{
+  if(moving||sunk)return;
+  const p=pointerPosition(e);
+  if(Math.hypot(p.x-ball.x,p.y-ball.y)<35){
+    dragging=true;
+    aim=p;
+    canvas.setPointerCapture(e.pointerId);
+    document.getElementById("message").textContent=
+      "Pull back to build your power!";
   }
-  startGolf();
+});
+
+canvas.addEventListener("pointermove",e=>{
+  if(!dragging)return;
+  aim=pointerPosition(e);
+  let dx=ball.x-aim.x;
+  let dy=ball.y-aim.y;
+  let power=Math.min(100,Math.hypot(dx,dy)/1.8);
+  updatePower(power);
+  draw();
+});
+
+canvas.addEventListener("pointerup",()=>{
+  if(!dragging)return;
+  dragging=false;
+  let dx=ball.x-aim.x;
+  let dy=ball.y-aim.y;
+  let distance=Math.hypot(dx,dy);
+  if(distance>5){
+    let force=Math.min(distance,140)*0.105;
+    vx=(dx/distance)*force;
+    vy=(dy/distance)*force;
+    strokes++;
+    moving=true;
+    document.getElementById("strokes").textContent=strokes;
+    document.getElementById("message").textContent="Nice putt! ⛳";
+    updatePower(0);
+  }
+});
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+
+  // Deep green course
+  let grass=ctx.createLinearGradient(0,0,W,H);
+  grass.addColorStop(0,"#267a3d");
+  grass.addColorStop(1,"#12542b");
+  ctx.fillStyle=grass;
+  ctx.fillRect(0,0,W,H);
+
+  // Striped grass
+  ctx.save();
+  ctx.globalAlpha=.12;
+  for(let x=0;x<W;x+=75){
+    ctx.fillStyle="#b9e7a0";
+    ctx.fillRect(x,0,36,H);
+  }
+  ctx.restore();
+
+  // Course border
+  ctx.strokeStyle="#d4a574";
+  ctx.lineWidth=8;
+  ctx.strokeRect(5,5,W-10,H-10);
+
+  // Sand bunker
+  ctx.fillStyle="#e6c995";
+  ctx.beginPath();
+  ctx.ellipse(sand.x,sand.y,sand.w/2,sand.h/2,-.2,0,Math.PI*2);
+  ctx.fill();
+  ctx.strokeStyle="#f7e2b8";
+  ctx.lineWidth=3;
+  ctx.stroke();
+
+  // Water hazard
+  ctx.fillStyle="#4cabc0";
+  ctx.beginPath();
+  ctx.ellipse(water.x,water.y,water.rx,water.ry,0,0,Math.PI*2);
+  ctx.fill();
+  ctx.strokeStyle="#b8e9ed";
+  ctx.lineWidth=3;
+  ctx.stroke();
+
+  // Water shine
+  ctx.strokeStyle="#d4f6f3";
+  ctx.lineWidth=2;
+  ctx.beginPath();
+  ctx.moveTo(220,270);ctx.quadraticCurveTo(270,260,310,274);
+  ctx.stroke();
+
+  // Flower decorations
+  function flower(x,y){
+    for(let i=0;i<5;i++){
+      let a=i*Math.PI*2/5;
+      ctx.fillStyle="#f4a5c1";
+      ctx.beginPath();
+      ctx.arc(x+Math.cos(a)*7,y+Math.sin(a)*7,5,0,Math.PI*2);
+      ctx.fill();
+    }
+    ctx.fillStyle="#f8d77b";
+    ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fill();
+  }
+  [[35,40],[55,350],[550,45],[560,350],
+   [175,65],[185,350],[430,345],[420,45]].forEach(p=>flower(...p));
+
+  // Decorative fairway markings
+  ctx.strokeStyle="rgba(255,255,255,.18)";
+  ctx.lineWidth=2;
+  ctx.setLineDash([8,10]);
+  ctx.beginPath();ctx.moveTo(85,200);ctx.lineTo(510,200);ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Hole and flag
+  ctx.fillStyle="#071c11";
+  ctx.beginPath();
+  ctx.arc(hole.x,hole.y,hole.r,0,Math.PI*2);
+  ctx.fill();
+
+  ctx.strokeStyle="#fff";
+  ctx.lineWidth=2;
+  ctx.beginPath();
+  ctx.moveTo(hole.x,hole.y-3);
+  ctx.lineTo(hole.x,hole.y-78);
+  ctx.stroke();
+
+  ctx.fillStyle="#e8a0b8";
+  ctx.beginPath();
+  ctx.moveTo(hole.x,hole.y-78);
+  ctx.lineTo(hole.x+42,hole.y-65);
+  ctx.lineTo(hole.x,hole.y-51);
+  ctx.fill();
+
+  // Aim line
+  if(dragging){
+    let dx=ball.x-aim.x;
+    let dy=ball.y-aim.y;
+    let len=Math.hypot(dx,dy);
+    let power=Math.min(100,len/1.8);
+    let scale=Math.min(160,len*1.6);
+    ctx.strokeStyle="#ffe4a8";
+    ctx.lineWidth=3;
+    ctx.setLineDash([8,7]);
+    ctx.beginPath();
+    ctx.moveTo(ball.x,ball.y);
+    ctx.lineTo(ball.x+(dx/Math.max(1,len))*scale,
+               ball.y+(dy/Math.max(1,len))*scale);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.fillStyle="#fff1c9";
+    ctx.font="bold 16px Outfit";
+    ctx.fillText(Math.round(power)+"% POWER",ball.x-35,ball.y-30);
+  }
+
+  // Ball shadow
+  ctx.fillStyle="rgba(0,0,0,.28)";
+  ctx.beginPath();
+  ctx.ellipse(ball.x+4,ball.y+7,11,5,0,0,Math.PI*2);
+  ctx.fill();
+
+  // Golf ball
+  let shine=ctx.createRadialGradient(
+    ball.x-4,ball.y-5,1,ball.x,ball.y,ball.r+2);
+  shine.addColorStop(0,"#ffffff");
+  shine.addColorStop(1,"#c9c9c9");
+  ctx.fillStyle=shine;
+  ctx.beginPath();
+  ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);
+  ctx.fill();
+  ctx.strokeStyle="#aaa";
+  ctx.lineWidth=1;
+  ctx.stroke();
+
+  // Dimples
+  ctx.fillStyle="#aaa";
+  for(let i=0;i<7;i++){
+    let a=i*Math.PI*2/7;
+    ctx.beginPath();
+    ctx.arc(ball.x+Math.cos(a)*5,
+            ball.y+Math.sin(a)*5,1,0,Math.PI*2);
+    ctx.fill();
+  }
+}
+
+function loop(time){
+  let dt=lastTime?Math.min((time-lastTime)/16.67,2):1;
+  lastTime=time;
+
+  if(moving){
+    ball.x+=vx*dt;
+    ball.y+=vy*dt;
+    let friction=Math.pow(.985,dt);
+    vx*=friction;
+    vy*=friction;
+
+    // Course edges
+    if(ball.x<18){ball.x=18;vx*=-.55}
+    if(ball.x>582){ball.x=582;vx*=-.55}
+    if(ball.y<18){ball.y=18;vy*=-.55}
+    if(ball.y>382){ball.y=382;vy*=-.55}
+
+    // Hole capture
+    if(Math.hypot(ball.x-hole.x,ball.y-hole.y)<hole.r-2
+       &&Math.hypot(vx,vy)<3){
+      moving=false;
+      sunk=true;
+      ball.x=hole.x;
+      ball.y=hole.y;
+      document.getElementById("message").textContent=
+        "HOLE IN "+strokes+"! 🎉";
+      setTimeout(resetGame,2200);
+    }
+
+    if(Math.hypot(vx,vy)<.045){
+      vx=vy=0;
+      moving=false;
+      if(!sunk)
+        document.getElementById("message").textContent=
+          "Ball stopped! Take your next shot.";
+    }
+  }
+
+  draw();
+  requestAnimationFrame(loop);
+}
+
+draw();
+requestAnimationFrame(loop);
 </script>
 </body>
 </html>
-
