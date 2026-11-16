@@ -1,120 +1,854 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shooting Range | Chic Games Lounge</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Outfit:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
-  :root { --rose:#e8a0b8; --gold:#d4a574; --cream:#fdf6f0; }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    font-family: 'Outfit', system-ui, sans-serif;
-    background: linear-gradient(165deg, #2a1a24 0%, #1a1218 50%, #120d12 100%);
-    color: var(--cream);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 28px 16px 50px;
-  }
-  .top { width:100%; max-width:500px; margin-bottom:20px; }
-  .back { color: var(--gold); text-decoration:none; font-size:0.9rem; opacity:0.85; }
-  .back:hover { opacity:1; }
-  h1 { font-family:'Cormorant Garamond',serif; font-size:2.4rem; text-align:center; margin-bottom:6px; }
-  .sub { text-align:center; color:rgba(253,246,240,0.65); margin-bottom:24px; font-size:0.95rem; }
-  canvas {
-    border-radius: 16px;
-    box-shadow: 0 12px 36px rgba(0,0,0,0.35);
-    max-width: 100%;
-    cursor: crosshair;
-  }
-  #shootmsg {
-    margin-top: 18px;
-    font-size: 1.25rem;
-    color: var(--rose);
-    text-align: center;
-    font-weight: 500;
-  }
-  .hint { font-size:0.85rem; color:rgba(253,246,240,0.5); margin-top:8px; text-align:center; }
+:root {
+  --rose:#e8a0b8;
+  --gold:#d4a574;
+  --cream:#fdf6f0;
+  --dark:#1a1218;
+  --panel:#35232f;
+}
+
+* {box-sizing:border-box;margin:0;padding:0}
+
+body {
+  font-family:'Outfit',sans-serif;
+  background:linear-gradient(165deg,#2a1a24,#1a1218 55%,#120d12);
+  color:var(--cream);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:25px 14px 45px;
+}
+
+.top {
+  width:100%;
+  max-width:760px;
+  margin-bottom:12px;
+}
+
+.back {
+  color:var(--gold);
+  text-decoration:none;
+}
+
+h1 {
+  font-family:'Cormorant Garamond',serif;
+  font-size:3rem;
+  text-align:center;
+}
+
+.sub {
+  color:#d8c5ca;
+  text-align:center;
+  margin-bottom:22px;
+}
+
+.game {width:100%;max-width:760px}
+
+.stats {
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+  margin-bottom:14px;
+}
+
+.stat {
+  background:var(--panel);
+  border:1px solid #70505e;
+  border-radius:12px;
+  padding:10px 3px;
+  text-align:center;
+}
+
+.stat small {
+  display:block;
+  color:var(--gold);
+  font-size:.65rem;
+  text-transform:uppercase;
+}
+
+.stat strong {font-size:1.25rem}
+
+.canvas-wrap {
+  border:2px solid var(--gold);
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 12px 40px #0008;
+  background:#9ccce0;
+}
+
+canvas {
+  display:block;
+  width:100%;
+  height:auto;
+  cursor:none;
+  touch-action:none;
+}
+
+#message {
+  text-align:center;
+  color:var(--rose);
+  font-size:1.05rem;
+  margin:15px 0 10px;
+  min-height:25px;
+}
+
+.hint {
+  text-align:center;
+  color:#b9a5ad;
+  font-size:.8rem;
+  margin-bottom:15px;
+}
+
+.settings {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-bottom:14px;
+}
+
+.setting {
+  background:var(--panel);
+  border:1px solid #70505e;
+  border-radius:13px;
+  padding:12px;
+}
+
+.setting label {
+  display:block;
+  color:var(--gold);
+  font-size:.75rem;
+  margin-bottom:7px;
+}
+
+select {
+  width:100%;
+  padding:10px;
+  border-radius:9px;
+  border:1px solid var(--gold);
+  background:#241722;
+  color:var(--cream);
+  font-family:inherit;
+}
+
+.toggle-row {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.toggle {
+  width:45px;
+  height:25px;
+  border-radius:20px;
+  background:#6c5963;
+  position:relative;
+  cursor:pointer;
+  border:0;
+}
+
+.toggle::after {
+  content:"";
+  width:19px;
+  height:19px;
+  border-radius:50%;
+  background:white;
+  position:absolute;
+  top:3px;
+  left:3px;
+  transition:.2s;
+}
+
+.toggle.on {background:var(--rose)}
+.toggle.on::after {left:23px}
+
+.buttons {
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:15px 0;
+}
+
+.action {
+  background:linear-gradient(135deg,var(--rose),var(--gold));
+  border:0;
+  border-radius:25px;
+  padding:12px 24px;
+  font-family:inherit;
+  font-weight:700;
+  color:#271722;
+  cursor:pointer;
+}
+
+.action.secondary {
+  background:var(--panel);
+  color:var(--cream);
+  border:1px solid var(--gold);
+}
+
+.action:hover {filter:brightness(1.12)}
+.action:disabled {opacity:.4;cursor:not-allowed}
+
+#result {
+  display:none;
+  background:var(--panel);
+  border:1px solid var(--gold);
+  border-radius:17px;
+  padding:22px;
+  text-align:center;
+  margin-top:15px;
+}
+
+#result h2 {
+  color:var(--gold);
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.3rem;
+  margin-bottom:10px;
+}
+
+#result p {margin:8px 0;color:#e4cfd7}
+
+#result .action {margin-top:14px}
+
+.aim-note {
+  text-align:center;
+  color:#cbb8bf;
+  font-size:.8rem;
+  margin-top:10px;
+}
+
+@media(max-width:480px) {
+  h1 {font-size:2.5rem}
+  .stats {gap:4px}
+  .stat {padding:8px 2px}
+  .stat strong {font-size:1rem}
+  .stat small {font-size:.55rem}
+  .setting {padding:9px}
+}
 </style>
 </head>
+
 <body>
-  <div class="top">
-    <a href="chic-games-lounge.html" class="back">← Back to Lounge</a>
+
+<div class="top">
+  <a href="chic-games-lounge.html" class="back">← Back to Lounge</a>
+</div>
+
+<h1>Shooting Range</h1>
+<p class="sub">A little glamour. A little competition. ✨</p>
+
+<div class="game">
+
+  <div class="stats">
+    <div class="stat"><small>Score</small><strong id="score">0</strong></div>
+    <div class="stat"><small>Time</small><strong id="time">60</strong></div>
+    <div class="stat"><small>Hits</small><strong id="hits">0</strong></div>
+    <div class="stat"><small>Accuracy</small><strong id="accuracy">0%</strong></div>
+    <div class="stat"><small>Best</small><strong id="best">0</strong></div>
   </div>
-  <h1>Shooting Range</h1>
-  <p class="sub">Click the targets as they appear</p>
-  <canvas id="shootCanvas" width="450" height="350"></canvas>
-  <p id="shootmsg">Score: 0</p>
-  <p class="hint">Targets appear randomly. Stay sharp.</p>
+
+  <div class="canvas-wrap">
+    <canvas id="range" width="700" height="430"></canvas>
+  </div>
+
+  <p id="message">Ready to test your aim? 🎯</p>
+  <p class="hint">
+    Move your mouse to aim. Hold the mouse button to shoot continuously!
+  </p>
+
+  <div class="settings">
+
+    <div class="setting">
+      <label>DIFFICULTY</label>
+      <select id="difficulty">
+        <option value="easy">Easy</option>
+        <option value="medium" selected>Medium</option>
+        <option value="hard">Hard</option>
+        <option value="expert">Expert</option>
+      </select>
+    </div>
+
+    <div class="setting">
+      <label>SHOOTING MODE</label>
+      <div class="toggle-row">
+        <span id="autoLabel">Auto-fire OFF</span>
+        <button class="toggle" id="autoToggle" aria-label="Toggle auto-fire" aria-pressed="false"></button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="buttons">
+    <button class="action" id="startBtn">▶ Start Game</button>
+    <button class="action secondary" id="resetBtn">↻ Reset</button>
+  </div>
+
+  <p class="aim-note">
+    ✨ Aim assist is ON · Hold to fire · Earn combo bonuses!
+  </p>
+
+  <div id="result">
+    <h2 id="resultTitle">🏆 Fabulous Shooting!</h2>
+    <p id="finalScore"></p>
+    <p id="finalAccuracy"></p>
+    <p id="finalCombo"></p>
+    <button class="action" id="playAgain">Play Again ✨</button>
+  </div>
+
+</div>
 
 <script>
-  let shootCtx, score = 0, targets = [];
-  function startShoot() {
-    const canvas = document.getElementById('shootCanvas');
-    shootCtx = canvas.getContext('2d');
-    score = 0; targets = [];
-    document.getElementById('shootmsg').textContent = 'Score: 0';
-    setInterval(() => {
-      if (targets.length < 8) {
-        targets.push({
-          x: Math.random()*400 + 25,
-          y: Math.random()*300 + 25,
-          r: 18 + Math.random()*18,
-          life: 180
-        });
-      }
-    }, 900);
-    canvas.onclick = e => {
-      const r = canvas.getBoundingClientRect();
-      const scaleX = canvas.width / r.width;
-      const scaleY = canvas.height / r.height;
-      const x = (e.clientX - r.left) * scaleX;
-      const y = (e.clientY - r.top) * scaleY;
-      targets = targets.filter(t => {
-        if (Math.hypot(x - t.x, y - t.y) < t.r) {
-          score++;
-          document.getElementById('shootmsg').textContent = `Score: ${score}`;
-          return false;
-        }
-        return true;
-      });
-    };
-    requestAnimationFrame(shootLoop);
-  }
-  function shootLoop() {
-    shootCtx.clearRect(0,0,450,350);
-    const g = shootCtx.createLinearGradient(0,0,0,350);
-    g.addColorStop(0, '#87CEEB');
-    g.addColorStop(1, '#b8e0f0');
-    shootCtx.fillStyle = g;
-    shootCtx.fillRect(0,0,450,350);
+const canvas=document.getElementById("range");
+const ctx=canvas.getContext("2d");
 
-    shootCtx.fillStyle = '#3a6b3a';
-    shootCtx.fillRect(0, 310, 450, 40);
+const W=700,H=430;
 
-    targets.forEach(t => {
-      t.life--;
-      shootCtx.fillStyle = '#ff1744';
-      shootCtx.beginPath();
-      shootCtx.arc(t.x, t.y, t.r, 0, Math.PI*2);
-      shootCtx.fill();
-      shootCtx.strokeStyle = '#fff';
-      shootCtx.lineWidth = 3;
-      shootCtx.beginPath();
-      shootCtx.arc(t.x, t.y, t.r * 0.55, 0, Math.PI*2);
-      shootCtx.stroke();
-      shootCtx.fillStyle = '#fff';
-      shootCtx.beginPath();
-      shootCtx.arc(t.x, t.y, t.r * 0.2, 0, Math.PI*2);
-      shootCtx.fill();
+const $=id=>document.getElementById(id);
+
+const settings={
+  easy:{life:300,speed:.65,size:27,spawn:1150},
+  medium:{life:230,speed:1.15,size:23,spawn:950},
+  hard:{life:175,speed:1.8,size:19,spawn:780},
+  expert:{life:125,speed:2.5,size:16,spawn:650}
+};
+
+let targets=[];
+let score=0,hits=0,shots=0;
+let combo=0,bestCombo=0;
+let timeLeft=60;
+let running=false;
+let gameOver=false;
+let holding=false;
+let autoFire=false;
+let mouse={x:350,y:215};
+let lastFrame=0;
+let lastShot=0;
+let lastSpawn=0;
+let animationId=null;
+let endTime=0;
+let particles=[];
+let difficulty="medium";
+
+let bestScore=0;
+
+try {
+  bestScore=Number(localStorage.getItem("chicShootingBest")||0);
+} catch(e) {}
+
+$("best").textContent=bestScore;
+
+function message(text){
+  $("message").textContent=text;
+}
+
+function updateStats(){
+  $("score").textContent=score;
+  $("hits").textContent=hits;
+  $("accuracy").textContent=
+    shots?Math.round(hits/shots*100)+"%":"0%";
+  $("best").textContent=bestScore;
+  $("time").textContent=Math.max(0,Math.ceil(timeLeft));
+}
+
+function getPointer(e){
+  const r=canvas.getBoundingClientRect();
+  return {
+    x:(e.clientX-r.left)*W/r.width,
+    y:(e.clientY-r.top)*H/r.height
+  };
+}
+
+function spawnTarget(){
+  const s=settings[difficulty];
+  const r=s.size+Math.random()*5;
+
+  targets.push({
+    x:65+Math.random()*(W-130),
+    y:65+Math.random()*(H-155),
+    r,
+    life:s.life,
+    maxLife:s.life,
+    vx:(Math.random()-.5)*s.speed*2,
+    vy:(Math.random()-.5)*s.speed*1.5,
+    phase:Math.random()*6.28,
+    hue:Math.random()>.5?"rose":"gold"
+  });
+}
+
+function addParticles(x,y){
+  for(let i=0;i<12;i++){
+    const a=Math.random()*Math.PI*2;
+    const speed=1+Math.random()*3;
+
+    particles.push({
+      x,y,
+      vx:Math.cos(a)*speed,
+      vy:Math.sin(a)*speed,
+      life:35,
+      size:2+Math.random()*4
     });
-    targets = targets.filter(t => t.life > 0);
-    requestAnimationFrame(shootLoop);
   }
-  startShoot();
+}
+
+function shoot(){
+  if(!running)return;
+
+  const now=performance.now();
+  if(now-lastShot<145)return;
+
+  lastShot=now;
+  shots++;
+
+  // Aim assist: gently expands the effective target area.
+  let best=null;
+  let bestDistance=Infinity;
+
+  targets.forEach(t=>{
+    const d=Math.hypot(mouse.x-t.x,mouse.y-t.y);
+    const assist=t.r+13;
+
+    if(d<assist && d<bestDistance){
+      best=t;
+      bestDistance=d;
+    }
+  });
+
+  if(best){
+    const index=targets.indexOf(best);
+
+    if(index!==-1){
+      targets.splice(index,1);
+      hits++;
+      combo++;
+      bestCombo=Math.max(bestCombo,combo);
+
+      const bonus=Math.min(combo-1,10)*2;
+      score+=10+bonus;
+
+      addParticles(best.x,best.y);
+
+      message(combo>=3?
+        "🔥 "+combo+" HIT COMBO! +"+(10+bonus):
+        "✨ Perfect hit! +10");
+
+    }
+  }else{
+    combo=0;
+    message("Keep aiming! 🎯");
+  }
+
+  updateStats();
+}
+
+function drawBackground(){
+  const sky=ctx.createLinearGradient(0,0,0,H);
+  sky.addColorStop(0,"#b9ddeb");
+  sky.addColorStop(.68,"#e8e2d9");
+  sky.addColorStop(1,"#b6cbb3");
+
+  ctx.fillStyle=sky;
+  ctx.fillRect(0,0,W,H);
+
+  // Distant hills
+  ctx.fillStyle="#9cbba4";
+  ctx.beginPath();
+  ctx.moveTo(0,260);
+  ctx.quadraticCurveTo(180,180,350,255);
+  ctx.quadraticCurveTo(520,175,700,245);
+  ctx.lineTo(700,H);
+  ctx.lineTo(0,H);
+  ctx.fill();
+
+  // Shooting range floor
+  ctx.fillStyle="#617b59";
+  ctx.fillRect(0,340,W,90);
+
+  // Decorative lane
+  ctx.strokeStyle="#e7d6b6";
+  ctx.lineWidth=2;
+  ctx.setLineDash([12,10]);
+  ctx.beginPath();
+  ctx.moveTo(0,380);
+  ctx.lineTo(W,380);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Decorative sign
+  ctx.fillStyle="#35232f";
+  ctx.fillRect(18,17,190,36);
+
+  ctx.strokeStyle="#d4a574";
+  ctx.lineWidth=2;
+  ctx.strokeRect(18,17,190,36);
+
+  ctx.fillStyle="#fdf6f0";
+  ctx.font="600 16px Outfit";
+  ctx.fillText("✦ CHIC RANGE ✦",30,41);
+
+  // Clouds
+  ctx.fillStyle="rgba(255,255,255,.5)";
+  [ [300,55],[500,95],[620,42] ].forEach(([x,y])=>{
+    ctx.beginPath();
+    ctx.arc(x,y,20,0,Math.PI*2);
+    ctx.arc(x+23,y-8,24,0,Math.PI*2);
+    ctx.arc(x+47,y,18,0,Math.PI*2);
+    ctx.fill();
+  });
+}
+
+function drawTarget(t){
+  const pulse=1+Math.sin(t.phase)*.035;
+  const r=t.r*pulse;
+
+  ctx.save();
+
+  // Shadow
+  ctx.fillStyle="rgba(0,0,0,.18)";
+  ctx.beginPath();
+  ctx.ellipse(t.x+4,t.y+r+8,r*.85,5,0,0,Math.PI*2);
+  ctx.fill();
+
+  // Outer ring
+  ctx.fillStyle=t.hue==="rose"?"#a72d54":"#aa7738";
+  ctx.beginPath();
+  ctx.arc(t.x,t.y,r+3,0,Math.PI*2);
+  ctx.fill();
+
+  // Main target
+  ctx.fillStyle=t.hue==="rose"?"#ed779e":"#e4b45f";
+  ctx.beginPath();
+  ctx.arc(t.x,t.y,r,0,Math.PI*2);
+  ctx.fill();
+
+  ctx.strokeStyle="#fff7e9";
+  ctx.lineWidth=3;
+  ctx.beginPath();
+  ctx.arc(t.x,t.y,r*.67,0,Math.PI*2);
+  ctx.stroke();
+
+  ctx.fillStyle="#fff7e9";
+  ctx.beginPath();
+  ctx.arc(t.x,t.y,r*.35,0,Math.PI*2);
+  ctx.fill();
+
+  ctx.fillStyle="#b23b61";
+  ctx.beginPath();
+  ctx.arc(t.x,t.y,r*.14,0,Math.PI*2);
+  ctx.fill();
+
+  // Target lifetime indicator
+  const ratio=Math.max(0,t.life/t.maxLife);
+
+  ctx.strokeStyle="rgba(255,255,255,.85)";
+  ctx.lineWidth=3;
+  ctx.beginPath();
+  ctx.arc(t.x,t.y,r+7,-Math.PI/2,-Math.PI/2+ratio*Math.PI*2);
+  ctx.stroke();
+
+  ctx.restore();
+}
+
+function drawCrosshair(){
+  ctx.save();
+
+  ctx.translate(mouse.x,mouse.y);
+
+  ctx.strokeStyle="#fff";
+  ctx.lineWidth=2;
+  ctx.shadowColor="#7b2545";
+  ctx.shadowBlur=6;
+
+  ctx.beginPath();
+  ctx.arc(0,0,15,0,Math.PI*2);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(-23,0);
+  ctx.lineTo(-8,0);
+  ctx.moveTo(8,0);
+  ctx.lineTo(23,0);
+  ctx.moveTo(0,-23);
+  ctx.lineTo(0,-8);
+  ctx.moveTo(0,8);
+  ctx.lineTo(0,23);
+  ctx.stroke();
+
+  ctx.fillStyle="#fff";
+  ctx.beginPath();
+  ctx.arc(0,0,2,0,Math.PI*2);
+  ctx.fill();
+
+  ctx.restore();
+}
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  drawBackground();
+
+  targets.forEach(drawTarget);
+
+  particles.forEach(p=>{
+    ctx.globalAlpha=Math.max(0,p.life/35);
+    ctx.fillStyle="#ffe0a8";
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+    ctx.fill();
+  });
+
+  ctx.globalAlpha=1;
+
+  drawCrosshair();
+
+  if(!running&&!gameOver){
+    ctx.fillStyle="rgba(35,20,30,.58)";
+    ctx.fillRect(0,0,W,H);
+
+    ctx.textAlign="center";
+    ctx.fillStyle="#fff";
+    ctx.font="bold 34px Cormorant Garamond";
+    ctx.fillText("WELCOME TO CHIC RANGE",W/2,190);
+
+    ctx.fillStyle="#f1c99a";
+    ctx.font="16px Outfit";
+    ctx.fillText("Press START GAME to begin",W/2,225);
+    ctx.textAlign="left";
+  }
+
+  if(gameOver){
+    ctx.fillStyle="rgba(35,20,30,.48)";
+    ctx.fillRect(0,0,W,H);
+    ctx.textAlign="center";
+    ctx.fillStyle="#fff";
+    ctx.font="bold 40px Cormorant Garamond";
+    ctx.fillText("TIME'S UP!",W/2,205);
+    ctx.fillStyle="#f1c99a";
+    ctx.font="20px Outfit";
+    ctx.fillText("Final Score: "+score,W/2,245);
+    ctx.textAlign="left";
+  }
+}
+
+function finishGame(){
+  if(!running)return;
+
+  running=false;
+  gameOver=true;
+  holding=false;
+  autoFire=false;
+
+  $("autoToggle").classList.remove("on");
+  $("autoToggle").setAttribute("aria-pressed","false");
+  $("autoLabel").textContent="Auto-fire OFF";
+
+  if(score>bestScore){
+    bestScore=score;
+    try {
+      localStorage.setItem("chicShootingBest",bestScore);
+    } catch(e) {}
+  }
+
+  updateStats();
+
+  $("resultTitle").textContent=
+    score>=300?"👑 Range Royalty!":
+    score>=150?"🏆 Fabulous Shooting!":
+    "✨ Nice Practice!";
+
+  $("finalScore").textContent="Your score: "+score+" points";
+  $("finalAccuracy").textContent=
+    "Accuracy: "+(shots?Math.round(hits/shots*100):0)+"%";
+  $("finalCombo").textContent=
+    "Longest combo: "+bestCombo+" consecutive hits";
+
+  $("result").style.display="block";
+  $("startBtn").textContent="▶ Play Again";
+
+  message("Time's up! What a performance! ✨");
+  draw();
+}
+
+function loop(timestamp){
+  if(!running)return;
+
+  const dt=lastFrame?
+    Math.min((timestamp-lastFrame)/16.67,2):1;
+
+  lastFrame=timestamp;
+
+  timeLeft=Math.max(0,60-(timestamp-endTime+60000)/1000);
+
+  // Use a fixed game clock for the countdown.
+  const elapsed=(timestamp-gameStart)/1000;
+  timeLeft=Math.max(0,60-elapsed);
+
+  if(timeLeft<=0){
+    timeLeft=0;
+    finishGame();
+    return;
+  }
+
+  if(timestamp-lastSpawn>settings[difficulty].spawn){
+    if(targets.length<7)spawnTarget();
+    lastSpawn=timestamp;
+  }
+
+  if(holding||autoFire)shoot();
+
+  targets.forEach(t=>{
+    t.x+=t.vx*dt;
+    t.y+=t.vy*dt;
+    t.phase+=.04*dt;
+    t.life-=dt;
+
+    if(t.x<t.r+8||t.x>W-t.r-8)t.vx*=-1;
+    if(t.y<t.r+65||t.y>H-90)t.vy*=-1;
+  });
+
+  targets=targets.filter(t=>t.life>0);
+
+  particles.forEach(p=>{
+    p.x+=p.vx*dt;
+    p.y+=p.vy*dt;
+    p.life-=dt;
+  });
+
+  particles=particles.filter(p=>p.life>0);
+
+  updateStats();
+  draw();
+
+  animationId=requestAnimationFrame(loop);
+}
+
+let gameStart=0;
+
+function startGame(){
+  if(animationId)cancelAnimationFrame(animationId);
+
+  score=0;
+  hits=0;
+  shots=0;
+  combo=0;
+  bestCombo=0;
+  timeLeft=60;
+
+  targets=[];
+  particles=[];
+
+  difficulty=$("difficulty").value;
+
+  running=true;
+  gameOver=false;
+  holding=false;
+
+  lastFrame=0;
+  lastShot=0;
+  lastSpawn=0;
+
+  gameStart=performance.now();
+  endTime=gameStart;
+
+  $("result").style.display="none";
+  $("startBtn").textContent="▶ Restart Game";
+
+  message("Aim, hold and fire! Good luck! 🎯");
+
+  spawnTarget();
+  spawnTarget();
+
+  updateStats();
+
+  animationId=requestAnimationFrame(loop);
+}
+
+function resetGame(){
+  if(animationId)cancelAnimationFrame(animationId);
+
+  running=false;
+  gameOver=false;
+  holding=false;
+  targets=[];
+  particles=[];
+
+  score=hits=shots=combo=bestCombo=0;
+  timeLeft=60;
+
+  $("result").style.display="none";
+  $("startBtn").textContent="▶ Start Game";
+
+  updateStats();
+  message("Ready when you are! 🎯");
+  draw();
+}
+
+// Pointer movement
+canvas.addEventListener("pointermove",e=>{
+  mouse=getPointer(e);
+});
+
+// Hold to shoot
+canvas.addEventListener("pointerdown",e=>{
+  if(!running)return;
+
+  e.preventDefault();
+  mouse=getPointer(e);
+  holding=true;
+
+  try {canvas.setPointerCapture(e.pointerId)} catch(err) {}
+  shoot();
+});
+
+canvas.addEventListener("pointerup",()=>{
+  holding=false;
+});
+
+canvas.addEventListener("pointercancel",()=>{
+  holding=false;
+});
+
+canvas.addEventListener("lostpointercapture",()=>{
+  holding=false;
+});
+
+// Auto-fire toggle
+$("autoToggle").addEventListener("click",()=>{
+  autoFire=!autoFire;
+
+  $("autoToggle").classList.toggle("on",autoFire);
+  $("autoToggle").setAttribute("aria-pressed",String(autoFire));
+  $("autoLabel").textContent=
+    autoFire?"Auto-fire ON":"Auto-fire OFF";
+
+  if(autoFire)message("Auto-fire activated! ✨");
+  else message("Auto-fire turned off.");
+});
+
+$("startBtn").addEventListener("click",startGame);
+$("resetBtn").addEventListener("click",resetGame);
+$("playAgain").addEventListener("click",startGame);
+
+$("difficulty").addEventListener("change",()=>{
+  difficulty=$("difficulty").value;
+  if(!running){
+    draw();
+  }
+});
+
+// Initial screen
+updateStats();
+draw();
+
 </script>
 </body>
 </html>
-
