@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luxe Media Hub | Katelyn's Luxe Life</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blush: #f8c8d8;
+    --rose: #e8a0b8;
+    --deep-rose: #c45c7a;
+    --cream: #fdf8f5;
+    --gold: #c9a06c;
+    --gold-light: #e0c090;
+    --dark: #1c1419;
+    --soft-dark: #2a1f25;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Outfit', system-ui, sans-serif;
+    background: 
+      radial-gradient(ellipse 100% 70% at 10% 0%, rgba(201, 160, 108, 0.12) 0%, transparent 50%),
+      radial-gradient(ellipse 80% 60% at 90% 100%, rgba(196, 92, 122, 0.15) 0%, transparent 50%),
+      linear-gradient(160deg, #1f161c 0%, #151015 50%, #100c10 100%);
+    color: var(--cream);
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 36px 22px 70px;
+  }
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .back {
+    color: var(--gold-light);
+    text-decoration: none;
+    font-size: 0.88rem;
+    opacity: 0.85;
+    transition: opacity 0.2s;
+  }
+  .back:hover { opacity: 1; }
+  .nav a {
+    color: var(--blush);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-left: 22px;
+    opacity: 0.8;
+  }
+  .nav a:hover { opacity: 1; color: var(--gold-light); }
+
+  .hero {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.6rem, 5.5vw, 3.8rem);
+    font-weight: 600;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--rose);
+  }
+  .sub {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: rgba(253,248,245,0.7);
+    max-width: 460px;
+    margin: 0 auto;
+  }
+
+  .hub-card {
+    background: linear-gradient(145deg, rgba(42, 31, 37, 0.9), rgba(28, 20, 25, 0.95));
+    border: 1px solid rgba(232, 160, 184, 0.18);
+    border-radius: 24px;
+    padding: 40px 36px 36px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+    backdrop-filter: blur(12px);
+  }
+
+  .section-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 22px;
+    font-weight: 500;
+  }
+
+  .search-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-bottom: 28px;
+  }
+
+  @media (min-width: 680px) {
+    .search-row { grid-template-columns: 1fr 1fr; }
+    .search-row .full { grid-column: 1 / -1; }
+  }
+
+  .search-group label {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--rose);
+    margin-bottom: 8px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+
+  .input-wrap {
+    position: relative;
+  }
+
+  .input-wrap input {
+    width: 100%;
+    padding: 15px 56px 15px 20px;
+    border: none;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.07);
+    color: var(--cream);
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+  .input-wrap input::placeholder {
+    color: rgba(253,248,245,0.35);
+  }
+  .input-wrap input:focus {
+    background: rgba(255,255,255,0.11);
+    box-shadow: 0 0 0 2px rgba(232, 160, 184, 0.35);
+  }
+
+  .search-btn {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 1.15rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s, filter 0.15s;
+  }
+  .search-btn:hover { transform: translateY(-50%) scale(1.06); filter: brightness(1.1); }
+
+  .btn-pin { background: linear-gradient(135deg, #e60023, #c4001a); }
+  .btn-spot { background: linear-gradient(135deg, #1DB954, #169c46); }
+  .btn-yt { background: linear-gradient(135deg, #FF0000, #cc0000); }
+
+  .quick {
+    margin-top: 8px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .quick-title {
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(253,248,245,0.5);
+    margin-bottom: 14px;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .chip {
+    background: rgba(232, 160, 184, 0.12);
+    border: 1px solid rgba(232, 160, 184, 0.25);
+    color: var(--blush);
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 400;
+  }
+  .chip:hover {
+    background: rgba(232, 160, 184, 0.22);
+    border-color: rgba(232, 160, 184, 0.45);
+    color: white;
+  }
+
+  .note {
+    text-align: center;
+    margin-top: 36px;
+    font-size: 0.8rem;
+    color: rgba(253,248,245,0.4);
+  }
+  .note a {
+    color: var(--gold-light);
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <a href="chic-games-lounge.html" class="back">← Games Lounge</a>
+      <nav class="nav">
+        <a href="https://katelynvparry-tech.github.io/katelyns-luxe-life/">Home</a>
+      </nav>
+    </div>
+
+    <header class="hero">
+      <div class="eyebrow">The Empire Collection</div>
+      <h1>Luxe <em>Media</em> Hub</h1>
+      <p class="sub">Search Pinterest, Spotify & YouTube with elevated intention. Curated for the soft life.</p>
+    </header>
+
+    <div class="hub-card">
+      <div class="section-label">Search Across Platforms</div>
+
+      <div class="search-row">
+        <div class="search-group">
+          <label>📌 Pinterest</label>
+          <div class="input-wrap">
+            <input id="pin-input" type="text" placeholder="old money aesthetic, quiet luxury...">
+            <button class="search-btn btn-pin" onclick="searchPin()">🔍</button>
+          </div>
+        </div>
+
+        <div class="search-group">
+          <label>🎵 Spotify</label>
+          <div class="input-wrap">
+            <input id="spot-input" type="text" placeholder="dark academia playlist, soft girl...">
+            <button class="search-btn btn-spot" onclick="searchSpot()">🔍</button>
+          </div>
+        </div>
+
+        <div class="search-group full">
+          <label>▶️ YouTube</label>
+          <div class="input-wrap">
+            <input id="yt-input" type="text" placeholder="luxury morning routine, get ready with me...">
+            <button class="search-btn btn-yt" onclick="searchYT()">🔍</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="quick">
+        <div class="quick-title">Quick Empire Vibes</div>
+        <div class="chips">
+          <span class="chip" onclick="quick('old money aesthetic')">old money aesthetic</span>
+          <span class="chip" onclick="quick('quiet luxury')">quiet luxury</span>
+          <span class="chip" onclick="quick('dark academia playlist')">dark academia playlist</span>
+          <span class="chip" onclick="quick('luxury morning routine')">luxury morning routine</span>
+          <span class="chip" onclick="quick('soft girl aesthetic')">soft girl aesthetic</span>
+          <span class="chip" onclick="quick('pink pilates princess')">pink pilates princess</span>
+          <span class="chip" onclick="quick('coquette core')">coquette core</span>
+          <span class="chip" onclick="quick('clean girl aesthetic')">clean girl aesthetic</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="note">
+      Part of <a href="https://katelynvparry-tech.github.io/katelyns-luxe-life/">Katelyn's Luxe Life</a> · Class of 2028
+    </p>
+  </div>
+
+<script>
+  function searchPin() {
+    const q = document.getElementById('pin-input').value.trim();
+    if (q) window.open(`https://www.pinterest.com/search/pins/?q=${encodeURIComponent(q)}`, '_blank');
+  }
+  function searchSpot() {
+    const q = document.getElementById('spot-input').value.trim();
+    if (q) window.open(`https://open.spotify.com/search/${encodeURIComponent(q)}`, '_blank');
+  }
+  function searchYT() {
+    const q = document.getElementById('yt-input').value.trim();
+    if (q) window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`, '_blank');
+  }
+  function quick(term) {
+    document.getElementById('pin-input').value = term;
+    document.getElementById('spot-input').value = term;
+    document.getElementById('yt-input').value = term;
+  }
+
+  document.querySelectorAll('input').forEach(input => {
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        if (input.id === 'pin-input') searchPin();
+        if (input.id === 'spot-input') searchSpot();
+        if (input.id === 'yt-input') searchYT();
+      }
+    });
+  });
+</script>
+</body>
+</html>
+

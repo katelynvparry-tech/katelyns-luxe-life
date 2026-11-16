@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shooting Range | Chic Games Lounge</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Outfit:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --rose:#e8a0b8; --gold:#d4a574; --cream:#fdf6f0; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Outfit', system-ui, sans-serif;
+    background: linear-gradient(165deg, #2a1a24 0%, #1a1218 50%, #120d12 100%);
+    color: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 28px 16px 50px;
+  }
+  .top { width:100%; max-width:500px; margin-bottom:20px; }
+  .back { color: var(--gold); text-decoration:none; font-size:0.9rem; opacity:0.85; }
+  .back:hover { opacity:1; }
+  h1 { font-family:'Cormorant Garamond',serif; font-size:2.4rem; text-align:center; margin-bottom:6px; }
+  .sub { text-align:center; color:rgba(253,246,240,0.65); margin-bottom:24px; font-size:0.95rem; }
+  canvas {
+    border-radius: 16px;
+    box-shadow: 0 12px 36px rgba(0,0,0,0.35);
+    max-width: 100%;
+    cursor: crosshair;
+  }
+  #shootmsg {
+    margin-top: 18px;
+    font-size: 1.25rem;
+    color: var(--rose);
+    text-align: center;
+    font-weight: 500;
+  }
+  .hint { font-size:0.85rem; color:rgba(253,246,240,0.5); margin-top:8px; text-align:center; }
+</style>
+</head>
+<body>
+  <div class="top">
+    <a href="chic-games-lounge.html" class="back">← Back to Lounge</a>
+  </div>
+  <h1>Shooting Range</h1>
+  <p class="sub">Click the targets as they appear</p>
+  <canvas id="shootCanvas" width="450" height="350"></canvas>
+  <p id="shootmsg">Score: 0</p>
+  <p class="hint">Targets appear randomly. Stay sharp.</p>
+
+<script>
+  let shootCtx, score = 0, targets = [];
+  function startShoot() {
+    const canvas = document.getElementById('shootCanvas');
+    shootCtx = canvas.getContext('2d');
+    score = 0; targets = [];
+    document.getElementById('shootmsg').textContent = 'Score: 0';
+    setInterval(() => {
+      if (targets.length < 8) {
+        targets.push({
+          x: Math.random()*400 + 25,
+          y: Math.random()*300 + 25,
+          r: 18 + Math.random()*18,
+          life: 180
+        });
+      }
+    }, 900);
+    canvas.onclick = e => {
+      const r = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / r.width;
+      const scaleY = canvas.height / r.height;
+      const x = (e.clientX - r.left) * scaleX;
+      const y = (e.clientY - r.top) * scaleY;
+      targets = targets.filter(t => {
+        if (Math.hypot(x - t.x, y - t.y) < t.r) {
+          score++;
+          document.getElementById('shootmsg').textContent = `Score: ${score}`;
+          return false;
+        }
+        return true;
+      });
+    };
+    requestAnimationFrame(shootLoop);
+  }
+  function shootLoop() {
+    shootCtx.clearRect(0,0,450,350);
+    const g = shootCtx.createLinearGradient(0,0,0,350);
+    g.addColorStop(0, '#87CEEB');
+    g.addColorStop(1, '#b8e0f0');
+    shootCtx.fillStyle = g;
+    shootCtx.fillRect(0,0,450,350);
+
+    shootCtx.fillStyle = '#3a6b3a';
+    shootCtx.fillRect(0, 310, 450, 40);
+
+    targets.forEach(t => {
+      t.life--;
+      shootCtx.fillStyle = '#ff1744';
+      shootCtx.beginPath();
+      shootCtx.arc(t.x, t.y, t.r, 0, Math.PI*2);
+      shootCtx.fill();
+      shootCtx.strokeStyle = '#fff';
+      shootCtx.lineWidth = 3;
+      shootCtx.beginPath();
+      shootCtx.arc(t.x, t.y, t.r * 0.55, 0, Math.PI*2);
+      shootCtx.stroke();
+      shootCtx.fillStyle = '#fff';
+      shootCtx.beginPath();
+      shootCtx.arc(t.x, t.y, t.r * 0.2, 0, Math.PI*2);
+      shootCtx.fill();
+    });
+    targets = targets.filter(t => t.life > 0);
+    requestAnimationFrame(shootLoop);
+  }
+  startShoot();
+</script>
+</body>
+</html>
+

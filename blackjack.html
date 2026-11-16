@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blackjack | Chic Games Lounge</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Outfit:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #e8a0b8;
+    --deep: #c45c7a;
+    --cream: #fdf6f0;
+    --gold: #d4a574;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Outfit', system-ui, sans-serif;
+    background: linear-gradient(165deg, #2a1a24 0%, #1a1218 50%, #120d12 100%);
+    color: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 16px 50px;
+  }
+  .top { width:100%; max-width:520px; margin-bottom:24px; }
+  .back { color: var(--gold); text-decoration:none; font-size:0.9rem; opacity:0.85; }
+  .back:hover { opacity:1; }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .sub { text-align:center; color:rgba(253,246,240,0.65); margin-bottom:32px; }
+  .table {
+    background: rgba(255,250,248,0.95);
+    border-radius: 20px;
+    padding: 28px 24px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+    color: #3a2a32;
+    text-align: center;
+  }
+  .cards {
+    font-size: 2.1rem;
+    min-height: 48px;
+    margin: 8px 0 4px;
+    letter-spacing: 0.05em;
+  }
+  .label { font-size: 0.9rem; color: #7a5a66; margin-bottom: 2px; }
+  .score { font-weight: 500; color: #c45c7a; }
+  .msg {
+    font-size: 1.2rem;
+    color: #c45c7a;
+    min-height: 1.6em;
+    margin: 16px 0 8px;
+    font-weight: 500;
+  }
+  .actions { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:12px; }
+  .btn {
+    background: linear-gradient(135deg, #c45c7a, #a84868);
+    color: white;
+    border: none;
+    padding: 12px 26px;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(196,92,122,0.35);
+  }
+  .btn:hover { filter: brightness(1.08); }
+  .btn.secondary {
+    background: transparent;
+    border: 1.5px solid #c45c7a;
+    color: #c45c7a;
+    box-shadow: none;
+  }
+</style>
+</head>
+<body>
+  <div class="top">
+    <a href="chic-games-lounge.html" class="back">← Back to Lounge</a>
+  </div>
+  <h1>Blackjack</h1>
+  <p class="sub">Get as close to 21 as you can without going over</p>
+
+  <div class="table">
+    <div class="label">Dealer</div>
+    <div class="cards" id="dealerCards"></div>
+    <div class="score">Score: <span id="dealerScore">?</span></div>
+
+    <div style="height:18px"></div>
+
+    <div class="label">You</div>
+    <div class="cards" id="playerCards"></div>
+    <div class="score">Score: <span id="playerScore">0</span></div>
+
+    <p class="msg" id="bjmsg"></p>
+
+    <div class="actions">
+      <button class="btn" onclick="deal()">Deal</button>
+      <button class="btn secondary" id="hitBtn" style="display:none" onclick="hit()">Hit</button>
+      <button class="btn secondary" id="standBtn" style="display:none" onclick="stand()">Stand</button>
+    </div>
+  </div>
+
+<script>
+  let deck = [], player = [], dealer = [];
+  function resetBJ() {
+    deck = []; player = []; dealer = [];
+    const suits = ['♥','♦','♣','♠'], ranks = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+    for (const s of suits) for (const r of ranks) deck.push(r + s);
+    for (let i = deck.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [deck[i], deck[j]] = [deck[j], deck[i]];
+    }
+    document.getElementById('dealerCards').innerHTML = '';
+    document.getElementById('playerCards').innerHTML = '';
+    document.getElementById('dealerScore').textContent = '?';
+    document.getElementById('playerScore').textContent = '0';
+    document.getElementById('bjmsg').textContent = '';
+    document.getElementById('hitBtn').style.display = 'none';
+    document.getElementById('standBtn').style.display = 'none';
+  }
+  function deal() {
+    resetBJ();
+    player = [deck.pop(), deck.pop()];
+    dealer = [deck.pop(), deck.pop()];
+    showCards();
+    document.getElementById('hitBtn').style.display = 'inline';
+    document.getElementById('standBtn').style.display = 'inline';
+    if (calc(player) === 21) { document.getElementById('bjmsg').textContent = 'Blackjack! You win! ♡'; endBJ(); }
+  }
+  function showCards(fullDealer = false) {
+    document.getElementById('playerCards').innerHTML = player.join(' ');
+    document.getElementById('playerScore').textContent = calc(player);
+    const d = fullDealer ? dealer : [dealer[0], '🂠'];
+    document.getElementById('dealerCards').innerHTML = d.join(' ');
+    document.getElementById('dealerScore').textContent = fullDealer ? calc(dealer) : '?';
+  }
+  function calc(hand) {
+    let score = 0, aces = 0;
+    for (const c of hand) {
+      const v = c.slice(0, -1);
+      if (v === 'A') { aces++; score += 11; }
+      else if (['J','Q','K'].includes(v)) score += 10;
+      else score += parseInt(v);
+    }
+    while (score > 21 && aces--) score -= 10;
+    return score;
+  }
+  function hit() {
+    player.push(deck.pop());
+    showCards();
+    if (calc(player) > 21) { document.getElementById('bjmsg').textContent = 'Bust! Dealer wins'; endBJ(); }
+  }
+  function stand() {
+    while (calc(dealer) < 17) dealer.push(deck.pop());
+    showCards(true);
+    const p = calc(player), d = calc(dealer);
+    let msg = p > 21 ? 'Bust! Dealer wins' :
+              d > 21 || p > d ? 'You win! ♡' :
+              p < d ? 'Dealer wins' : 'Push!';
+    document.getElementById('bjmsg').textContent = msg;
+    endBJ();
+  }
+  function endBJ() {
+    document.getElementById('hitBtn').style.display = 'none';
+    document.getElementById('standBtn').style.display = 'none';
+  }
+  resetBJ();
+</script>
+</body>
+</html>
+

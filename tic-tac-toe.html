@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tic-Tac-Toe | Chic Games Lounge</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Outfit:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #e8a0b8;
+    --deep: #c45c7a;
+    --cream: #fdf6f0;
+    --gold: #d4a574;
+    --dark: #1a1218;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Outfit', system-ui, sans-serif;
+    background: linear-gradient(165deg, #2a1a24 0%, #1a1218 50%, #120d12 100%);
+    color: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 16px;
+  }
+  .top { width:100%; max-width:480px; margin-bottom:30px; }
+  .back { color: var(--gold); text-decoration:none; font-size:0.9rem; opacity:0.85; }
+  .back:hover { opacity:1; }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem;
+    margin: 10px 0 6px;
+    text-align: center;
+  }
+  .sub { text-align:center; color:rgba(253,246,240,0.65); margin-bottom:28px; font-size:0.95rem; }
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    gap: 10px;
+    margin: 0 auto 24px;
+  }
+  .cell {
+    width: 100px; height: 100px;
+    background: rgba(255,250,248,0.95);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.8rem;
+    font-weight: 500;
+    color: #3a2a32;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  }
+  .cell:hover { transform: scale(1.04); }
+  .status {
+    text-align: center;
+    font-size: 1.25rem;
+    color: var(--rose);
+    margin-bottom: 22px;
+    min-height: 1.5em;
+  }
+  .btn {
+    background: linear-gradient(135deg, #c45c7a, #a84868);
+    color: white;
+    border: none;
+    padding: 13px 32px;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(196,92,122,0.35);
+  }
+  .btn:hover { filter: brightness(1.08); }
+  @media (max-width:420px) {
+    .board { grid-template-columns: repeat(3, 85px); gap:8px; }
+    .cell { width:85px; height:85px; font-size:2.3rem; }
+  }
+</style>
+</head>
+<body>
+  <div class="top">
+    <a href="chic-games-lounge.html" class="back">← Back to Lounge</a>
+  </div>
+  <h1>Tic-Tac-Toe</h1>
+  <p class="sub">X goes first · Classic quick rounds</p>
+
+  <div id="tttGrid" class="board"></div>
+  <p id="tttStatus" class="status">X goes first</p>
+  <button class="btn" onclick="resetTTT()">New Game</button>
+
+<script>
+  let ttt = Array(9).fill(''), current = 'X';
+  function startTTT() {
+    const grid = document.getElementById('tttGrid');
+    grid.innerHTML = '';
+    for (let i = 0; i < 9; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.onclick = () => playTTT(i);
+      grid.appendChild(cell);
+    }
+    document.getElementById('tttStatus').textContent = "X goes first";
+  }
+  function playTTT(i) {
+    if (ttt[i] || checkWin()) return;
+    ttt[i] = current;
+    document.querySelectorAll('.cell')[i].textContent = current;
+    if (checkWin()) document.getElementById('tttStatus').textContent = current + ' wins! ♡';
+    else if (ttt.every(c => c)) document.getElementById('tttStatus').textContent = 'Draw!';
+    else {
+      current = current === 'X' ? 'O' : 'X';
+      document.getElementById('tttStatus').textContent = current + "'s turn";
+    }
+  }
+  function checkWin() {
+    const lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+    return lines.some(l => l.every(i => ttt[i] === current));
+  }
+  function resetTTT() { ttt.fill(''); current = 'X'; startTTT(); }
+  startTTT();
+</script>
+</body>
+</html>
+
