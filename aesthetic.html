@@ -474,194 +474,442 @@
       { src: "https://cdn.shopify.com/s/files/1/2176/7751/files/Modern_silk_flowers_on_a_marble_table.jpg?v=1759893164", tags: ["flowers","marble"], title: "Silk Flowers on Marble" }
     ];
 
-    // State
-    let currentTag = "all";
-    let currentQuery = "";
-    let filtered = [];
-    let rendered = 0;
-    const BATCH = 15;
-    let isLoading = false;
 
-    const masonry = document.getElementById("masonry");
-    const searchInput = document.getElementById("searchInput");
-    const suggestions = document.getElementById("suggestions");
-    const loading = document.getElementById("loading");
-    const empty = document.getElementById("empty");
-    const modal = document.getElementById("modal");
-    const modalImg = document.getElementById("modalImg");
-    const modalTitle = document.getElementById("modalTitle");
-    const relatedGrid = document.getElementById("relatedGrid");
-    const closeModal = document.getElementById("closeModal");
-    const closeBtnSide = document.getElementById("closeBtnSide");
+// State
+const WORKER_URL = "https://katelyns-luxe-unsplash.katelynvparry.workers.dev";
 
-    const popularSearches = ["goddess", "perfume", "marble", "mermaid", "chess queen", "succulent", "jewelry", "bedroom", "aphrodite", "bastet", "pomegranate", "gold"];
+let currentTag = "all";
+let currentQuery = "";
+let filtered = [];
+let rendered = 0;
+const BATCH = 15;
+let isLoading = false;
+let remoteMode = false;
+let remotePage = 1;
+let hasMore = false;
+let searchTimer = null;
+let activeImage = null;
 
-    function shuffle(arr) {
-      return [...arr].sort(() => Math.random() - 0.5);
-    }
+const masonry = document.getElementById("masonry");
+const searchInput = document.getElementById("searchInput");
+const suggestions = document.getElementById("suggestions");
+const loading = document.getElementById("loading");
+const empty = document.getElementById("empty");
+const modal = document.getElementById("modal");
+const modalImg = document.getElementById("modalImg");
+const modalTitle = document.getElementById("modalTitle");
+const relatedGrid = document.getElementById("relatedGrid");
+const closeModal = document.getElementById("closeModal");
+const closeBtnSide = document.getElementById("closeBtnSide");
+const saveBtn = document.getElementById("saveBtn");
 
-    function getFiltered() {
-      let res = images;
-      if (currentTag !== "all") {
-        res = res.filter(img => img.tags.some(t => t.includes(currentTag)));
-      }
-      if (currentQuery.trim()) {
-        const q = currentQuery.toLowerCase();
-        res = res.filter(img =>
-          img.tags.some(t => t.includes(q)) ||
-          img.title.toLowerCase().includes(q)
-        );
-      }
-      return shuffle(res);
-    }
+const popularSearches = [
+  "goddess", "perfume", "marble", "mermaid",
+  "chess queen", "succulent", "jewelry",
+  "dream bedroom", "aphrodite", "bastet",
+  "pomegranate", "gold", "old money",
+  "coquette", "luxury fashion", "flowers",
+  "architecture", "interior design"
+];
 
-    function createPin(img) {
-      const pin = document.createElement("div");
-      pin.className = "pin";
-      pin.innerHTML = `
-        <img src="${img.src}" alt="${img.title}" loading="lazy">
-        <div class="pin-overlay">
-          <div class="pin-caption">${img.title}</div>
-          <button class="save-btn">Save</button>
-        </div>
-      `;
-      pin.querySelector(".save-btn").addEventListener("click", (e) => {
-        e.stopPropagation();
-        e.target.textContent = "Saved";
-        e.target.style.background = "#0a0";
-      });
-      pin.addEventListener("click", () => openModal(img));
-      return pin;
-    }
+let favorites = [];
+try {
+  favorites = JSON.parse(localStorage.getItem("luxeVaultFavorites") || "[]");
+} catch {
+  favorites = [];
+}
 
-    function renderMore() {
-      if (isLoading || rendered >= filtered.length) return;
-      isLoading = true;
-      loading.style.display = "block";
+function saveFavorites() {
+  localStorage.setItem("luxeVaultFavorites", JSON.stringify(favorites));
+}
 
-      setTimeout(() => {
-        const batch = filtered.slice(rendered, rendered + BATCH);
-        batch.forEach(img => masonry.appendChild(createPin(img)));
-        rendered += batch.length;
-        isLoading = false;
-        loading.style.display = "none";
+function isSaved(img) {
+  return favorites.some(item => item.id === (img.id || img.src));
+}
 
-        if (filtered.length === 0) {
-          empty.style.display = "block";
-        } else {
-          empty.style.display = "none";
-        }
-      }, 280);
-    }
+function toggleFavorite(img, button) {
+  const id = img.id || img.src;
 
-    function resetAndRender() {
-      filtered = getFiltered();
-      rendered = 0;
-      masonry.innerHTML = "";
-      empty.style.display = "none";
-      renderMore();
-    }
-
-    // Infinite scroll
-    const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) renderMore();
-    }, { rootMargin: "300px" });
-
-    // Create a sentinel
-    const sentinel = document.createElement("div");
-    sentinel.style.height = "20px";
-    document.querySelector(".masonry-wrapper").appendChild(sentinel);
-    observer.observe(sentinel);
-
-    // Search suggestions
-    searchInput.addEventListener("input", () => {
-      const val = searchInput.value.toLowerCase().trim();
-      currentQuery = val;
-      currentTag = "all";
-      document.querySelectorAll(".qtag").forEach(t => t.classList.remove("active"));
-      document.querySelector('.qtag[data-tag="all"]').classList.add("active");
-
-      if (val.length > 0) {
-        const matches = popularSearches.filter(s => s.includes(val)).slice(0, 6);
-        if (matches.length) {
-          suggestions.innerHTML = matches.map(m =>
-            `<div class="suggestion" data-q="${m}"><strong>${m}</strong> <span>aesthetic</span></div>`
-          ).join("");
-          suggestions.classList.add("show");
-        } else {
-          suggestions.classList.remove("show");
-        }
-      } else {
-        suggestions.classList.remove("show");
-      }
-      resetAndRender();
+  if (isSaved(img)) {
+    favorites = favorites.filter(item => item.id !== id);
+  } else {
+    favorites.push({
+      id,
+      title: img.title,
+      src: img.src,
+      photographer: img.photographer || "",
+      photographer_url: img.photographer_url || "",
+      photo_url: img.photo_url || ""
     });
+  }
 
-    suggestions.addEventListener("click", (e) => {
-      const item = e.target.closest(".suggestion");
-      if (!item) return;
-      searchInput.value = item.dataset.q;
-      currentQuery = item.dataset.q;
-      suggestions.classList.remove("show");
-      resetAndRender();
-    });
+  saveFavorites();
 
-    document.addEventListener("click", (e) => {
-      if (!e.target.closest(".search-container")) suggestions.classList.remove("show");
-    });
+  if (button) {
+    button.textContent = isSaved(img) ? "♥ Saved" : "♡ Save";
+  }
 
-    // Quick tags
-    document.querySelectorAll(".qtag").forEach(tag => {
-      tag.addEventListener("click", () => {
-        document.querySelectorAll(".qtag").forEach(t => t.classList.remove("active"));
-        tag.classList.add("active");
-        currentTag = tag.dataset.tag;
-        currentQuery = "";
-        searchInput.value = "";
-        suggestions.classList.remove("show");
-        resetAndRender();
-      });
-    });
+  if (activeImage && (activeImage.id || activeImage.src) === id) {
+    saveBtn.textContent = isSaved(img) ? "♥ Saved" : "♡ Save";
+  }
+}
 
-    // Modal
-    function openModal(img) {
-      modalImg.src = img.src;
-      modalTitle.textContent = img.title;
-      document.getElementById("modalDesc").textContent = img.tags.map(t => t.charAt(0).toUpperCase() + t.slice(1)).join(" · ");
+function shuffle(arr) {
+  return [...arr].sort(() => Math.random() - 0.5);
+}
 
-      // Related
-      const related = shuffle(images.filter(i =>
-        i.src !== img.src && i.tags.some(t => img.tags.includes(t))
-      )).slice(0, 4);
+function getAttributionUrl(url) {
+  if (!url) return "https://unsplash.com/?utm_source=katelyns_luxe_life&utm_medium=referral";
 
-      relatedGrid.innerHTML = related.map(r =>
-        `<div class="related-pin" data-src="${r.src}" data-title="${r.title}">
-          <img src="${r.src}" alt="${r.title}">
+  const separator = url.includes("?") ? "&" : "?";
+  return url + separator +
+    "utm_source=katelyns_luxe_life&utm_medium=referral";
+}
+
+function createPin(img) {
+  const pin = document.createElement("div");
+  pin.className = "pin";
+
+  const image = document.createElement("img");
+  image.src = img.src;
+  image.alt = img.title || "Aesthetic inspiration";
+  image.loading = "lazy";
+
+  const overlay = document.createElement("div");
+  overlay.className = "pin-overlay";
+
+  const caption = document.createElement("div");
+  caption.className = "pin-caption";
+  caption.textContent = img.title || "Beautiful inspiration";
+
+  const credit = document.createElement("div");
+  credit.style.fontSize = "0.72rem";
+  credit.style.marginBottom = "9px";
+
+  if (img.photographer) {
+    const photographerLink = document.createElement("a");
+    photographerLink.href = getAttributionUrl(img.photographer_url);
+    photographerLink.target = "_blank";
+    photographerLink.rel = "noopener noreferrer";
+    photographerLink.style.color = "white";
+    photographerLink.textContent = "Photo by " + img.photographer;
+    photographerLink.addEventListener("click", e => e.stopPropagation());
+    credit.appendChild(photographerLink);
+
+    const sourceLink = document.createElement("a");
+    sourceLink.href = getAttributionUrl("https://unsplash.com/");
+    sourceLink.target = "_blank";
+    sourceLink.rel = "noopener noreferrer";
+    sourceLink.style.color = "white";
+    sourceLink.textContent = " · Unsplash";
+    sourceLink.addEventListener("click", e => e.stopPropagation());
+    credit.appendChild(sourceLink);
+  }
+
+  const button = document.createElement("button");
+  button.className = "save-btn";
+  button.textContent = isSaved(img) ? "♥ Saved" : "♡ Save";
+
+  button.addEventListener("click", e => {
+    e.stopPropagation();
+    toggleFavorite(img, button);
+  });
+
+  overlay.append(caption, credit, button);
+  pin.append(image, overlay);
+
+  pin.addEventListener("click", () => openModal(img));
+
+  return pin;
+}
+
+function showLoading(show, message = "Loading more divine inspo...") {
+  loading.textContent = message;
+  loading.style.display = show ? "block" : "none";
+}
+
+function renderMore() {
+  if (isLoading) return;
+
+  if (rendered >= filtered.length) {
+    if (remoteMode && hasMore) {
+      loadNextPage();
+    }
+    return;
+  }
+
+  isLoading = true;
+  showLoading(true);
+
+  const batch = filtered.slice(rendered, rendered + BATCH);
+
+  batch.forEach(img => {
+    masonry.appendChild(createPin(img));
+  });
+
+  rendered += batch.length;
+  isLoading = false;
+  showLoading(false);
+
+  empty.style.display = filtered.length ? "none" : "block";
+}
+
+async function loadNextPage() {
+  if (isLoading || !remoteMode || !hasMore) return;
+
+  isLoading = true;
+  showLoading(true);
+
+  try {
+    const term = currentQuery || currentTag;
+    const url = `${WORKER_URL}/search?q=${encodeURIComponent(term)}&page=${remotePage}`;
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error("Search request failed");
+    }
+
+    const data = await response.json();
+
+    const newImages = data.results.map(photo => ({
+      id: photo.id,
+      title: photo.title || "Beautiful inspiration",
+      src: photo.image,
+      tags: [term.toLowerCase()],
+      photographer: photo.photographer,
+      photographer_url: photo.photographer_url,
+      photo_url: photo.photo_url
+    }));
+
+    filtered.push(...newImages);
+    remotePage++;
+    hasMore = remotePage <= data.total_pages;
+
+    const batch = filtered.slice(rendered, rendered + BATCH);
+    batch.forEach(img => masonry.appendChild(createPin(img)));
+    rendered += batch.length;
+
+    empty.style.display = filtered.length ? "none" : "block";
+
+  } catch (error) {
+    console.error("Unsplash search error:", error);
+    loading.textContent = "Couldn't load images. Please try again.";
+    loading.style.display = "block";
+  }
+
+  isLoading = false;
+  if (loading.textContent === "Loading more divine inspo...") {
+    showLoading(false);
+  }
+}
+
+async function resetAndRender() {
+  clearTimeout(searchTimer);
+
+  masonry.innerHTML = "";
+  filtered = [];
+  rendered = 0;
+  remotePage = 1;
+  hasMore = false;
+  isLoading = false;
+  empty.style.display = "none";
+  showLoading(false);
+
+  remoteMode = currentQuery.trim().length > 0 || currentTag !== "all";
+
+  if (!remoteMode) {
+    filtered = shuffle(images);
+    renderMore();
+    return;
+  }
+
+  await loadNextPage();
+}
+
+// Infinite scrolling
+const observer = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) {
+    renderMore();
+  }
+}, { rootMargin: "500px" });
+
+const sentinel = document.createElement("div");
+sentinel.style.height = "20px";
+document.querySelector(".masonry-wrapper").appendChild(sentinel);
+observer.observe(sentinel);
+
+// Search suggestions
+searchInput.addEventListener("input", () => {
+  const val = searchInput.value.trim().toLowerCase();
+
+  currentQuery = val;
+  currentTag = "all";
+
+  document.querySelectorAll(".qtag").forEach(tag =>
+    tag.classList.remove("active")
+  );
+
+  document.querySelector('.qtag[data-tag="all"]').classList.add("active");
+
+  if (val.length > 0) {
+    const matches = popularSearches
+      .filter(term => term.includes(val))
+      .slice(0, 6);
+
+    if (matches.length) {
+      suggestions.innerHTML = matches.map(term =>
+        `<div class="suggestion" data-q="${term}">
+          <strong>${term}</strong> <span>aesthetic</span>
         </div>`
       ).join("");
 
-      relatedGrid.querySelectorAll(".related-pin").forEach(p => {
-        p.addEventListener("click", () => {
-          const found = images.find(i => i.src === p.dataset.src);
-          if (found) openModal(found);
-        });
-      });
-
-      modal.classList.add("open");
-      document.body.style.overflow = "hidden";
+      suggestions.classList.add("show");
+    } else {
+      suggestions.classList.remove("show");
     }
+  } else {
+    suggestions.classList.remove("show");
+  }
 
-    function closeModalFn() {
-      modal.classList.remove("open");
-      document.body.style.overflow = "";
-    }
+  clearTimeout(searchTimer);
 
-    closeModal.addEventListener("click", closeModalFn);
-    closeBtnSide.addEventListener("click", closeModalFn);
-    modal.addEventListener("click", (e) => { if (e.target === modal) closeModalFn(); });
-
-    // Init
+  searchTimer = setTimeout(() => {
     resetAndRender();
+  }, 450);
+});
+
+suggestions.addEventListener("click", e => {
+  const item = e.target.closest(".suggestion");
+  if (!item) return;
+
+  searchInput.value = item.dataset.q;
+  currentQuery = item.dataset.q;
+  suggestions.classList.remove("show");
+  resetAndRender();
+});
+
+document.addEventListener("click", e => {
+  if (!e.target.closest(".search-container")) {
+    suggestions.classList.remove("show");
+  }
+});
+
+// Quick tags now search Unsplash
+document.querySelectorAll(".qtag").forEach(tag => {
+  tag.addEventListener("click", () => {
+    document.querySelectorAll(".qtag").forEach(t =>
+      t.classList.remove("active")
+    );
+
+    tag.classList.add("active");
+    currentTag = tag.dataset.tag;
+    currentQuery = "";
+    searchInput.value = "";
+    suggestions.classList.remove("show");
+
+    resetAndRender();
+  });
+});
+
+// Modal
+function openModal(img) {
+  activeImage = img;
+
+  modalImg.src = img.src;
+  modalImg.alt = img.title || "Aesthetic inspiration";
+  modalTitle.textContent = img.title || "Aesthetic Pin";
+
+  const desc = document.getElementById("modalDesc");
+  desc.textContent = "";
+
+  const tags = document.createElement("span");
+  tags.textContent = (img.tags || []).map(t =>
+    t.charAt(0).toUpperCase() + t.slice(1)
+  ).join(" · ");
+
+  desc.appendChild(tags);
+
+  if (img.photographer) {
+    const credit = document.createElement("div");
+    credit.style.marginTop = "12px";
+
+    const link = document.createElement("a");
+    link.href = getAttributionUrl(img.photographer_url);
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = "Photograph by " + img.photographer;
+    link.style.color = "#9b7951";
+
+    credit.appendChild(link);
+    desc.appendChild(credit);
+
+    const source = document.createElement("div");
+    source.style.marginTop = "5px";
+
+    const unsplashLink = document.createElement("a");
+    unsplashLink.href = getAttributionUrl("https://unsplash.com/");
+    unsplashLink.target = "_blank";
+    unsplashLink.rel = "noopener noreferrer";
+    unsplashLink.textContent = "View on Unsplash";
+    unsplashLink.style.color = "#9b7951";
+
+    source.appendChild(unsplashLink);
+    desc.appendChild(source);
+  }
+
+  saveBtn.textContent = isSaved(img) ? "♥ Saved" : "♡ Save";
+
+  const related = shuffle(filtered.filter(item =>
+    item.id !== img.id && item.src !== img.src
+  )).slice(0, 4);
+
+  relatedGrid.innerHTML = "";
+
+  related.forEach(item => {
+    const tile = document.createElement("div");
+    tile.className = "related-pin";
+
+    const image = document.createElement("img");
+    image.src = item.src;
+    image.alt = item.title || "Related inspiration";
+    image.loading = "lazy";
+
+    tile.appendChild(image);
+    tile.addEventListener("click", () => openModal(item));
+    relatedGrid.appendChild(tile);
+  });
+
+  modal.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+saveBtn.addEventListener("click", () => {
+  if (activeImage) {
+    toggleFavorite(activeImage, saveBtn);
+  }
+});
+
+function closeModalFn() {
+  modal.classList.remove("open");
+  document.body.style.overflow = "";
+  activeImage = null;
+}
+
+closeModal.addEventListener("click", closeModalFn);
+closeBtnSide.addEventListener("click", closeModalFn);
+
+modal.addEventListener("click", e => {
+  if (e.target === modal) closeModalFn();
+});
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeModalFn();
+});
+
+// Initial gallery
+resetAndRender();
+
   </script>
 </body>
 </html>
