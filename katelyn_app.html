@@ -37,18 +37,7 @@
     <button onclick="logout()">Logout</button>
   </nav>
 
-  <!-- Login -->
-  <div id="login" class="screen active">
-    <div class="card">
-      <h2>Welcome Back, Queen</h2>
-      <p>Log in to unlock your campus glow-up</p>
-      <form onsubmit="handleLogin(event)">
-        <input type="text" id="email" placeholder="Email" required>
-        <input type="password" id="password" placeholder="Password" required>
-        <button type="submit">Login</button>
-      </form>
-    </div>
-  </div>
+
 
   <!-- Home Screen -->
   <div id="home" class="screen">
@@ -148,43 +137,18 @@
       <button>Search Chegg / Amazon (soon!)</button>
     </div>
   </div>
-
+  
+  <!-- Equations -->
+ </div>
+<a href="equations.html"><button>Open Finance Equations</button></a>
+ </div>
+</div>
+  
   <footer>
     <a href="./" class="back-link">← Back to Campus Queens Hub</a><br><br>
     Made with love by Katelyn • Class of 2028
   </footer>
 
-  <script>
-    function handleLogin(event) {
-      event.preventDefault();
-      const email = document.getElementById('email').value;
-      // Optional: You could grab the name from email or add a name field later
-      document.getElementById('login').classList.remove('active');
-      document.getElementById('home').classList.add('active');
-      document.getElementById('mainNav').style.display = 'flex';
-    }
-
-    function showScreen(id) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-    }
-
-    function logout() {
-      document.getElementById('mainNav').style.display = 'none';
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById('login').classList.add('active');
-      // Clear form fields if you want
-      document.getElementById('email').value = '';
-      document.getElementById('password').value = '';
-    }
-
-    function splitBill() {
-      let amount = document.getElementById('amount').value;
-      let people = document.getElementById('people').value;
-      if (!amount || !people) return alert("Fill both fields, babe!");
-      let each = (amount / people).toFixed(2);
-      document.getElementById('result').innerHTML = `Each pays $${each}<br><a href="venmo://pay?amount=${each}">Open Venmo</a>`;
-    }
-  </script>
+  
 </body>
 </html>
