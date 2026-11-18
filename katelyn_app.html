@@ -6,10 +6,11 @@
   <title>CampusKit Student App – Katelyn's Campus Queens</title>
   <link href="https://fonts.googleapis.com/css2?family=Georgia&family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    * {box-sizing: border-box;}
     body {font-family:'Georgia',serif;margin:0;background:#ffeef8;color:#ff6bc1;text-align:center;}
     header {background:#ff69b4;color:white;padding:30px;font-size:2.4em;font-weight:bold;}
-    nav {display:none;justify-content:center;background:#ff1493;padding:15px;gap:12px;flex-wrap:wrap;}
-    nav button {background:white;color:#ff1493;border:none;padding:10px 18px;border-radius:30px;font-weight:600;cursor:pointer;box-shadow:0 4px 15px rgba(255,20,147,0.3);}
+    nav {display:flex;justify-content:center;background:#ff1493;padding:15px;gap:12px;flex-wrap:wrap;}
+    nav button {background:white;color:#ff1493;border:none;padding:10px 18px;border-radius:30px;font-weight:600;cursor:pointer;box-shadow:0 4px 15px rgba(255,20,147,0.3);width:auto;margin:0;}
     nav button:hover {transform:scale(1.08);}
     .screen {display:none;padding:20px 20px 60px;}
     .active {display:block !important;}
@@ -34,16 +35,21 @@
     <button onclick="showScreen('finals')">Finals</button>
     <button onclick="showScreen('split')">Split Bills</button>
     <button onclick="showScreen('books')">Textbooks</button>
-    <button onclick="logout()">Logout</button>
+    <a href="equations.html" style="text-decoration:none;"><button>Equations</button></a>
   </nav>
 
-
-
-  <!-- Home Screen -->
-  <div id="home" class="screen">
+  <!-- Home Screen (Active by Default) -->
+  <div id="home" class="screen active">
     <div class="card">
       <h2>Hello, Queen! 👑</h2>
       <p>Your ultimate sidekick for schedules, moods, and to-dos.</p>
+
+      <!-- Equations Card -->
+      <div class="feature">
+        <h3>Finance Equations ✨</h3>
+        <p>Plug-and-play calculators for ratios, bonds & NPV.</p>
+        <a href="equations.html"><button>Open Finance Equations</button></a>
+      </div>
 
       <!-- Schedule Card -->
       <div class="feature">
@@ -75,7 +81,7 @@
   <!-- Feed -->
   <div id="feed" class="screen"><div class="card"><h2>Feed</h2><p>Latest campus tea coming soon…</p></div></div>
 
-  <!-- Shop (with Amazon affiliate example) -->
+  <!-- Shop -->
   <div id="shop" class="screen">
     <div class="card">
       <h2>Shop Dorm Must-Haves ✨</h2>
@@ -83,21 +89,21 @@
       <small>(I earn a small commission when you shop through my links — thank you queens! 💕)</small></p>
 
       <div class="feature">
-        <h3>Shop my amzon afiliate page </h3>
+        <h3>Shop my Amazon affiliate page</h3>
         <a href="https://katelynvparry-tech.github.io/katelyns-luxe-life/dorm3.html" target="_blank">
           <button>Shop My Amazon Storefront</button>
         </a>
       </div>
 
       <div class="feature">
-        <h3>placeholder for future shop </h3>
+        <h3>Placeholder for future shop</h3>
         <a href="https://amzn.to/yourshortlink" target="_blank">
           <button>Browse Curated List</button>
         </a>
       </div>
 
       <div class="feature">
-        <h3>Shop Amazon </h3>
+        <h3>Shop Amazon</h3>
         <a href="https://amzn.to/anothershortlink" target="_blank">
           <button>See Deals</button>
         </a>
@@ -117,6 +123,7 @@
         <li>ID + scantron</li>
         <li>Charged laptop/phone</li>
       </ul>
+      <a href="equations.html"><button style="margin-top:20px;">Open Finance Equations 💖</button></a>
     </div>
   </div>
 
@@ -137,18 +144,31 @@
       <button>Search Chegg / Amazon (soon!)</button>
     </div>
   </div>
-  
-  <!-- Equations -->
- </div>
-<a href="equations.html"><button>Open Finance Equations</button></a>
- </div>
-</div>
-  
+
   <footer>
     <a href="./" class="back-link">← Back to Campus Queens Hub</a><br><br>
     Made with love by Katelyn • Class of 2028
   </footer>
 
-  
+  <script>
+    function showScreen(id) {
+      var screens = document.querySelectorAll('.screen');
+      for (var i = 0; i < screens.length; i++) {
+        screens[i].classList.remove('active');
+      }
+      document.getElementById(id).classList.add('active');
+    }
+
+    function splitBill() {
+      var amount = parseFloat(document.getElementById('amount').value);
+      var people = parseInt(document.getElementById('people').value);
+      if (!amount || !people || amount <= 0 || people <= 0) {
+        alert("Enter a valid amount and at least 1 girlie, babe!");
+        return;
+      }
+      var each = (amount / people).toFixed(2);
+      document.getElementById('result').innerHTML = 'Each pays $' + each + '<br><a href="venmo://pay?amount=' + each + '">Open Venmo</a>';
+    }
+  </script>
 </body>
 </html>
