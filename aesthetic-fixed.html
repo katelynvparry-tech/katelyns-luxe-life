@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Katelyn's Luxe Aesthetic Vault ♡</title>
+  <style>
+    :root {
+      --gold: #d4af37;
+      --rose: #e8a0b0;
+      --cream: #f8f4ef;
+      --text: #5c4e42;
+      --soft: rgba(212, 175, 55, 0.15);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(248, 244, 239, 0.92);
+      backdrop-filter: blur(12px);
+      padding: 18px 20px 12px;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.12);
+    }
+
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      background: linear-gradient(90deg, var(--gold), var(--rose));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    /* Search */
+    .search-container {
+      width: 100%;
+      max-width: 680px;
+      position: relative;
+    }
+
+    .search-box {
+      width: 100%;
+      padding: 16px 20px 16px 52px;
+      border: none;
+      border-radius: 50px;
+      background: white;
+      box-shadow: 0 4px 20px var(--soft);
+      font-size: 1.05rem;
+      font-family: inherit;
+      color: var(--text);
+      outline: none;
+      transition: box-shadow 0.25s;
+    }
+
+    .search-box:focus {
+      box-shadow: 0 6px 28px rgba(212, 175, 55, 0.28);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.55;
+      font-size: 1.15rem;
+    }
+
+    /* Suggestions */
+    .suggestions {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+      display: none;
+      overflow: hidden;
+      z-index: 50;
+    }
+
+    .suggestions.show { display: block; }
+
+    .suggestion {
+      padding: 12px 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background 0.15s;
+    }
+
+    .suggestion:hover { background: #faf6f1; }
+
+    .suggestion span { opacity: 0.5; font-size: 0.9rem; }
+
+    /* Quick tags */
+    .quick-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 4px;
+    }
+
+    .qtag {
+      background: white;
+      border: 1px solid #eadfce;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: #7a6b5c;
+      transition: all 0.2s;
+    }
+
+    .qtag:hover, .qtag.active {
+      background: linear-gradient(90deg, var(--gold), var(--rose));
+      color: white;
+      border-color: transparent;
+    }
+
+    /* Masonry */
+    .masonry-wrapper {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 28px 18px 80px;
+    }
+
+    .masonry {
+      column-count: 5;
+      column-gap: 18px;
+    }
+
+    @media (max-width: 1300px) { .masonry { column-count: 4; } }
+    @media (max-width: 1000px) { .masonry { column-count: 3; } }
+    @media (max-width: 700px)  { .masonry { column-count: 2; } }
+    @media (max-width: 420px)  { .masonry { column-count: 1; } }
+
+    .pin {
+      break-inside: avoid;
+      margin-bottom: 18px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: white;
+      position: relative;
+      cursor: zoom-in;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .pin:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(212, 175, 55, 0.18);
+    }
+
+    .pin img {
+      width: 100%;
+      display: block;
+      vertical-align: middle;
+    }
+
+    /* Hover overlay */
+    .pin-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(40,30,25,0.65) 0%, transparent 45%);
+      opacity: 0;
+      transition: opacity 0.25s;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 16px;
+      color: white;
+    }
+
+    .pin:hover .pin-overlay { opacity: 1; }
+
+    .pin-caption {
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+
+    .save-btn {
+      align-self: flex-start;
+      background: #e60023;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 24px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: system-ui, sans-serif;
+      transition: background 0.2s;
+    }
+
+    .save-btn:hover { background: #ad081b; }
+
+    /* Loading & empty */
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #a08b7a;
+      font-style: italic;
+      display: none;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 80px 20px;
+      color: #a08b7a;
+      display: none;
+    }
+
+    .empty h3 { font-size: 1.4rem; margin-bottom: 8px; }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(30, 22, 18, 0.88);
+      display: none;
+      z-index: 1000;
+      overflow-y: auto;
+      padding: 40px 20px;
+      backdrop-filter: blur(8px);
+    }
+
+    .modal.open { display: block; }
+
+    .modal-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 24px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+    }
+
+    @media (max-width: 800px) {
+      .modal-inner { grid-template-columns: 1fr; }
+    }
+
+    .modal-image {
+      background: #f5f0ea;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+    }
+
+    .modal-image img {
+      max-width: 100%;
+      max-height: 80vh;
+      display: block;
+    }
+
+    .modal-side {
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-side h2 {
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+      color: #4a3f35;
+    }
+
+    .modal-side p {
+      color: #8b7a6b;
+      margin-bottom: 24px;
+      font-size: 0.95rem;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    .btn-primary {
+      background: #e60023;
+      color: white;
+      border: none;
+      padding: 12px 22px;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: system-ui, sans-serif;
+    }
+
+    .btn-secondary {
+      background: #f0eae3;
+      color: #5c4e42;
+      border: none;
+      padding: 12px 22px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-family: system-ui, sans-serif;
+    }
+
+    .related-title {
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      color: #5c4e42;
+    }
+
+    .related-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .related-pin {
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      aspect-ratio: 1;
+    }
+
+    .related-pin img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    .related-pin:hover img { transform: scale(1.06); }
+
+    .close-modal {
+      position: fixed;
+      top: 20px;
+      right: 24px;
+      background: white;
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 1001;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      display: none;
+    }
+
+    .modal.open + .close-modal,
+    .modal.open ~ .close-modal { display: flex; align-items: center; justify-content: center; }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: #b09e8d;
+      font-style: italic;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <h1>Katelyn's Luxe Aesthetic Vault ♡</h1>
+
+      <div class="search-container">
+        <span class="search-icon">✧</span>
+        <input type="text" class="search-box" id="searchInput" placeholder="Search for goddess, perfume, marble, mermaid, chess..." autocomplete="off">
+        <div class="suggestions" id="suggestions"></div>
+      </div>
+
+      <div class="quick-tags" id="quickTags">
+        <span class="qtag active" data-tag="all">All</span>
+        <span class="qtag" data-tag="goddess">Goddess</span>
+        <span class="qtag" data-tag="perfume">Perfume</span>
+        <span class="qtag" data-tag="marble">Marble</span>
+        <span class="qtag" data-tag="chess">Chess Queen</span>
+        <span class="qtag" data-tag="mermaid">Mermaid</span>
+        <span class="qtag" data-tag="succulent">Succulent</span>
+        <span class="qtag" data-tag="jewelry">Jewelry</span>
+        <span class="qtag" data-tag="bedroom">Dream Bedroom</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="masonry-wrapper">
+    <div class="masonry" id="masonry"></div>
+    <div class="loading" id="loading">Loading more divine inspo...</div>
+    <div class="empty" id="empty">
+      <h3>No matching vibes found</h3>
+      <p>Try searching for goddess, perfume, marble, mermaid...</p>
+    </div>
+  </div>
+
+  <div class="footer">♡ Visual search for elevated everyday luxury ♡</div>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <div class="modal-inner">
+      <div class="modal-image">
+        <img id="modalImg" src="" alt="">
+      </div>
+      <div class="modal-side">
+        <h2 id="modalTitle">Aesthetic Pin</h2>
+        <p id="modalDesc">Golden divine oracle queen energy</p>
+        <div class="modal-actions">
+          <button class="btn-primary" id="saveBtn">Save</button>
+          <button class="btn-secondary" id="closeBtnSide">Close</button>
+        </div>
+        <div class="related-title">More like this</div>
+        <div class="related-grid" id="relatedGrid"></div>
+      </div>
+    </div>
+  </div>
+  <button class="close-modal" id="closeModal">×</button>
+
+  <!-- Load Supabase before the page script so window.supabase exists. -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+     // SUPABASE CONNECTION
+const SUPABASE_URL = "https://aphoxrcceljstxvyueun.supabase.co";
+
+const SUPABASE_ANON_KEY = "sb_publishable_7oDpTb8GgyT2iGwsGOZHdQ_Uu03rS0A";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+    const images = [
+      { src: "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTExL3Jhd3BpeGVsb2ZmaWNlMTlfZHJlYW15X3BhbGVfcGlua19hZXN0aGV0aWNfd2FsbHBhcGVyX29mX2dyZWVrX18yZjU1MjZhNC0xNzM4LTQ5ZDItYjVhNi1hNjgyN2E5MjQxMGVfMS5qcGc.jpg", tags: ["goddess","statue","pink","aphrodite"], title: "Dreamy Aphrodite" },
+      { src: "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTExL3Jhd3BpeGVsb2ZmaWNlMTlfZHJlYW15X3BhbGVfcGlua19hZXN0aGV0aWNfd2FsbHBhcGVyX29mX2dyZWVrX19mODI1OGY2ZS1jMjY0LTRiMjktOTIyMS1hOTgyYjBmZGU4ODBfMS5qcGc.jpg", tags: ["goddess","statue","soft"], title: "Soft Goddess Portrait" },
+      { src: "https://thumbs.dreamstime.com/b/greek-goddess-aphrodite-depicted-digital-artwork-statue-offered-as-stock-greek-goddess-aphrodite-depicted-365584933.jpg", tags: ["goddess","aphrodite","statue"], title: "Aphrodite Statue" },
+      { src: "https://indonesiaexpat.id/wp-content/uploads/2025/02/3d-rendering-statue-with-flowers.jpg", tags: ["goddess","statue","flowers"], title: "Floral Goddess" },
+      { src: "https://i.etsystatic.com/12061794/r/il/48e310/2281236527/il_fullxfull.2281236527_904y.jpg", tags: ["goddess","statue","classical"], title: "Classical Goddess" },
+      { src: "https://i.ebayimg.com/images/g/KQYAAOSw-wtknRyz/s-l1200.jpg", tags: ["bastet","egyptian","cat","goddess"], title: "Bastet Cat Goddess" },
+      { src: "https://i.etsystatic.com/24513741/c/803/637/32/251/il/cf57f5/5507997552/il_340x270.5507997552_gubh.jpg", tags: ["bastet","cat","egyptian"], title: "Elegant Bastet" },
+      { src: "https://i.ebayimg.com/images/g/CNAAAOSwOTRnfZ~0/s-l1200.jpg", tags: ["bastet","egyptian","gold"], title: "Golden Bastet" },
+      { src: "https://i.etsystatic.com/13933039/r/il/d8df97/5934750712/il_fullxfull.5934750712_cwbh.jpg", tags: ["medusa","statue","myth"], title: "Medusa Bust" },
+      { src: "https://i.etsystatic.com/53505305/r/il/274842/6251482553/il_fullxfull.6251482553_gros.jpg", tags: ["medusa","gold"], title: "Golden Medusa" },
+      { src: "https://i.etsystatic.com/13953711/c/1140/906/0/0/il/fedfde/3752129863/il_340x270.3752129863_l6ky.jpg", tags: ["persephone","goddess"], title: "Persephone Energy" },
+      { src: "https://m.media-amazon.com/images/I/61vM6+hdfnL.jpg", tags: ["persephone","statue","goddess"], title: "Persephone Statue" },
+      { src: "https://i.etsystatic.com/19721251/r/il/09f609/5495538689/il_570xN.5495538689_i9dp.jpg", tags: ["chess","queen","gold"], title: "Golden Chess Queen" },
+      { src: "https://thumbs.dreamstime.com/b/high-end-marble-chess-set-gold-pieces-elegant-angle-shot-luxurious-white-board-opposing-sides-highly-detailed-408756737.jpg", tags: ["chess","marble","gold","queen"], title: "Luxury Marble Chess" },
+      { src: "https://thumbs.dreamstime.com/b/gold-glass-chess-pieces-board-closeup-406431187.jpg", tags: ["chess","gold"], title: "Gold Glass Chess" },
+      { src: "https://media.istockphoto.com/id/2172836783/photo/a-chic-bottle-with-a-gold-cap-of-cosmetic-perfume-on-an-abstract-marble-background-top-view.jpg?s=170667a&w=is&k=20&c=sf5D5RZ5Tr-J_I20AnLUzH2IgA-TVUZM35doCh5U7nc=", tags: ["perfume","marble","gold"], title: "Chic Perfume on Marble" },
+      { src: "https://www.shutterstock.com/image-photo/luxury-perfume-bottle-on-marble-260nw-2606663609.jpg", tags: ["perfume","marble"], title: "Luxury Perfume Bottle" },
+      { src: "https://thumbs.dreamstime.com/b/luxurious-clear-glass-perfume-bottle-gold-cap-elegant-marble-display-surrounded-fresh-green-leaves-description-389652792.jpg", tags: ["perfume","gold"], title: "Glass Perfume Gold Cap" },
+      { src: "https://t3.ftcdn.net/jpg/16/60/01/86/360_F_1660018623_YQ3FO2htj65aBeHy3OYzK3HBCCRP9yZW.jpg", tags: ["pomegranate","fruit"], title: "Pomegranate Still Life" },
+      { src: "https://c8.alamy.com/comp/2PHJW6B/cactus-and-succulents-collection-in-small-decorative-ceramic-flowerpots-arranged-on-a-marble-stand-2PHJW6B.jpg", tags: ["succulent","plant"], title: "Succulent Collection" },
+      { src: "https://i.etsystatic.com/31725365/r/il/75dd53/5070390967/il_fullxfull.5070390967_9r5k.jpg", tags: ["succulent"], title: "Soft Succulents" },
+      { src: "https://bloomscape.com/wp-content/uploads/2021/07/Succulents-scaled.jpg?ver=559429", tags: ["succulent","green"], title: "Lush Succulents" },
+      { src: "https://i.etsystatic.com/9313816/r/il/017eb8/2265305937/il_fullxfull.2265305937_4kau.jpg", tags: ["mermaid","scales"], title: "Mermaid Scales" },
+      { src: "https://happywall-img-gallery.imgix.net/53341/mermaid-glitter-scales-2a-roll.jpg?w=1400&auto=format&q=40", tags: ["mermaid","scales","glitter"], title: "Glitter Mermaid Scales" },
+      { src: "https://m.media-amazon.com/images/S/aplus-media-library-service-media/f703c0f9-528b-4324-9bcf-623fb8eccf14.__CR0,0,1940,1200_PT0_SX970_V1___.jpg", tags: ["bedroom","pink","dream"], title: "Dreamy Pink Bedroom" },
+      { src: "https://basichomediy.com/wp-content/uploads/2023/02/pink-princess-bedroom-ideas-with-canopy-1024x683.png", tags: ["bedroom","canopy","pink"], title: "Princess Canopy Bed" },
+      { src: "https://media.istockphoto.com/id/1331089160/photo/different-elegant-bijouterie-and-plate-on-white-marble-table-flat-lay.jpg?s=612x612&w=0&k=20&c=3WOGBkSwU9hfJD-x43wMEBITuc0NrUD6E8x1l0BYQOA=", tags: ["jewelry","gold","marble"], title: "Elegant Jewelry Flatlay" },
+      { src: "https://imageretouchinglab.com/wp-content/uploads/2024/06/10.-Rose-Gold-Flower-Jewelry-1024x687.webp", tags: ["jewelry","rose","gold"], title: "Rose Gold Flower Jewelry" },
+      { src: "https://thumbs.dreamstime.com/b/abstract-pink-gold-swirling-marble-texture-glitter-accents-generative-ai-image-369831919.jpg", tags: ["marble","pink","gold"], title: "Pink Gold Marble" },
+      { src: "https://everwallpaper.com/cdn/shop/products/1069.jpg?v=1658824666", tags: ["marble","pink"], title: "Soft Pink Marble" },
+      { src: "https://png.pngtree.com/background/20250522/original/pngtree-abstract-pink-gold-marble-background-with-glitter-swirls-for-stylish-texture-picture-image_16566477.jpg", tags: ["marble","gold","glitter"], title: "Glitter Marble Texture" },
+      { src: "https://thumbs.dreamstime.com/b/elegant-swirling-pink-gold-marble-texture-liquid-paint-effect-perfect-sophisticated-wallpaper-designs-elegant-327777952.jpg", tags: ["marble","pink","gold"], title: "Swirling Pink Gold Marble" },
+      { src: "https://rosehausco.com/cdn/shop/files/Pink_Collection.jpg?v=1753942606&width=3840", tags: ["flowers","pink"], title: "Pink Flower Collection" },
+      { src: "https://cdn.shopify.com/s/files/1/2176/7751/files/Modern_silk_flowers_on_a_marble_table.jpg?v=1759893164", tags: ["flowers","marble"], title: "Silk Flowers on Marble" }
+    ];
+
+
+// State
+const WORKER_URL = "https://katelyns-luxe-unsplash.katelynvparry.workers.dev";
+
+let currentTag = "all";
+let currentQuery = "";
+let filtered = [];
+let rendered = 0;
+const BATCH = 15;
+let isLoading = false;
+let remoteMode = false;
+let remotePage = 1;
+let hasMore = false;
+let searchTimer = null;
+let activeImage = null;
+
+const masonry = document.getElementById("masonry");
+const searchInput = document.getElementById("searchInput");
+const suggestions = document.getElementById("suggestions");
+const loading = document.getElementById("loading");
+const empty = document.getElementById("empty");
+const modal = document.getElementById("modal");
+const modalImg = document.getElementById("modalImg");
+const modalTitle = document.getElementById("modalTitle");
+const relatedGrid = document.getElementById("relatedGrid");
+const closeModal = document.getElementById("closeModal");
+const closeBtnSide = document.getElementById("closeBtnSide");
+const saveBtn = document.getElementById("saveBtn");
+
+const popularSearches = [
+  "goddess", "perfume", "marble", "mermaid",
+  "chess queen", "succulent", "jewelry",
+  "dream bedroom", "aphrodite", "bastet",
+  "pomegranate", "gold", "old money",
+  "coquette", "luxury fashion", "flowers",
+  "architecture", "interior design"
+];
+
+let favorites = [];
+try {
+  favorites = JSON.parse(localStorage.getItem("luxeVaultFavorites") || "[]");
+} catch {
+  favorites = [];
+}
+
+function saveFavorites() {
+  localStorage.setItem("luxeVaultFavorites", JSON.stringify(favorites));
+}
+
+function isSaved(img) {
+  return favorites.some(item => item.id === (img.id || img.src));
+}
+
+function toggleFavorite(img, button) {
+  const id = img.id || img.src;
+
+  if (isSaved(img)) {
+    favorites = favorites.filter(item => item.id !== id);
+  } else {
+    favorites.push({
+      id,
+      title: img.title,
+      src: img.src,
+      photographer: img.photographer || "",
+      photographer_url: img.photographer_url || "",
+      photo_url: img.photo_url || ""
+    });
+  }
+
+  saveFavorites();
+
+  if (button) {
+    button.textContent = isSaved(img) ? "♥ Saved" : "♡ Save";
+  }
+
+  if (activeImage && (activeImage.id || activeImage.src) === id) {
+    saveBtn.textContent = isSaved(img) ? "♥ Saved" : "♡ Save";
+  }
+}
+
+function shuffle(arr) {
+  return [...arr].sort(() => Math.random() - 0.5);
+}
+
+function getAttributionUrl(url) {
+  if (!url) return "https://unsplash.com/?utm_source=katelyns_luxe_life&utm_medium=referral";
+
+  const separator = url.includes("?") ? "&" : "?";
+  return url + separator +
+    "utm_source=katelyns_luxe_life&utm_medium=referral";
+}
+
+function createPin(img) {
+  const pin = document.createElement("div");
+  pin.className = "pin";
+
+  const image = document.createElement("img");
+  image.src = img.src;
+  image.alt = img.title || "Aesthetic inspiration";
+  image.loading = "lazy";
+
+  const overlay = document.createElement("div");
+  overlay.className = "pin-overlay";
+
+  const caption = document.createElement("div");
+  caption.className = "pin-caption";
+  caption.textContent = img.title || "Beautiful inspiration";
+
+  const credit = document.createElement("div");
+  credit.style.fontSize = "0.72rem";
+  credit.style.marginBottom = "9px";
+
+  if (img.photographer) {
+    const photographerLink = document.createElement("a");
+    photographerLink.href = getAttributionUrl(img.photographer_url);
+    photographerLink.target = "_blank";
+    photographerLink.rel = "noopener noreferrer";
+    photographerLink.style.color = "white";
+    photographerLink.textContent = "Photo by " + img.photographer;
+    photographerLink.addEventListener("click", e => e.stopPropagation());
+    credit.appendChild(photographerLink);
+
+    const sourceLink = document.createElement("a");
+    sourceLink.href = getAttributionUrl("https://unsplash.com/");
+    sourceLink.target = "_blank";
+    sourceLink.rel = "noopener noreferrer";
+    sourceLink.style.color = "white";
+    sourceLink.textContent = " · Unsplash";
+    sourceLink.addEventListener("click", e => e.stopPropagation());
+    credit.appendChild(sourceLink);
+  }
+
+  const button = document.createElement("button");
+  button.className = "save-btn";
+  button.textContent = isSaved(img) ? "♥ Saved" : "♡ Save";
+
+  button.addEventListener("click", e => {
+    e.stopPropagation();
+    toggleFavorite(img, button);
+  });
+
+  overlay.append(caption, credit, button);
+  pin.append(image, overlay);
+
+  pin.addEventListener("click", () => openModal(img));
+
+  return pin;
+}
+
+function showLoading(show, message = "Loading more divine inspo...") {
+  loading.textContent = message;
+  loading.style.display = show ? "block" : "none";
+}
+
+function renderMore() {
+  if (isLoading) return;
+
+  if (rendered >= filtered.length) {
+    if (remoteMode && hasMore) {
+      loadNextPage();
+    }
+    return;
+  }
+
+  isLoading = true;
+  showLoading(true);
+
+  const batch = filtered.slice(rendered, rendered + BATCH);
+
+  batch.forEach(img => {
+    masonry.appendChild(createPin(img));
+  });
+
+  rendered += batch.length;
+  isLoading = false;
+  showLoading(false);
+
+  empty.style.display = filtered.length ? "none" : "block";
+}
+
+async function loadNextPage() {
+  if (isLoading || !remoteMode || !hasMore) return;
+
+  isLoading = true;
+  showLoading(true);
+
+  try {
+    const term = currentQuery || currentTag;
+    const url = `${WORKER_URL}/search?q=${encodeURIComponent(term)}&page=${remotePage}`;
+
+    const response = await fetch(url);
+console.log("UNSPLASH WORKER RESPONSE:", response.status, url);
+    
+    if (!response.ok) {
+      throw new Error("Search request failed");
+    }
+
+    const data = await response.json();
+
+    if (!Array.isArray(data.results)) {
+      throw new Error("The image service returned an unexpected response.");
+    }
+
+    const newImages = data.results.map(photo => ({
+      id: photo.id,
+      title: photo.title || "Beautiful inspiration",
+      src: photo.image,
+      tags: [term.toLowerCase()],
+      photographer: photo.photographer,
+      photographer_url: photo.photographer_url,
+      photo_url: photo.photo_url
+    }));
+
+    filtered.push(...newImages);
+    remotePage++;
+    const totalPages = Number(data.total_pages) || remotePage;
+    hasMore = remotePage <= totalPages;
+
+    const batch = filtered.slice(rendered, rendered + BATCH);
+    batch.forEach(img => masonry.appendChild(createPin(img)));
+    rendered += batch.length;
+
+    empty.style.display = filtered.length ? "none" : "block";
+
+  } catch (error) {
+    console.error("Unsplash search error:", error);
+    loading.textContent = "Couldn't load images. Please try again.";
+    loading.style.display = "block";
+  }
+
+  isLoading = false;
+  if (loading.textContent === "Loading more divine inspo...") {
+    showLoading(false);
+  }
+}
+
+async function resetAndRender() {
+  clearTimeout(searchTimer);
+
+  masonry.innerHTML = "";
+  filtered = [];
+  rendered = 0;
+  remotePage = 1;
+  hasMore = true;
+  isLoading = false;
+  empty.style.display = "none";
+  showLoading(false);
+
+  remoteMode = currentQuery.trim().length > 0 || currentTag !== "all";
+
+  if (!remoteMode) {
+    filtered = shuffle(images);
+    renderMore();
+    return;
+  }
+
+  await loadNextPage();
+}
+
+// Infinite scrolling
+const observer = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) {
+    renderMore();
+  }
+}, { rootMargin: "500px" });
+
+const sentinel = document.createElement("div");
+sentinel.style.height = "20px";
+document.querySelector(".masonry-wrapper").appendChild(sentinel);
+observer.observe(sentinel);
+
+// Search suggestions
+searchInput.addEventListener("input", () => {
+  const val = searchInput.value.trim().toLowerCase();
+
+  currentQuery = val;
+  currentTag = "all";
+
+  document.querySelectorAll(".qtag").forEach(tag =>
+    tag.classList.remove("active")
+  );
+
+  document.querySelector('.qtag[data-tag="all"]').classList.add("active");
+
+  if (val.length > 0) {
+    const matches = popularSearches
+      .filter(term => term.includes(val))
+      .slice(0, 6);
+
+    if (matches.length) {
+      suggestions.innerHTML = matches.map(term =>
+        `<div class="suggestion" data-q="${term}">
+          <strong>${term}</strong> <span>aesthetic</span>
+        </div>`
+      ).join("");
+
+      suggestions.classList.add("show");
+    } else {
+      suggestions.classList.remove("show");
+    }
+  } else {
+    suggestions.classList.remove("show");
+  }
+
+  clearTimeout(searchTimer);
+
+  searchTimer = setTimeout(() => {
+    resetAndRender();
+  }, 450);
+});
+
+suggestions.addEventListener("click", e => {
+  const item = e.target.closest(".suggestion");
+  if (!item) return;
+
+  searchInput.value = item.dataset.q;
+  currentQuery = item.dataset.q;
+  suggestions.classList.remove("show");
+  resetAndRender();
+});
+
+document.addEventListener("click", e => {
+  if (!e.target.closest(".search-container")) {
+    suggestions.classList.remove("show");
+  }
+});
+
+// Quick tags now search Unsplash
+document.querySelectorAll(".qtag").forEach(tag => {
+  tag.addEventListener("click", () => {
+    document.querySelectorAll(".qtag").forEach(t =>
+      t.classList.remove("active")
+    );
+
+    tag.classList.add("active");
+    currentTag = tag.dataset.tag;
+    currentQuery = "";
+    searchInput.value = "";
+    suggestions.classList.remove("show");
+
+    resetAndRender();
+  });
+});
+
+// Modal
+function openModal(img) {
+  activeImage = img;
+
+  modalImg.src = img.src;
+  modalImg.alt = img.title || "Aesthetic inspiration";
+  modalTitle.textContent = img.title || "Aesthetic Pin";
+
+  const desc = document.getElementById("modalDesc");
+  desc.textContent = "";
+
+  const tags = document.createElement("span");
+  tags.textContent = (img.tags || []).map(t =>
+    t.charAt(0).toUpperCase() + t.slice(1)
+  ).join(" · ");
+
+  desc.appendChild(tags);
+
+  if (img.photographer) {
+    const credit = document.createElement("div");
+    credit.style.marginTop = "12px";
+
+    const link = document.createElement("a");
+    link.href = getAttributionUrl(img.photographer_url);
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = "Photograph by " + img.photographer;
+    link.style.color = "#9b7951";
+
+    credit.appendChild(link);
+    desc.appendChild(credit);
+
+    const source = document.createElement("div");
+    source.style.marginTop = "5px";
+
+    const unsplashLink = document.createElement("a");
+    unsplashLink.href = getAttributionUrl("https://unsplash.com/");
+    unsplashLink.target = "_blank";
+    unsplashLink.rel = "noopener noreferrer";
+    unsplashLink.textContent = "View on Unsplash";
+    unsplashLink.style.color = "#9b7951";
+
+    source.appendChild(unsplashLink);
+    desc.appendChild(source);
+  }
+
+  saveBtn.textContent = isSaved(img) ? "♥ Saved" : "♡ Save";
+
+  const related = shuffle(filtered.filter(item =>
+    item.id !== img.id && item.src !== img.src
+  )).slice(0, 4);
+
+  relatedGrid.innerHTML = "";
+
+  related.forEach(item => {
+    const tile = document.createElement("div");
+    tile.className = "related-pin";
+
+    const image = document.createElement("img");
+    image.src = item.src;
+    image.alt = item.title || "Related inspiration";
+    image.loading = "lazy";
+
+    tile.appendChild(image);
+    tile.addEventListener("click", () => openModal(item));
+    relatedGrid.appendChild(tile);
+  });
+
+  modal.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+saveBtn.addEventListener("click", () => {
+  if (activeImage) {
+    toggleFavorite(activeImage, saveBtn);
+  }
+});
+
+function closeModalFn() {
+  modal.classList.remove("open");
+  document.body.style.overflow = "";
+  activeImage = null;
+}
+
+closeModal.addEventListener("click", closeModalFn);
+closeBtnSide.addEventListener("click", closeModalFn);
+
+modal.addEventListener("click", e => {
+  if (e.target === modal) closeModalFn();
+});
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeModalFn();
+});
+
+// Initial page load: show the existing inspiration gallery immediately.
+resetAndRender();
+
+  </script>
+</body>
+</html>
