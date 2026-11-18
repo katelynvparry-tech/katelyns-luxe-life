@@ -437,6 +437,15 @@
   <button class="close-modal" id="closeModal">×</button>
 
   <script>
+     // SUPABASE CONNECTION
+const SUPABASE_URL = "https://aphoxrcceljstxvyueun.supabase.co";
+
+const SUPABASE_ANON_KEY = "sb_publishable_7oDpTb8GgyT2iGwsGOZHdQ_Uu03rS0A";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
     const images = [
       { src: "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTExL3Jhd3BpeGVsb2ZmaWNlMTlfZHJlYW15X3BhbGVfcGlua19hZXN0aGV0aWNfd2FsbHBhcGVyX29mX2dyZWVrX18yZjU1MjZhNC0xNzM4LTQ5ZDItYjVhNi1hNjgyN2E5MjQxMGVfMS5qcGc.jpg", tags: ["goddess","statue","pink","aphrodite"], title: "Dreamy Aphrodite" },
       { src: "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTExL3Jhd3BpeGVsb2ZmaWNlMTlfZHJlYW15X3BhbGVfcGlua19hZXN0aGV0aWNfd2FsbHBhcGVyX29mX2dyZWVrX19mODI1OGY2ZS1jMjY0LTRiMjktOTIyMS1hOTgyYjBmZGU4ODBfMS5qcGc.jpg", tags: ["goddess","statue","soft"], title: "Soft Goddess Portrait" },
