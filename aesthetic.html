@@ -920,6 +920,11 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape") closeModalFn();
 });
 
+    // INITIALIZE THE GALLERY WHEN THE PAGE OPENS
+document.addEventListener("DOMContentLoaded", () => {
+  resetAndRender();
+});
+    
   </script>
   
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
