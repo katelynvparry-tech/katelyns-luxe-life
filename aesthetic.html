@@ -665,7 +665,8 @@ async function loadNextPage() {
     const url = `${WORKER_URL}/search?q=${encodeURIComponent(term)}&page=${remotePage}`;
 
     const response = await fetch(url);
-
+console.log("UNSPLASH WORKER RESPONSE:", response.status, url);
+    
     if (!response.ok) {
       throw new Error("Search request failed");
     }
