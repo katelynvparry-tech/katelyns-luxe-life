@@ -3,182 +3,82 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CampusKit Student App – Katelyn's Campus Queens</title>
-  <link href="https://googleapis.com" rel="stylesheet">
+  <title>Finance Formula Cheat Sheet – CampusKit</title>
   <style>
     * {box-sizing: border-box;}
     body {font-family:'Georgia',serif;margin:0;background:#ffeef8;color:#ff6bc1;text-align:center;}
-    header {background:#ff69b4;color:white;padding:30px;font-size:2.4em;font-weight:bold;}
-    nav {display:none;justify-content:center;background:#ff1493;padding:15px;gap:12px;flex-wrap:wrap;}
-    nav button {background:white;color:#ff1493;border:none;padding:10px 18px;border-radius:30px;font-weight:600;cursor:pointer;box-shadow:0 4px 15px rgba(255,20,147,0.3);width:auto;margin:0;}
-    nav button:hover {transform:scale(1.08);}
-    .screen {display:none;padding:20px 20px 60px;}
-    .active {display:block !important;}
-    .card {background:white;border-radius:20px;padding:30px;margin:20px auto;max-width:560px;box-shadow:0 10px 30px rgba(255,105,180,0.3);}
-    .feature {background:white;padding:20px;border-radius:20px;box-shadow:0 8px 25px rgba(255,105,180,0.25);margin:20px auto;max-width:460px;}
-    input, button, select {padding:14px;margin:10px 0;width:100%;border-radius:30px;border:none;font-size:16px;}
-    input, select {background:#fff0f5;color:#ff1493;}
-    button {background:#ff69b4;color:white;font-weight:600;cursor:pointer;}
-    button:hover {background:#ff1493;}
-    a {color:#ff1493;text-decoration:underline;}
-    footer {padding:40px;color:#ff8ccd;font-size:0.9em;}
-    .back-link {margin-top:30px;display:block;color:#ff69b4;font-weight:bold;}
-    
-    /* Equations Styling */
+    header {background:#ff69b4;color:white;padding:30px;font-size:2.2em;font-weight:bold;}
+    .card {background:white;border-radius:20px;padding:30px;margin:25px auto;max-width:580px;box-shadow:0 10px 30px rgba(255,105,180,0.3);}
+    input {padding:14px;margin:10px 0 20px;width:100%;border-radius:30px;border:none;font-size:16px;background:#fff0f5;color:#ff1493;}
     .eq-box {background:#fff0f5;border-left:5px solid #ff1493;border-radius:14px;padding:14px 18px;margin:14px 0;text-align:left;color:#c2185b;}
     .eq-title {font-weight:bold;color:#ff1493;font-size:1.05em;margin-bottom:4px;}
-    .eq-formula {font-family:'Inter',sans-serif;font-size:0.95em;color:#880e4f;font-weight:600;}
+    .eq-formula {font-family:sans-serif;font-size:0.95em;color:#880e4f;font-weight:600;}
     .eq-section-title {color:#ff1493;border-bottom:2px dashed #ffb6c1;padding-bottom:6px;margin-top:28px;}
+    footer {padding:30px;color:#ff8ccd;font-size:0.9em;}
+    a {color:#ff1493;text-decoration:underline;font-weight:bold;}
   </style>
 </head>
 <body>
-  <header>CampusKit Student App</header>
-  <nav id="mainNav">
-    <button onclick="showScreen('home')">Home</button>
-    <button onclick="showScreen('feed')">Feed</button>
-    <button onclick="showScreen('shop')">Shop</button>
-    <button onclick="showScreen('cart')">Cart</button>
-    <button onclick="showScreen('finals')">Finals</button>
-    <button onclick="showScreen('equations')">Equations</button>
-    <button onclick="showScreen('split')">Split Bills</button>
-    <button onclick="showScreen('books')">Textbooks</button>
-    <button onclick="logout()">Logout</button>
-  </nav>
+  <header>Finance Formula Cheat Sheet 💖</header>
 
-  <!-- Login -->
-  <div id="login" class="screen active">
-    <div class="card">
-      <h2>Welcome Back, Queen</h2>
-      <p>Log in to unlock your campus glow-up</p>
-      <form onsubmit="handleLogin(event)">
-        <input type="text" id="email" placeholder="Email" required>
-        <input type="password" id="password" placeholder="Password" required>
-        <button type="submit">Login</button>
-      </form>
+  <div class="card">
+    <p>Type a formula or ratio name below to filter instantly:</p>
+    <input type="text" id="eqSearch" onkeyup="filterEquations()" placeholder="Search formula (e.g., ROE, DuPont, Bond, NPV)...">
+
+    <div id="eqList">
+      <h3 class="eq-section-title">1. Financial Statements & Taxes</h3>
+      <div class="eq-box"><div class="eq-title">Total Assets (TA)</div><div class="eq-formula">TA = Current Assets (CA) + Fixed Assets (FA)</div></div>
+      <div class="eq-box"><div class="eq-title">Balance Sheet Identity</div><div class="eq-formula">Total Assets = Total Liabilities + Equity</div></div>
+      <div class="eq-box"><div class="eq-title">Net Working Capital (NWC)</div><div class="eq-formula">NWC = Current Assets (CA) - Current Liabilities (CL)</div></div>
+      <div class="eq-box"><div class="eq-title">EBIT</div><div class="eq-formula">EBIT = Sales - COGS - Operating Expenses - Depreciation</div></div>
+      <div class="eq-box"><div class="eq-title">EBT (Earnings Before Taxes)</div><div class="eq-formula">EBT = EBIT - Interest | EBT = Net Income / (1 - Tax Rate)</div></div>
+      <div class="eq-box"><div class="eq-title">Net Income & Retained Earnings</div><div class="eq-formula">NI = EBT - Taxes | Transfer to RE = NI - Dividends</div></div>
+      <div class="eq-box"><div class="eq-title">Average Tax Rate</div><div class="eq-formula">Average Tax Rate = Taxes / Taxable Income</div></div>
+
+      <h3 class="eq-section-title">2. Liquidity & Turnover Ratios</h3>
+      <div class="eq-box"><div class="eq-title">Current Ratio (CR)</div><div class="eq-formula">CR = Current Assets (CA) / Current Liabilities (CL)</div></div>
+      <div class="eq-box"><div class="eq-title">Quick Ratio (QR)</div><div class="eq-formula">QR = (CA - Inventory - Prepaid Expenses) / CL</div></div>
+      <div class="eq-box"><div class="eq-title">Accounts Receivable Turnover (ART)</div><div class="eq-formula">ART = Credit Sales / Accounts Receivable (AR)</div></div>
+      <div class="eq-box"><div class="eq-title">Average Collection Period (ACP)</div><div class="eq-formula">ACP = 365 / ART | AR / (Sales / 365)</div></div>
+      <div class="eq-box"><div class="eq-title">Inventory Turnover Ratio (ITR)</div><div class="eq-formula">ITR = Sales / Inventory (Days in Inventory = 365 / ITR)</div></div>
+      <div class="eq-box"><div class="eq-title">Total Assets Turnover (TAT)</div><div class="eq-formula">TAT = Sales / Total Assets (TA)</div></div>
+
+      <h3 class="eq-section-title">3. Debt, Profitability & Market Ratios</h3>
+      <div class="eq-box"><div class="eq-title">Debt Ratio & Debt-Equity Ratio</div><div class="eq-formula">DR = Total Debt / TA | D/E = Total Debt / Equity</div></div>
+      <div class="eq-box"><div class="eq-title">Equity Multiplier (EM)</div><div class="eq-formula">EM = Total Assets / Equity = 1 + (D/E)</div></div>
+      <div class="eq-box"><div class="eq-title">Net Profit Margin (NPM)</div><div class="eq-formula">NPM = Net Income (NI) / Sales</div></div>
+      <div class="eq-box"><div class="eq-title">Return on Assets (ROA) & Equity (ROE)</div><div class="eq-formula">ROA = NI / TA | ROE = NI / Equity</div></div>
+      <div class="eq-box"><div class="eq-title">DuPont Identity</div><div class="eq-formula">ROE = NPM x TAT x EM</div></div>
+      <div class="eq-box"><div class="eq-title">Earnings Per Share (EPS) & P/E Ratio</div><div class="eq-formula">EPS = NI / Shares | P/E = Market Price per Share / EPS</div></div>
+      <div class="eq-box"><div class="eq-title">Market-to-Book Ratio (MTB)</div><div class="eq-formula">MTB = Market Value per Share / Book Value per Share</div></div>
+
+      <h3 class="eq-section-title">4. Interest Rates & Bonds</h3>
+      <div class="eq-box"><div class="eq-title">Bond Value</div><div class="eq-formula">Bond Value = Coupon x [ (1 - (1 + r)^-t) / r ] + FV / (1 + r)^t</div></div>
+      <div class="eq-box"><div class="eq-title">Current Yield</div><div class="eq-formula">Current Yield = Annual Coupon / Today's Market Price</div></div>
+      <div class="eq-box"><div class="eq-title">Call Premium & After-Tax Yield</div><div class="eq-formula">Call Premium = Call Price - Par | After-Tax Yield = Taxable Yield x (1 - Tax Rate)</div></div>
+      <div class="eq-box"><div class="eq-title">Fisher Effect</div><div class="eq-formula">1 + Nominal Rate = (1 + Real Rate) x (1 + Inflation Rate)</div></div>
+
+      <h3 class="eq-section-title">5. Capital Budgeting</h3>
+      <div class="eq-box"><div class="eq-title">Net Present Value (NPV)</div><div class="eq-formula">NPV = PV of Future Cash Flows + Initial Outlay (Accept if NPV &gt; 0)</div></div>
+      <div class="eq-box"><div class="eq-title">Profitability Index (PI)</div><div class="eq-formula">PI = PV of Future Cash Flows / |Initial Outlay| (Accept if PI &gt; 1)</div></div>
+      <div class="eq-box"><div class="eq-title">IRR & MIRR</div><div class="eq-formula">IRR: Rate where NPV = 0 | MIRR: Rate where PV Outflows = FV Inflows</div></div>
     </div>
   </div>
 
-  <!-- Home Screen -->
-  <div id="home" class="screen">
-    <div class="card">
-      <h2>Hello, Queen! 👑</h2>
-      <p>Your ultimate sidekick for schedules, moods, and to-dos.</p>
+  <footer>
+    <a href="./">← Back to CampusKit App</a><br><br>
+    Made with love by Katelyn • Class of 2028
+  </footer>
 
-      <div class="feature">
-        <h3>Schedule Magic</h3>
-        <p>Drag-and-drop classes, reminders, & group hangs.</p>
-        <a href="calender.html"><button>View Schedule</button></a>
-      </div>
-
-      <div class="feature">
-        <h3>Mood Tracker</h3>
-        <p>Log feels, spot patterns, get self-care tips.</p>
-        <a href="mood-tracker.html"><button>Track Mood</button></a>
-      </div>
-
-      <div class="feature">
-        <h3>To-Do Crusher</h3>
-        <p>Prioritize homework, shopping, glow-up goals.</p>
-        <a href="To-doCrusher.html"><button>Add Task</button></a>
-      </div>
-
-      <div class="feature">
-        <h3>Finance Formula Sheet ✨</h3>
-        <p>Quick cheat sheet for statements, ratios, bonds & NPV.</p>
-        <button onclick="showScreen('equations')">Open Equations</button>
-      </div>
-
-      <p style="margin-top:40px">
-        <a href="https://figma.com" target="_blank">View Figma Prototype</a>
-      </p>
-    </div>
-  </div>
-
-  <!-- Feed -->
-  <div id="feed" class="screen"><div class="card"><h2>Feed</h2><p>Latest campus tea coming soon…</p></div></div>
-
-  <!-- Shop -->
-  <div id="shop" class="screen">
-    <div class="card">
-      <h2>Shop Dorm Must-Haves ✨</h2>
-      <p>Star-sign scented candles, pink organizers, fairy lights & more.<br>
-      <small>(I earn a small commission when you shop through my links — thank you queens! 💕)</small></p>
-
-      <div class="feature">
-        <h3>Shop my Amazon affiliate page</h3>
-        <a href="https://github.io" target="_blank">
-          <button>Shop My Amazon Storefront</button>
-        </a>
-      </div>
-
-      <div class="feature">
-        <h3>Placeholder for future shop</h3>
-        <a href="https://amzn.to" target="_blank">
-          <button>Browse Curated List</button>
-        </a>
-      </div>
-
-      <div class="feature">
-        <h3>Shop Amazon</h3>
-        <a href="https://amzn.to" target="_blank">
-          <button>See Deals</button>
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Cart -->
-  <div id="cart" class="screen"><div class="card"><h2>Cart</h2><p>Nothing yet — go treat yourself!</p></div></div>
-
-  <!-- Finals -->
-  <div id="finals" class="screen">
-    <div class="card"><h2>Finals Survival Kit</h2>
-      <ul style="text-align:left;max-width:300px;margin:0 auto">
-        <li>Calculator + pencils</li>
-        <li>Water + snack</li>
-        <li>ID + scantron</li>
-        <li>Charged laptop/phone</li>
-      </ul>
-      <button style="margin-top:20px" onclick="showScreen('equations')">Go to Finance Equations 📖</button>
-    </div>
-  </div>
-
-  <!-- Corporate Finance Equations -->
-  <div id="equations" class="screen">
-    <div class="card">
-      <h2>Finance Formula Cheat Sheet 💖</h2>
-      <p>Search or filter your corporate finance equations below:</p>
-      
-      <input type="text" id="eqSearch" onkeyup="filterEquations()" placeholder="🔍 Search formula (e.g., ROE, DuPont, Bond, NPV)...">
-
-      <div id="eqList">
-        <!-- Section 1 -->
-        <h3 class="eq-section-title">1. Financial Statements & Taxes</h3>
-        <div class="eq-box"><div class="eq-title">Total Assets (TA)</div><div class="eq-formula">TA = Current Assets (CA) + Fixed Assets (FA)</div></div>
-        <div class="eq-box"><div class="eq-title">Balance Sheet Identity</div><div class="eq-formula">Total Assets = Total Liabilities + Equity</div></div>
-        <div class="eq-box"><div class="eq-title">Net Working Capital (NWC)</div><div class="eq-formula">NWC = Current Assets (CA) − Current Liabilities (CL)</div></div>
-        <div class="eq-box"><div class="eq-title">EBIT</div><div class="eq-formula">EBIT = Sales − COGS − Operating Expenses − Depreciation</div></div>
-        <div class="eq-box"><div class="eq-title">EBT (Earnings Before Taxes)</div><div class="eq-formula">EBT = EBIT − Interest &nbsp;|&nbsp; EBT = Net Income / (1 − Tax Rate)</div></div>
-        <div class="eq-box"><div class="eq-title">Net Income & Retained Earnings</div><div class="eq-formula">NI = EBT − Taxes &nbsp;|&nbsp; Transfer to RE = NI − Dividends</div></div>
-        <div class="eq-box"><div class="eq-title">Average Tax Rate</div><div class="eq-formula">Average Tax Rate = Taxes / Taxable Income</div></div>
-
-        <!-- Section 2 -->
-        <h3 class="eq-section-title">2. Liquidity & Turnover Ratios</h3>
-        <div class="eq-box"><div class="eq-title">Current Ratio (CR)</div><div class="eq-formula">CR = Current Assets (CA) / Current Liabilities (CL)</div></div>
-        <div class="eq-box"><div class="eq-title">Quick Ratio (QR)</div><div class="eq-formula">QR = (CA − Inventory − Prepaid Expenses) / CL</div></div>
-        <div class="eq-box"><div class="eq-title">Accounts Receivable Turnover (ART)</div><div class="eq-formula">ART = Credit Sales / Accounts Receivable (AR)</div></div>
-        <div class="eq-box"><div class="eq-title">Average Collection Period (ACP)</div><div class="eq-formula">ACP = 365 / ART &nbsp;|&nbsp; AR / (Sales / 365)</div></div>
-        <div class="eq-box"><div class="eq-title">Inventory Turnover Ratio (ITR)</div><div class="eq-formula">ITR = Sales / Inventory &nbsp;(Days in Inventory = 365 / ITR)</div></div>
-        <div class="eq-box"><div class="eq-title">Total Assets Turnover (TAT)</div><div class="eq-formula">TAT = Sales / Total Assets (TA)</div></div>
-
-        <!-- Section 3 -->
-        <h3 class="eq-section-title">3. Debt, Profitability & Market Ratios</h3>
-        <div class="eq-box"><div class="eq-title">Debt Ratio & Debt-Equity Ratio</div><div class="eq-formula">DR = Total Debt / TA &nbsp;|&nbsp; D/E = Total Debt / Equity</div></div>
-        <div class="eq-box"><div class="eq-title">Equity Multiplier (EM)</div><div class="eq-formula">EM = Total Assets / Equity = 1 + (D/E)</div></div>
-        <div class="eq-box"><div class="eq-title">Net Profit Margin (NPM)</div><div class="eq-formula">NPM = Net Income (NI) / Sales</div></div>
-        <div class="eq-box"><div class="eq-title">Return on Assets (ROA) & Equity (ROE)</div><div class="eq-formula">ROA = NI / TA &nbsp;|&nbsp; ROE = NI / Equity</div></div>
-        <div class="eq-box"><div class="eq-title">DuPont Identity</div><div class="eq-formula">ROE = NPM × TAT × EM</div></div>
-        <div class="eq-box"><div class="eq-title">Earnings Per Share (EPS) & P/E Ratio</div><div class="eq-formula">EPS = NI / Shares &nbsp;|&nbsp; P/E = Market Price per Share / EPS</div></div>
-
-
-
+  <script>
+    function filterEquations() {
+      var input = document.getElementById('eqSearch').value.toLowerCase();
+      var boxes = document.querySelectorAll('.eq-box');
+      for (var i = 0; i < boxes.length; i++) {
+        var text = boxes[i].innerText.toLowerCase();
+        boxes[i].style.display = text.indexOf(input) > -1 ? 'block' : 'none';
+      }
+    }
+  </script>
+</body>
+</html>
