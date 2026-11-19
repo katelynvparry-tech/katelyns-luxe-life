@@ -1,620 +1,507 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Queens Feed ♕</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background: linear-gradient(to bottom, #fdf2f8, #ffc0cb);
-            color: #333;
-            min-height: 100vh;
-        }
-
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 15px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-        }
-
-        .container {
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo {
-            font-size: 32px;
-            font-weight: 700;
-            color: #ff1493;
-            text-shadow: 1px 1px 2px rgba(255,105,180,0.3);
-        }
-
-        .nav-icons {
-            display: flex;
-            gap: 25px;
-        }
-
-        .nav-icons i {
-            font-size: 26px;
-            color: #ff69b4;
-            cursor: pointer;
-            transition: transform 0.3s, color 0.3s;
-        }
-
-        .nav-icons i:hover {
-            transform: scale(1.2);
-            color: #ff1493;
-        }
-
-        .main-content {
-            padding: 30px 0;
-        }
-
-        /* Login Modal */
-        .login-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            animation: fadeIn 0.5s;
-        }
-
-        .login-box {
-            background: #fff;
-            padding: 50px;
-            border-radius: 30px;
-            box-shadow: 0 15px 40px rgba(255,105,180,0.4);
-            text-align: center;
-            max-width: 420px;
-            width: 90%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .login-box::before {
-            content: '♕';
-            position: absolute;
-            top: -60px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 120px;
-            color: #ff69b4;
-            opacity: 0.2;
-            z-index: -1;
-        }
-
-        .login-box h2 {
-            color: #ff1493;
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-
-        .login-box p {
-            color: #666;
-            margin-bottom: 30px;
-        }
-
-        .login-box input {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #ffd1dc;
-            border-radius: 30px;
-            font-size: 16px;
-            text-align: center;
-            margin-bottom: 20px;
-            transition: border 0.3s;
-        }
-
-        .login-box input:focus {
-            border-color: #ff69b4;
-            outline: none;
-        }
-
-        .login-box button {
-            background: linear-gradient(to right, #ff69b4, #ff1493);
-            color: white;
-            border: none;
-            padding: 15px 50px;
-            border-radius: 30px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .login-box button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(255,105,180,0.4);
-        }
-
-        /* Profile Setup */
-        .profile-setup {
-            background: #fff;
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        .profile-setup h3 {
-            color: #ff1493;
-            margin-bottom: 15px;
-        }
-
-        .profile-setup input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ffd1dc;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            font-size: 15px;
-        }
-
-        .profile-setup button {
-            background: #ff69b4;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .profile-setup button:hover {
-            background: #ff1493;
-        }
-
-        .current-profile {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 15px;
-            font-size: 18px;
-        }
-
-        .current-profile img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: 4px solid #ff69b4;
-            object-fit: cover;
-        }
-
-        /* New Post */
-        .new-post {
-            background: #fff;
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-
-        .new-post textarea {
-            width: 100%;
-            border: 1px solid #ffd1dc;
-            border-radius: 15px;
-            padding: 15px;
-            font-size: 16px;
-            resize: vertical;
-            min-height: 80px;
-            margin-bottom: 15px;
-        }
-
-        .new-post input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ffd1dc;
-            border-radius: 15px;
-            margin-bottom: 15px;
-        }
-
-        .new-post button {
-            background: #ff69b4;
-            color: white;
-            border: none;
-            padding: 12px 40px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .new-post button:hover {
-            background: #ff1493;
-        }
-
-        /* Feed */
-        .feed {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        .post {
-            background: #fff;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-        }
-
-        .post:hover {
-            transform: translateY(-5px);
-        }
-
-        .post-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .user-info img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: 3px solid #ff69b4;
-            object-fit: cover;
-        }
-
-        .user-info h4 {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .user-info span {
-            font-size: 13px;
-            color: #888;
-        }
-
-        .delete-post {
-            color: #ff69b4;
-            cursor: pointer;
-            font-size: 20px;
-        }
-
-        .post-content p {
-            padding: 0 20px 15px;
-            font-size: 16px;
-            line-height: 1.5;
-        }
-
-        .post-image {
-            width: 100%;
-            max-height: 600px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .post-actions {
-            display: flex;
-            justify-content: flex-start;
-            padding: 15px 20px;
-            gap: 25px;
-            font-size: 26px;
-            color: #888;
-        }
-
-        .like-btn.liked {
-            color: #ff69b4;
-        }
-
-        .likes-count {
-            padding: 0 20px 15px;
-            font-size: 15px;
-        }
-
-        .comments-section {
-            border-top: 1px solid #eee;
-            padding: 15px 20px;
-        }
-
-        .add-comment {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        .add-comment input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid #ffd1dc;
-            border-radius: 30px;
-            font-size: 14px;
-        }
-
-        .add-comment button {
-            background: #ff69b4;
-            color: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .comment {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            padding: 10px 0;
-            font-size: 14px;
-        }
-
-        .comment-user {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .comment-user img {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            border: 2px solid #ff69b4;
-        }
-
-        .comment-text {
-            flex: 1;
-            background: #f9f9f9;
-            padding: 10px 15px;
-            border-radius: 15px;
-        }
-
-        .delete-comment {
-            color: #ff69b4;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @media (max-width: 600px) {
-            .container { padding: 0 15px; }
-            .login-box { padding: 30px; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luxe Life | Inspiration Feed ♡</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#faf7f2;
+  --white:#fffefa;
+  --rose:#d99aa8;
+  --pink:#f1dce0;
+  --gold:#b69a65;
+  --ink:#39312f;
+  --muted:#958783;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+header{
+  position:sticky;top:0;z-index:20;background:#fffefaed;
+  backdrop-filter:blur(16px);border-bottom:1px solid #eee5dc;
+}
+.topbar{
+  max-width:1450px;margin:auto;padding:17px 5%;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+}
+.logo{font:600 32px 'Cormorant Garamond',serif;letter-spacing:1px}
+.logo span{color:var(--gold)}
+nav{display:flex;gap:27px;align-items:center}
+nav a{color:var(--muted);text-decoration:none;font-size:13px}
+nav a.active,nav a:hover{color:#b77d89}
+.nav-actions{display:flex;gap:17px;align-items:center}
+.nav-actions button{border:0;background:none;color:var(--ink);font-size:19px}
+.avatar{width:37px;height:37px;border-radius:50%;object-fit:cover;border:1px solid var(--gold)}
+.hero{
+  max-width:1450px;margin:35px auto 25px;padding:0 5%;
+  display:flex;justify-content:space-between;align-items:end;gap:20px;
+}
+.eyebrow{color:var(--gold);font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px}
+h1{font:600 clamp(38px,5vw,58px) 'Cormorant Garamond',serif}
+.hero p{color:var(--muted);font-size:13px;margin-top:5px}
+.create-button{
+  background:var(--ink);color:white;border:0;border-radius:30px;
+  padding:13px 23px;font-size:12px;letter-spacing:.5px;
+}
+.create-button:hover{background:#9e7880}
+.categories{
+  max-width:1450px;margin:0 auto 25px;padding:0 5%;
+  display:flex;gap:10px;overflow-x:auto;
+}
+.category{
+  white-space:nowrap;border:1px solid #e8ddd4;background:transparent;
+  border-radius:30px;padding:9px 17px;color:#786d68;font-size:11px;
+}
+.category.active,.category:hover{background:var(--ink);color:white;border-color:var(--ink)}
+.feed-tools{
+  max-width:1450px;margin:0 auto 22px;padding:0 5%;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.feed-tools p{font:600 21px 'Cormorant Garamond',serif}
+.feed-tools span{font-size:11px;color:var(--muted)}
+.gallery{
+  max-width:1450px;margin:auto;padding:0 5% 70px;
+  columns:4 230px;column-gap:19px;
+}
+.post{
+  display:inline-block;width:100%;margin:0 0 20px;
+  background:var(--white);border-radius:13px;overflow:hidden;
+  break-inside:avoid;box-shadow:0 5px 22px #5c45310b;
+  border:1px solid #eee8e1;
+}
+.post-image-wrap{position:relative}
+.post-image{width:100%;display:block;max-height:550px;object-fit:cover}
+.post-overlay{
+  position:absolute;inset:0;background:#211b1a40;opacity:0;
+  display:flex;align-items:center;justify-content:center;transition:.25s;
+}
+.post:hover .post-overlay{opacity:1}
+.save-button{
+  border:0;border-radius:25px;background:#fffefa;padding:10px 17px;
+  font-size:11px;color:var(--ink);
+}
+.post-info{padding:14px 15px}
+.post-caption{font-size:12px;line-height:1.6;margin-bottom:12px}
+.post-bottom{display:flex;align-items:center;justify-content:space-between}
+.post-user{display:flex;align-items:center;gap:8px;font-size:10px;color:var(--muted)}
+.post-user img{width:25px;height:25px;border-radius:50%;object-fit:cover}
+.post-actions{display:flex;gap:12px;align-items:center}
+.post-actions button{border:0;background:none;font-size:17px;color:#9a8880}
+.post-actions button.liked{color:#d77e91}
+.post-actions button.saved{color:var(--gold)}
+.likes{font-size:10px;color:var(--muted);margin-top:7px}
+.empty{text-align:center;padding:65px 20px;color:var(--muted)}
+.empty h2{font:600 30px 'Cormorant Garamond',serif;color:var(--ink);margin-bottom:8px}
+.modal{
+  display:none;position:fixed;inset:0;background:#211b1ac9;
+  z-index:50;align-items:center;justify-content:center;padding:18px;
+}
+.modal.open{display:flex}
+.modal-card{
+  background:var(--white);width:min(520px,100%);max-height:90vh;
+  overflow:auto;border-radius:18px;padding:28px;
+}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.modal-head h2{font:600 30px 'Cormorant Garamond',serif}
+.close{border:0;background:none;font-size:24px;color:var(--muted)}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:11px;color:var(--muted);margin-bottom:7px}
+.field input,.field textarea,.field select{
+  width:100%;padding:12px;border:1px solid #e8ddd4;border-radius:9px;
+  background:#fffefa;color:var(--ink);outline:none;font-size:12px;
+}
+.field textarea{min-height:90px;resize:vertical}
+.upload-area{
+  border:1px dashed #cbb69d;border-radius:12px;padding:24px;
+  text-align:center;background:#faf6f1;cursor:pointer;color:var(--muted);
+}
+.upload-area strong{display:block;color:var(--ink);margin-bottom:5px}
+.upload-area input{display:none}
+.preview{width:100%;max-height:230px;object-fit:contain;margin-top:12px;border-radius:9px;display:none}
+.submit{
+  width:100%;padding:14px;border:0;border-radius:30px;
+  background:var(--ink);color:white;font-size:12px;
+}
+.profile-area{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.profile-area img{width:65px;height:65px;border-radius:50%;object-fit:cover}
+.comments{margin-top:15px;border-top:1px solid #eee5dc;padding-top:12px}
+.comment{font-size:11px;padding:7px 0;line-height:1.5}
+.comment-form{display:flex;gap:7px;margin-top:10px}
+.comment-form input{flex:1;min-width:0;padding:10px;border:1px solid #e8ddd4;border-radius:20px;font-size:11px}
+.comment-form button{border:0;background:var(--ink);color:white;border-radius:20px;padding:0 14px;font-size:11px}
+footer{text-align:center;padding:25px;color:var(--muted);font:italic 17px 'Cormorant Garamond',serif}
+@media(max-width:650px){
+  .topbar{padding:14px 5%}
+  .logo{font-size:25px}
+  nav{gap:13px}
+  nav a{font-size:11px}
+  .nav-actions{gap:9px}
+  .hero{align-items:start;flex-direction:column}
+  .gallery{columns:2 145px;column-gap:10px}
+  .post{margin-bottom:10px}
+  .post-info{padding:10px}
+  .post-caption{font-size:11px}
+}
+@media(max-width:380px){nav{gap:8px}nav a{font-size:10px}}
+</style>
 </head>
 <body>
-    <!-- Login Modal -->
-    <div class="login-modal" id="loginModal">
-        <div class="login-box">
-            <h2>Welcome, Queen! 👑</h2>
-            <p>Enter your royal name to join the feed 💕</p>
-            <input type="text" id="loginName" placeholder="Your Queen Name (e.g. Aaliyah, Katelyn...)">
-            <button onclick="enterKingdom()">Enter the Kingdom</button>
-        </div>
+
+<header>
+  <div class="topbar">
+    <div class="logo">Luxe Life <span>♡</span></div>
+    <nav>
+      <a href="aesthetic.html">Discover</a>
+      <a href="feed.html" class="active">Feed</a>
+    </nav>
+    <div class="nav-actions">
+      <button onclick="showSaved()" title="Saved posts">♡</button>
+      <button onclick="openProfile()" title="My profile">
+        <img id="navAvatar" class="avatar" alt="Profile">
+      </button>
     </div>
+  </div>
+</header>
 
-    <header>
-        <div class="container">
-            <div class="logo">Campus Queens ♕</div>
-            <div class="nav-icons">
-                <i class="fas fa-home" onclick="location.reload()" title="Home"></i>
-                <i class="fas fa-heart" onclick="alert('Your likes: Coming soon! 💖')" title="Likes"></i>
-                <i class="fas fa-crown" onclick="alert('Your profile: ' + (localStorage.getItem('campusQueenProfile') ? JSON.parse(localStorage.getItem('campusQueenProfile')).name : 'Queen'))" title="Profile"></i>
-            </div>
-        </div>
-    </header>
+<section class="hero">
+  <div>
+    <div class="eyebrow">A little inspiration, every day</div>
+    <h1>The Inspiration Edit.</h1>
+    <p>Discover beautiful things. Share your world. Find your people.</p>
+  </div>
+  <button class="create-button" onclick="openCreate()">＋ CREATE A POST</button>
+</section>
 
-    <div class="container main-content">
-        <div class="profile-setup">
-            <h3>Your Queen Profile 💕</h3>
-            <input type="text" id="userName" placeholder="Your name">
-            <input type="text" id="userPic" placeholder="Profile pic URL (paste a link)">
-            <button onclick="saveProfile()">Update Profile</button>
-            <div class="current-profile" id="currentProfile"></div>
-        </div>
+<div class="categories" id="categories">
+  <button class="category active" data-category="All">For You</button>
+  <button class="category" data-category="Fashion">Fashion</button>
+  <button class="category" data-category="Beauty">Beauty</button>
+  <button class="category" data-category="Perfume">Perfume</button>
+  <button class="category" data-category="Interiors">Interiors</button>
+  <button class="category" data-category="Art">Art</button>
+  <button class="category" data-category="Lifestyle">Lifestyle</button>
+  <button class="category" data-category="Garden">Garden</button>
+  <button class="category" data-category="Travel">Travel</button>
+</div>
 
-        <div class="new-post">
-            <textarea id="postText" rows="4" placeholder="What's on your mind, Queen? 💕"></textarea>
-            <input type="text" id="postImage" placeholder="Image URL (optional - pink vibes only!)">
-            <button onclick="createPost()">Post</button>
-        </div>
+<div class="feed-tools">
+  <p id="feedHeading">Curated for you</p>
+  <span id="postCount">Your inspiration community</span>
+</div>
 
-        <section class="feed" id="feed"></section>
+<main class="gallery" id="gallery"></main>
+
+<footer>Make room for beautiful things. ♡</footer>
+
+<!-- Create post -->
+<div class="modal" id="createModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h2>Share your inspiration</h2>
+      <button class="close" onclick="closeModal('createModal')">×</button>
     </div>
+    <div class="field">
+      <label>YOUR CAPTION</label>
+      <textarea id="caption" placeholder="Share the little things you love..."></textarea>
+    </div>
+    <div class="field">
+      <label>CATEGORY</label>
+      <select id="postCategory">
+        <option>Fashion</option><option>Beauty</option><option>Perfume</option>
+        <option>Interiors</option><option>Art</option><option>Lifestyle</option>
+        <option>Garden</option><option>Travel</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>YOUR PHOTO</label>
+      <label class="upload-area" for="photoUpload">
+        <strong>＋ Choose a photo</strong>
+        <span>Upload from your phone or computer</span>
+        <input type="file" id="photoUpload" accept="image/*">
+        <img id="photoPreview" class="preview" alt="Photo preview">
+      </label>
+    </div>
+    <button class="submit" onclick="createPost()">SHARE INSPIRATION</button>
+  </div>
+</div>
 
-    <script>
-        const loginModal = document.getElementById('loginModal');
-        const feed = document.getElementById('feed');
-        const currentProfileDiv = document.getElementById('currentProfile');
+<!-- Profile -->
+<div class="modal" id="profileModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h2>Your profile</h2>
+      <button class="close" onclick="closeModal('profileModal')">×</button>
+    </div>
+    <div class="profile-area">
+      <img id="profilePreview" alt="Profile photo">
+      <div><strong id="profileDisplay"></strong><p style="font-size:11px;color:#958783">Your Luxe Life identity</p></div>
+    </div>
+    <div class="field"><label>DISPLAY NAME</label><input id="profileName" placeholder="Your name"></div>
+    <div class="field">
+      <label>PROFILE PHOTO</label>
+      <input type="file" id="avatarUpload" accept="image/*">
+    </div>
+    <button class="submit" onclick="saveProfile()">SAVE PROFILE</button>
+  </div>
+</div>
 
-        const defaultAvatars = [
-            "https://bayoulifemag.com/wp-content/uploads/2025/03/1Z1A4773-Edit-Edit-edited.jpg",
-            "https://bayoulifemag.com/wp-content/uploads/2025/01/1Z1A5650-Edit-edited.jpg",
-            "https://flathatnews.com/wp-content/uploads/2022/12/BWA4493-1-768x513.jpg",
-            "https://thumbs.dreamstime.com/b/vibrant-young-woman-pink-outfit-stylish-backpack-posing-confidently-against-purple-backdrop-confident-wearing-ensemble-397711552.jpg",
-            "https://www.shutterstock.com/image-photo/cheerful-young-latina-woman-raises-260nw-2626361837.jpg",
-            "https://thumbs.dreamstime.com/b/fashion-focused-image-beautiful-young-woman-curly-blonde-hair-wearing-chic-pink-outfit-dreamy-expression-presented-412300410.jpg",
-            "https://www.shutterstock.com/image-photo/cheerful-young-blonde-woman-standing-600nw-2469759233.jpg"
-        ];
+<script>
+const $ = id => document.getElementById(id);
+const DEFAULT_AVATAR = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150";
+const STORAGE_KEY = "luxeLifeFeedPosts";
+const PROFILE_KEY = "luxeLifeFeedProfile";
+const SAVED_KEY = "luxeLifeFeedSaved";
 
-        let userProfile = JSON.parse(localStorage.getItem('campusQueenProfile')) || {
-            name: 'Queen',
-            pic: defaultAvatars[0]
-        };
+let profile = JSON.parse(localStorage.getItem(PROFILE_KEY) || "null") ||
+  {name:"Luxe Member",photo:DEFAULT_AVATAR};
+let posts = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+let saved = JSON.parse(localStorage.getItem(SAVED_KEY) || "[]");
+let activeCategory = "All";
+let savedOnly = false;
+let selectedPhoto = "";
+let selectedAvatar = "";
 
-        let posts = JSON.parse(localStorage.getItem('campusQueensPosts')) || [];
+function persist(){
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(posts));
+  localStorage.setItem(PROFILE_KEY,JSON.stringify(profile));
+  localStorage.setItem(SAVED_KEY,JSON.stringify(saved));
+}
 
-        // Login
-        if (localStorage.getItem('campusQueenLoggedIn') !== 'true') {
-            loginModal.style.display = 'flex';
-        } else {
-            loginModal.style.display = 'none';
-            updateCurrentProfile();
-            renderPosts();
-        }
+function safe(text){
+  return String(text || "").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
 
-        function enterKingdom() {
-            const name = document.getElementById('loginName').value.trim();
-            if (!name) return alert("Tell us your name, Queen! 💖");
-            localStorage.setItem('campusQueenLoggedIn', 'true');
-            if (!localStorage.getItem('campusQueenProfile')) {
-                userProfile.name = name;
-                localStorage.setItem('campusQueenProfile', JSON.stringify(userProfile));
-            }
-            loginModal.style.display = 'none';
-            updateCurrentProfile();
-            renderPosts();
-        }
+// Resize uploaded photos so they use less browser storage.
+function compressImage(file){
+  return new Promise((resolve,reject)=>{
+    if(!file || !file.type.startsWith("image/")){
+      reject(new Error("Please choose an image file."));
+      return;
+    }
+    const reader=new FileReader();
+    reader.onload=()=>{
+      const img=new Image();
+      img.onload=()=>{
+        const max=1200;
+        const scale=Math.min(1,max/Math.max(img.width,img.height));
+        const canvas=document.createElement("canvas");
+        canvas.width=Math.round(img.width*scale);
+        canvas.height=Math.round(img.height*scale);
+        canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);
+        resolve(canvas.toDataURL("image/jpeg",0.78));
+      };
+      img.onerror=()=>reject(new Error("Could not read that image."));
+      img.src=reader.result;
+    };
+    reader.onerror=()=>reject(new Error("Could not upload that image."));
+    reader.readAsDataURL(file);
+  });
+}
 
-        function updateCurrentProfile() {
-            currentProfileDiv.innerHTML = `
-                <img src="${userProfile.pic}" alt="You" onerror="this.src='${defaultAvatars[0]}'">
-                <strong>Welcome, ${userProfile.name} 👑</strong>
-            `;
-        }
+$("photoUpload").addEventListener("change",async e=>{
+  const file=e.target.files[0];
+  if(!file)return;
+  try{
+    selectedPhoto=await compressImage(file);
+    $("photoPreview").src=selectedPhoto;
+    $("photoPreview").style.display="block";
+  }catch(err){alert(err.message);}
+});
 
-        function saveProfile() {
-            const name = document.getElementById('userName').value.trim() || userProfile.name;
-            const pic = document.getElementById('userPic').value.trim() || userProfile.pic;
-            userProfile = { name, pic };
-            localStorage.setItem('campusQueenProfile', JSON.stringify(userProfile));
-            updateCurrentProfile();
-            renderPosts();
-        }
+$("avatarUpload").addEventListener("change",async e=>{
+  const file=e.target.files[0];
+  if(!file)return;
+  try{
+    selectedAvatar=await compressImage(file);
+    $("profilePreview").src=selectedAvatar;
+  }catch(err){alert(err.message);}
+});
 
-        function savePosts() {
-            localStorage.setItem('campusQueensPosts', JSON.stringify(posts));
-        }
+function openCreate(){
+  selectedPhoto="";
+  $("caption").value="";
+  $("photoUpload").value="";
+  $("photoPreview").style.display="none";
+  $("createModal").classList.add("open");
+}
+function closeModal(id){$(id).classList.remove("open");}
 
-        function renderPosts() {
-            feed.innerHTML = '';
-            posts.slice().reverse().forEach((post, idx) => {
-                const postIndex = posts.length - 1 - idx;
-                const postEl = document.createElement('div');
-                postEl.className = 'post';
-                postEl.innerHTML = `
-                    <div class="post-header">
-                        <div class="user-info">
-                            <img src="${post.profile.pic}" alt="${post.profile.name}" onerror="this.src='${defaultAvatars[0]}'">
-                            <div>
-                                <h4>${post.profile.name}</h4>
-                                <span>Just now</span>
-                            </div>
-                        </div>
-                        ${post.profile.name === userProfile.name ? `<i class="fas fa-trash delete-post" onclick="deletePost(${postIndex})"></i>` : ''}
-                    </div>
-                    <div class="post-content">
-                        <p>${post.text.replace(/\n/g, '<br>')}</p>
-                        ${post.image ? `<img src="${post.image}" class="post-image" onerror="this.style.display='none'">` : ''}
-                    </div>
-                    <div class="post-actions">
-                        <i class="far fa-heart like-btn ${post.liked ? 'liked fas' : ''}" onclick="toggleLike(${postIndex})"></i>
-                        <i class="far fa-comment"></i>
-                    </div>
-                    <div class="likes-count"><strong>${post.likes || 0} likes</strong></div>
-                    <div class="comments-section">
-                        <div class="add-comment">
-                            <input type="text" placeholder="Add a comment..." onkeypress="if(event.key==='Enter') addComment(${postIndex}, this)">
-                            <button onclick="addComment(${postIndex}, this.previousElementSibling)">➤</button>
-                        </div>
-                        ${post.comments ? post.comments.map((c, i) => `
-                            <div class="comment">
-                                <div class="comment-user">
-                                    <img src="${c.profile.pic}" alt="${c.profile.name}" onerror="this.src='${defaultAvatars[0]}'">
-                                    <div class="comment-text"><strong>${c.profile.name}:</strong> ${c.text}</div>
-                                </div>
-                                ${c.profile.name === userProfile.name ? `<i class="fas fa-trash delete-comment" onclick="deleteComment(${postIndex}, ${i})"></i>` : ''}
-                            </div>
-                        `).join('') : ''}
-                    </div>
-                `;
-                feed.appendChild(postEl);
-            });
-        }
+function createPost(){
+  const caption=$("caption").value.trim();
+  if(!caption && !selectedPhoto){
+    alert("Add a caption or a photo first ♡");
+    return;
+  }
+  posts.push({
+    id:Date.now().toString(),
+    name:profile.name,
+    avatar:profile.photo,
+    caption,
+    image:selectedPhoto,
+    category:$("postCategory").value,
+    likes:0,
+    liked:false,
+    comments:[]
+  });
+  try{
+    persist();
+    closeModal("createModal");
+    render();
+  }catch(err){
+    posts.pop();
+    alert("Your browser storage is full. Try a smaller photo or remove older posts.");
+  }
+}
 
-        function createPost() {
-            const text = document.getElementById('postText').value.trim();
-            const image = document.getElementById('postImage').value.trim();
-            if (!text) return alert("Spill the tea, Queen! 💕");
+function toggleLike(id){
+  const post=posts.find(p=>p.id===id);
+  if(!post)return;
+  post.liked=!post.liked;
+  post.likes=Math.max(0,(post.likes||0)+(post.liked?1:-1));
+  persist();render();
+}
 
-            posts.push({
-                profile: { ...userProfile },
-                text,
-                image,
-                likes: 0,
-                liked: false,
-                comments: []
-            });
+function toggleSave(id){
+  saved=saved.includes(id)?saved.filter(x=>x!==id):[...saved,id];
+  persist();render();
+}
 
-            document.getElementById('postText').value = '';
-            document.getElementById('postImage').value = '';
-            savePosts();
-            renderPosts();
-        }
+function showSaved(){
+  savedOnly=!savedOnly;
+  $("feedHeading").textContent=savedOnly?"Your saved inspiration":"Curated for you";
+  render();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
 
-        function deletePost(index) {
-            if (confirm('Delete forever?')) {
-                posts.splice(index, 1);
-                savePosts();
-                renderPosts();
-            }
-        }
+function openProfile(){
+  selectedAvatar="";
+  $("profileName").value=profile.name;
+  $("profileDisplay").textContent=profile.name;
+  $("profilePreview").src=profile.photo;
+  $("profileModal").classList.add("open");
+}
 
-        function toggleLike(index) {
-            posts[index].liked = !posts[index].liked;
-            posts[index].likes += posts[index].liked ? 1 : -1;
-            savePosts();
-            renderPosts();
-        }
+function saveProfile(){
+  profile.name=$("profileName").value.trim()||"Luxe Member";
+  if(selectedAvatar)profile.photo=selectedAvatar;
+  persist();
+  closeModal("profileModal");
+  render();
+  updateAvatar();
+}
 
-        function addComment(postIndex, input) {
-            const text = input.value.trim();
-            if (!text) return;
-            posts[postIndex].comments.push({ profile: { ...userProfile }, text });
-            input.value = '';
-            savePosts();
-            renderPosts();
-        }
+function updateAvatar(){$("navAvatar").src=profile.photo;}
 
-        function deleteComment(postIndex, commentIndex) {
-            posts[postIndex].comments.splice(commentIndex, 1);
-            savePosts();
-            renderPosts();
-        }
+function addComment(id,input){
+  const text=input.value.trim();
+  if(!text)return;
+  const post=posts.find(p=>p.id===id);
+  if(!post)return;
+  post.comments.push({name:profile.name,text});
+  persist();render();
+}
 
-        // Init
-        if (localStorage.getItem('campusQueenLoggedIn') === 'true') {
-            updateCurrentProfile();
-            renderPosts();
-        }
-    </script>
+function deletePost(id){
+  if(!confirm("Delete this post?"))return;
+  posts=posts.filter(p=>p.id!==id);
+  saved=saved.filter(x=>x!==id);
+  persist();render();
+}
+
+function render(){
+  const gallery=$("gallery");
+  gallery.innerHTML="";
+  let visible=posts.filter(p=>
+    (activeCategory==="All"||p.category===activeCategory)&&
+    (!savedOnly||saved.includes(p.id))
+  );
+  $("postCount").textContent=visible.length+" inspiration posts";
+
+  if(!visible.length){
+    gallery.innerHTML=`<div class="empty">
+      <h2>${savedOnly?"Nothing saved just yet ♡":"Your inspiration wall awaits."}</h2>
+      <p>${savedOnly?"Tap the bookmark on a post to save it.":"Be the first to share something beautiful."}</p>
+      <br><button class="create-button" onclick="openCreate()">CREATE A POST</button>
+    </div>`;
+    return;
+  }
+
+  visible.slice().reverse().forEach(post=>{
+    const card=document.createElement("article");
+    card.className="post";
+    const liked=post.liked;
+    const isSaved=saved.includes(post.id);
+    card.innerHTML=`
+      ${post.image?`<div class="post-image-wrap">
+        <img class="post-image" src="${post.image}" alt="Shared inspiration">
+        <div class="post-overlay">
+          <button class="save-button" data-save="${safe(post.id)}">${isSaved?"✓ Saved":"♡ Save inspiration"}</button>
+        </div>
+      </div>`:""}
+      <div class="post-info">
+        <p class="post-caption">${safe(post.caption)}</p>
+        <div class="post-bottom">
+          <div class="post-user">
+            <img src="${safe(post.avatar||DEFAULT_AVATAR)}" alt="">
+            <span>${safe(post.name)} · ${safe(post.category)}</span>
+          </div>
+          <div class="post-actions">
+            <button class="${liked?"liked":""}" data-like="${safe(post.id)}" title="Like">${liked?"♥":"♡"}</button>
+            <button class="${isSaved?"saved":""}" data-save="${safe(post.id)}" title="Save">⌑</button>
+            ${post.name===profile.name?`<button data-delete="${safe(post.id)}" title="Delete">×</button>`:""}
+          </div>
+        </div>
+        <div class="likes">${post.likes||0} appreciations</div>
+        <div class="comments">
+          ${(post.comments||[]).map(c=>`<div class="comment"><strong>${safe(c.name)}:</strong> ${safe(c.text)}</div>`).join("")}
+          <div class="comment-form">
+            <input type="text" placeholder="Leave a thoughtful comment..." data-comment-input="${safe(post.id)}">
+            <button data-comment="${safe(post.id)}">Send</button>
+          </div>
+        </div>
+      </div>`;
+    gallery.appendChild(card);
+  });
+}
+
+$("gallery").addEventListener("click",e=>{
+  const like=e.target.closest("[data-like]");
+  const save=e.target.closest("[data-save]");
+  const del=e.target.closest("[data-delete]");
+  const comment=e.target.closest("[data-comment]");
+  if(like)toggleLike(like.dataset.like);
+  if(save)toggleSave(save.dataset.save);
+  if(del)deletePost(del.dataset.delete);
+  if(comment){
+    const input=document.querySelector(`[data-comment-input="${CSS.escape(comment.dataset.comment)}"]`);
+    if(input)addComment(comment.dataset.comment,input);
+  }
+});
+
+$("gallery").addEventListener("keydown",e=>{
+  if(e.key==="Enter"&&e.target.matches("[data-comment-input]")){
+    addComment(e.target.dataset.commentInput,e.target);
+  }
+});
+
+$("categories").addEventListener("click",e=>{
+  const button=e.target.closest("[data-category]");
+  if(!button)return;
+  activeCategory=button.dataset.category;
+  savedOnly=false;
+  $("feedHeading").textContent="Curated for you";
+  document.querySelectorAll(".category").forEach(b=>b.classList.toggle("active",b===button));
+  render();
+});
+
+updateAvatar();
+render();
+</script>
 </body>
 </html>
