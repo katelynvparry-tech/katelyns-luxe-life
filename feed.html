@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Queens Feed ♕</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to bottom, #fdf2f8, #ffc0cb);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 700;
+            color: #ff1493;
+            text-shadow: 1px 1px 2px rgba(255,105,180,0.3);
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-icons i {
+            font-size: 26px;
+            color: #ff69b4;
+            cursor: pointer;
+            transition: transform 0.3s, color 0.3s;
+        }
+
+        .nav-icons i:hover {
+            transform: scale(1.2);
+            color: #ff1493;
+        }
+
+        .main-content {
+            padding: 30px 0;
+        }
+
+        /* Login Modal */
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.5s;
+        }
+
+        .login-box {
+            background: #fff;
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 15px 40px rgba(255,105,180,0.4);
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-box::before {
+            content: '♕';
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 120px;
+            color: #ff69b4;
+            opacity: 0.2;
+            z-index: -1;
+        }
+
+        .login-box h2 {
+            color: #ff1493;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .login-box p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ffd1dc;
+            border-radius: 30px;
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: border 0.3s;
+        }
+
+        .login-box input:focus {
+            border-color: #ff69b4;
+            outline: none;
+        }
+
+        .login-box button {
+            background: linear-gradient(to right, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            border-radius: 30px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .login-box button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255,105,180,0.4);
+        }
+
+        /* Profile Setup */
+        .profile-setup {
+            background: #fff;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .profile-setup h3 {
+            color: #ff1493;
+            margin-bottom: 15px;
+        }
+
+        .profile-setup input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ffd1dc;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+
+        .profile-setup button {
+            background: #ff69b4;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .profile-setup button:hover {
+            background: #ff1493;
+        }
+
+        .current-profile {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            font-size: 18px;
+        }
+
+        .current-profile img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 4px solid #ff69b4;
+            object-fit: cover;
+        }
+
+        /* New Post */
+        .new-post {
+            background: #fff;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .new-post textarea {
+            width: 100%;
+            border: 1px solid #ffd1dc;
+            border-radius: 15px;
+            padding: 15px;
+            font-size: 16px;
+            resize: vertical;
+            min-height: 80px;
+            margin-bottom: 15px;
+        }
+
+        .new-post input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ffd1dc;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+
+        .new-post button {
+            background: #ff69b4;
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .new-post button:hover {
+            background: #ff1493;
+        }
+
+        /* Feed */
+        .feed {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .post {
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .post:hover {
+            transform: translateY(-5px);
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-info img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 3px solid #ff69b4;
+            object-fit: cover;
+        }
+
+        .user-info h4 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .user-info span {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .delete-post {
+            color: #ff69b4;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .post-content p {
+            padding: 0 20px 15px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .post-image {
+            width: 100%;
+            max-height: 600px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: flex-start;
+            padding: 15px 20px;
+            gap: 25px;
+            font-size: 26px;
+            color: #888;
+        }
+
+        .like-btn.liked {
+            color: #ff69b4;
+        }
+
+        .likes-count {
+            padding: 0 20px 15px;
+            font-size: 15px;
+        }
+
+        .comments-section {
+            border-top: 1px solid #eee;
+            padding: 15px 20px;
+        }
+
+        .add-comment {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .add-comment input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ffd1dc;
+            border-radius: 30px;
+            font-size: 14px;
+        }
+
+        .add-comment button {
+            background: #ff69b4;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .comment {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 10px 0;
+            font-size: 14px;
+        }
+
+        .comment-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .comment-user img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid #ff69b4;
+        }
+
+        .comment-text {
+            flex: 1;
+            background: #f9f9f9;
+            padding: 10px 15px;
+            border-radius: 15px;
+        }
+
+        .delete-comment {
+            color: #ff69b4;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 0 15px; }
+            .login-box { padding: 30px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Modal -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-box">
+            <h2>Welcome, Queen! 👑</h2>
+            <p>Enter your royal name to join the feed 💕</p>
+            <input type="text" id="loginName" placeholder="Your Queen Name (e.g. Aaliyah, Katelyn...)">
+            <button onclick="enterKingdom()">Enter the Kingdom</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="container">
+            <div class="logo">Campus Queens ♕</div>
+            <div class="nav-icons">
+                <i class="fas fa-home" onclick="location.reload()" title="Home"></i>
+                <i class="fas fa-heart" onclick="alert('Your likes: Coming soon! 💖')" title="Likes"></i>
+                <i class="fas fa-crown" onclick="alert('Your profile: ' + (localStorage.getItem('campusQueenProfile') ? JSON.parse(localStorage.getItem('campusQueenProfile')).name : 'Queen'))" title="Profile"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="container main-content">
+        <div class="profile-setup">
+            <h3>Your Queen Profile 💕</h3>
+            <input type="text" id="userName" placeholder="Your name">
+            <input type="text" id="userPic" placeholder="Profile pic URL (paste a link)">
+            <button onclick="saveProfile()">Update Profile</button>
+            <div class="current-profile" id="currentProfile"></div>
+        </div>
+
+        <div class="new-post">
+            <textarea id="postText" rows="4" placeholder="What's on your mind, Queen? 💕"></textarea>
+            <input type="text" id="postImage" placeholder="Image URL (optional - pink vibes only!)">
+            <button onclick="createPost()">Post</button>
+        </div>
+
+        <section class="feed" id="feed"></section>
+    </div>
+
+    <script>
+        const loginModal = document.getElementById('loginModal');
+        const feed = document.getElementById('feed');
+        const currentProfileDiv = document.getElementById('currentProfile');
+
+        const defaultAvatars = [
+            "https://bayoulifemag.com/wp-content/uploads/2025/03/1Z1A4773-Edit-Edit-edited.jpg",
+            "https://bayoulifemag.com/wp-content/uploads/2025/01/1Z1A5650-Edit-edited.jpg",
+            "https://flathatnews.com/wp-content/uploads/2022/12/BWA4493-1-768x513.jpg",
+            "https://thumbs.dreamstime.com/b/vibrant-young-woman-pink-outfit-stylish-backpack-posing-confidently-against-purple-backdrop-confident-wearing-ensemble-397711552.jpg",
+            "https://www.shutterstock.com/image-photo/cheerful-young-latina-woman-raises-260nw-2626361837.jpg",
+            "https://thumbs.dreamstime.com/b/fashion-focused-image-beautiful-young-woman-curly-blonde-hair-wearing-chic-pink-outfit-dreamy-expression-presented-412300410.jpg",
+            "https://www.shutterstock.com/image-photo/cheerful-young-blonde-woman-standing-600nw-2469759233.jpg"
+        ];
+
+        let userProfile = JSON.parse(localStorage.getItem('campusQueenProfile')) || {
+            name: 'Queen',
+            pic: defaultAvatars[0]
+        };
+
+        let posts = JSON.parse(localStorage.getItem('campusQueensPosts')) || [];
+
+        // Login
+        if (localStorage.getItem('campusQueenLoggedIn') !== 'true') {
+            loginModal.style.display = 'flex';
+        } else {
+            loginModal.style.display = 'none';
+            updateCurrentProfile();
+            renderPosts();
+        }
+
+        function enterKingdom() {
+            const name = document.getElementById('loginName').value.trim();
+            if (!name) return alert("Tell us your name, Queen! 💖");
+            localStorage.setItem('campusQueenLoggedIn', 'true');
+            if (!localStorage.getItem('campusQueenProfile')) {
+                userProfile.name = name;
+                localStorage.setItem('campusQueenProfile', JSON.stringify(userProfile));
+            }
+            loginModal.style.display = 'none';
+            updateCurrentProfile();
+            renderPosts();
+        }
+
+        function updateCurrentProfile() {
+            currentProfileDiv.innerHTML = `
+                <img src="${userProfile.pic}" alt="You" onerror="this.src='${defaultAvatars[0]}'">
+                <strong>Welcome, ${userProfile.name} 👑</strong>
+            `;
+        }
+
+        function saveProfile() {
+            const name = document.getElementById('userName').value.trim() || userProfile.name;
+            const pic = document.getElementById('userPic').value.trim() || userProfile.pic;
+            userProfile = { name, pic };
+            localStorage.setItem('campusQueenProfile', JSON.stringify(userProfile));
+            updateCurrentProfile();
+            renderPosts();
+        }
+
+        function savePosts() {
+            localStorage.setItem('campusQueensPosts', JSON.stringify(posts));
+        }
+
+        function renderPosts() {
+            feed.innerHTML = '';
+            posts.slice().reverse().forEach((post, idx) => {
+                const postIndex = posts.length - 1 - idx;
+                const postEl = document.createElement('div');
+                postEl.className = 'post';
+                postEl.innerHTML = `
+                    <div class="post-header">
+                        <div class="user-info">
+                            <img src="${post.profile.pic}" alt="${post.profile.name}" onerror="this.src='${defaultAvatars[0]}'">
+                            <div>
+                                <h4>${post.profile.name}</h4>
+                                <span>Just now</span>
+                            </div>
+                        </div>
+                        ${post.profile.name === userProfile.name ? `<i class="fas fa-trash delete-post" onclick="deletePost(${postIndex})"></i>` : ''}
+                    </div>
+                    <div class="post-content">
+                        <p>${post.text.replace(/\n/g, '<br>')}</p>
+                        ${post.image ? `<img src="${post.image}" class="post-image" onerror="this.style.display='none'">` : ''}
+                    </div>
+                    <div class="post-actions">
+                        <i class="far fa-heart like-btn ${post.liked ? 'liked fas' : ''}" onclick="toggleLike(${postIndex})"></i>
+                        <i class="far fa-comment"></i>
+                    </div>
+                    <div class="likes-count"><strong>${post.likes || 0} likes</strong></div>
+                    <div class="comments-section">
+                        <div class="add-comment">
+                            <input type="text" placeholder="Add a comment..." onkeypress="if(event.key==='Enter') addComment(${postIndex}, this)">
+                            <button onclick="addComment(${postIndex}, this.previousElementSibling)">➤</button>
+                        </div>
+                        ${post.comments ? post.comments.map((c, i) => `
+                            <div class="comment">
+                                <div class="comment-user">
+                                    <img src="${c.profile.pic}" alt="${c.profile.name}" onerror="this.src='${defaultAvatars[0]}'">
+                                    <div class="comment-text"><strong>${c.profile.name}:</strong> ${c.text}</div>
+                                </div>
+                                ${c.profile.name === userProfile.name ? `<i class="fas fa-trash delete-comment" onclick="deleteComment(${postIndex}, ${i})"></i>` : ''}
+                            </div>
+                        `).join('') : ''}
+                    </div>
+                `;
+                feed.appendChild(postEl);
+            });
+        }
+
+        function createPost() {
+            const text = document.getElementById('postText').value.trim();
+            const image = document.getElementById('postImage').value.trim();
+            if (!text) return alert("Spill the tea, Queen! 💕");
+
+            posts.push({
+                profile: { ...userProfile },
+                text,
+                image,
+                likes: 0,
+                liked: false,
+                comments: []
+            });
+
+            document.getElementById('postText').value = '';
+            document.getElementById('postImage').value = '';
+            savePosts();
+            renderPosts();
+        }
+
+        function deletePost(index) {
+            if (confirm('Delete forever?')) {
+                posts.splice(index, 1);
+                savePosts();
+                renderPosts();
+            }
+        }
+
+        function toggleLike(index) {
+            posts[index].liked = !posts[index].liked;
+            posts[index].likes += posts[index].liked ? 1 : -1;
+            savePosts();
+            renderPosts();
+        }
+
+        function addComment(postIndex, input) {
+            const text = input.value.trim();
+            if (!text) return;
+            posts[postIndex].comments.push({ profile: { ...userProfile }, text });
+            input.value = '';
+            savePosts();
+            renderPosts();
+        }
+
+        function deleteComment(postIndex, commentIndex) {
+            posts[postIndex].comments.splice(commentIndex, 1);
+            savePosts();
+            renderPosts();
+        }
+
+        // Init
+        if (localStorage.getItem('campusQueenLoggedIn') === 'true') {
+            updateCurrentProfile();
+            renderPosts();
+        }
+    </script>
+</body>
+</html>
