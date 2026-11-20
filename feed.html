@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Luxe Life | Inspiration Feed ♡</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root {
   --cream:#faf7f2;
@@ -36,6 +36,9 @@ nav a.active,nav a:hover{color:#b77d89}
 .nav-actions{display:flex;gap:17px;align-items:center}
 .nav-actions button{border:0;background:none;color:var(--ink);font-size:19px}
 .avatar{width:37px;height:37px;border-radius:50%;object-fit:cover;border:1px solid var(--gold)}
+.auth-button{border:1px solid var(--gold)!important;border-radius:24px!important;padding:9px 16px!important;font-size:11px!important;letter-spacing:.4px;color:var(--ink)!important;background:#fffefa!important}
+.auth-button:hover{background:var(--ink)!important;color:white!important;border-color:var(--ink)!important}
+.auth-status{font-size:10px;color:var(--muted);max-width:115px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .hero{
   max-width:1450px;margin:35px auto 25px;padding:0 5%;
   display:flex;justify-content:space-between;align-items:end;gap:20px;
@@ -127,6 +130,11 @@ h1{font:600 clamp(38px,5vw,58px) 'Cormorant Garamond',serif}
   background:var(--ink);color:white;font-size:12px;
 }
 .profile-area{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.auth-switch{text-align:center;font-size:11px;color:var(--muted);margin-top:16px}
+.auth-switch button{border:0;background:none;color:#b77d89;text-decoration:underline;font-size:11px}
+.auth-message{font-size:11px;line-height:1.5;color:var(--muted);margin:0 0 14px}
+.auth-message.error{color:#b34f62}
+.auth-message.success{color:#557b61}
 .profile-area img{width:65px;height:65px;border-radius:50%;object-fit:cover}
 .comments{margin-top:15px;border-top:1px solid #eee5dc;padding-top:12px}
 .comment{font-size:11px;padding:7px 0;line-height:1.5}
@@ -159,6 +167,8 @@ footer{text-align:center;padding:25px;color:var(--muted);font:italic 17px 'Cormo
       <a href="feed.html" class="active">Feed</a>
     </nav>
     <div class="nav-actions">
+      <span class="auth-status" id="authStatus">Guest</span>
+      <button class="auth-button" id="authButton" onclick="openAuth()">LOG IN / SIGN UP</button>
       <button onclick="showSaved()" title="Saved posts">♡</button>
       <button onclick="openProfile()" title="My profile">
         <img id="navAvatar" class="avatar" alt="Profile">
@@ -196,6 +206,31 @@ footer{text-align:center;padding:25px;color:var(--muted);font:italic 17px 'Cormo
 <main class="gallery" id="gallery"></main>
 
 <footer>Make room for beautiful things. ♡</footer>
+
+<!-- Member login and sign up -->
+<div class="modal" id="authModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h2 id="authTitle">Welcome to Luxe Life</h2>
+      <button class="close" onclick="closeModal('authModal')">×</button>
+    </div>
+    <p class="auth-message" id="authMessage">Log in or create your member account to join the community.</p>
+    <div class="field" id="authNameField" style="display:none">
+      <label>DISPLAY NAME</label>
+      <input id="authName" type="text" autocomplete="name" placeholder="What should we call you?">
+    </div>
+    <div class="field">
+      <label>EMAIL ADDRESS</label>
+      <input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com">
+    </div>
+    <div class="field">
+      <label>PASSWORD</label>
+      <input id="authPassword" type="password" autocomplete="current-password" placeholder="At least 6 characters">
+    </div>
+    <button class="submit" id="authSubmit" onclick="submitAuth()">LOG IN</button>
+    <p class="auth-switch" id="authSwitch">New here? <button type="button" onclick="setAuthMode('signup')">Create an account</button></p>
+  </div>
+</div>
 
 <!-- Create post -->
 <div class="modal" id="createModal">
@@ -256,6 +291,13 @@ const STORAGE_KEY = "luxeLifeFeedPosts";
 const PROFILE_KEY = "luxeLifeFeedProfile";
 const SAVED_KEY = "luxeLifeFeedSaved";
 
+// Supabase uses the public/publishable key here. Never put a service-role key in website code.
+const SUPABASE_URL = "https://aphoxrcceljstxvyueun.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_7oDpTb8GgyT2iGwsGOZHdQ_Uu03rS0A";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let currentUser = null;
+let authMode = "login";
+
 let profile = JSON.parse(localStorage.getItem(PROFILE_KEY) || "null") ||
   {name:"Luxe Member",photo:DEFAULT_AVATAR};
 let posts = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
@@ -264,6 +306,159 @@ let activeCategory = "All";
 let savedOnly = false;
 let selectedPhoto = "";
 let selectedAvatar = "";
+
+function openAuth(){
+  setAuthMode("login");
+  $("authModal").classList.add("open");
+}
+
+function setAuthMode(mode){
+  authMode = mode;
+  const signup = mode === "signup";
+  $("authTitle").textContent = signup ? "Join Luxe Life" : "Welcome back";
+  $("authNameField").style.display = signup ? "block" : "none";
+  $("authPassword").autocomplete = signup ? "new-password" : "current-password";
+  $("authSubmit").textContent = signup ? "CREATE MY ACCOUNT" : "LOG IN";
+  $("authSwitch").innerHTML = signup
+    ? 'Already a member? <button type="button" onclick="setAuthMode(&quot;login&quot;)">Log in</button>'
+    : 'New here? <button type="button" onclick="setAuthMode(&quot;signup&quot;)">Create an account</button>';
+  $("authMessage").className = "auth-message";
+  $("authMessage").textContent = signup
+    ? "Create your free member account. We'll send you an email to confirm your address."
+    : "Log in to your Luxe Life member account.";
+}
+
+function showAuthMessage(message, type=""){
+  $("authMessage").textContent = message;
+  $("authMessage").className = "auth-message" + (type ? " " + type : "");
+}
+
+async function ensureMemberProfile(user){
+  const { data: existing, error: readError } = await supabaseClient
+    .from("profiles")
+    .select("id, display_name, avatar_url")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  if(readError) throw readError;
+
+  if(existing){
+    profile.name = existing.display_name || user.user_metadata?.display_name || user.email?.split("@")[0] || "Luxe Member";
+    if(existing.avatar_url) profile.photo = existing.avatar_url;
+  }else{
+    const displayName = user.user_metadata?.display_name || user.email?.split("@")[0] || "Luxe Member";
+    const { error: insertError } = await supabaseClient
+      .from("profiles")
+      .insert({ id:user.id, display_name:displayName });
+    if(insertError) throw insertError;
+    profile.name = displayName;
+  }
+
+  persist();
+  updateAvatar();
+}
+
+function updateAuthDisplay(){
+  $("authStatus").textContent = currentUser
+    ? (profile.name || currentUser.email || "Member")
+    : "Guest";
+  $("authButton").textContent = currentUser ? "LOG OUT" : "LOG IN / SIGN UP";
+  $("authButton").onclick = currentUser ? logoutMember : openAuth;
+}
+
+async function submitAuth(){
+  const email = $("authEmail").value.trim();
+  const password = $("authPassword").value;
+  const displayName = $("authName").value.trim();
+
+  if(!email || !password){
+    showAuthMessage("Please enter your email address and password.", "error");
+    return;
+  }
+  if(authMode === "signup" && !displayName){
+    showAuthMessage("Please enter a display name.", "error");
+    return;
+  }
+  if(password.length < 6){
+    showAuthMessage("Your password must be at least 6 characters.", "error");
+    return;
+  }
+
+  $("authSubmit").disabled = true;
+  $("authSubmit").textContent = "PLEASE WAIT…";
+
+  try{
+    if(authMode === "signup"){
+      const { data, error } = await supabaseClient.auth.signUp({
+        email,
+        password,
+        options:{ data:{ display_name:displayName } }
+      });
+      if(error) throw error;
+
+      if(data.session && data.user){
+        currentUser = data.user;
+        await ensureMemberProfile(data.user);
+        updateAuthDisplay();
+        closeModal("authModal");
+        alert("Welcome to Luxe Life, " + displayName + "! ♡");
+      }else{
+        showAuthMessage("Your account request is in! Please check your email and click the confirmation link. After confirming, return here and log in.", "success");
+        setAuthMode("login");
+        showAuthMessage("Please check your email for the confirmation link. Once confirmed, log in here.", "success");
+      }
+    }else{
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      if(error) throw error;
+      currentUser = data.user;
+      await ensureMemberProfile(data.user);
+      updateAuthDisplay();
+      closeModal("authModal");
+      alert("You're logged in. Welcome back to Luxe Life! ♡");
+    }
+  }catch(error){
+    showAuthMessage(error.message || "We couldn't complete that request. Please try again.", "error");
+  }finally{
+    $("authSubmit").disabled = false;
+    $("authSubmit").textContent = authMode === "signup" ? "CREATE MY ACCOUNT" : "LOG IN";
+  }
+}
+
+async function logoutMember(){
+  const { error } = await supabaseClient.auth.signOut();
+  if(error){
+    alert("We couldn't log you out: " + error.message);
+    return;
+  }
+  currentUser = null;
+  updateAuthDisplay();
+  alert("You've been logged out. See you again soon! ♡");
+}
+
+async function initializeMemberAuth(){
+  try{
+    const { data, error } = await supabaseClient.auth.getSession();
+    if(error) throw error;
+    currentUser = data.session?.user || null;
+    if(currentUser) await ensureMemberProfile(currentUser);
+    updateAuthDisplay();
+
+    supabaseClient.auth.onAuthStateChange((event, session)=>{
+      currentUser = session?.user || null;
+      updateAuthDisplay();
+    });
+  }catch(error){
+    console.error("Luxe Life authentication could not initialize:", error);
+    showAuthMessage("Member sign-in is temporarily unavailable. Please refresh and try again.", "error");
+  }
+}
+
+function requireMember(){
+  if(currentUser) return true;
+  openAuth();
+  showAuthMessage("Please log in or create a member account to use this feature.");
+  return false;
+}
 
 function persist(){
   localStorage.setItem(STORAGE_KEY,JSON.stringify(posts));
@@ -324,6 +519,7 @@ $("avatarUpload").addEventListener("change",async e=>{
 });
 
 function openCreate(){
+  if(!requireMember())return;
   selectedPhoto="";
   $("caption").value="";
   $("photoUpload").value="";
@@ -333,6 +529,7 @@ function openCreate(){
 function closeModal(id){$(id).classList.remove("open");}
 
 function createPost(){
+  if(!requireMember())return;
   const caption=$("caption").value.trim();
   if(!caption && !selectedPhoto){
     alert("Add a caption or a photo first ♡");
@@ -380,6 +577,7 @@ function showSaved(){
 }
 
 function openProfile(){
+  if(!requireMember())return;
   selectedAvatar="";
   $("profileName").value=profile.name;
   $("profileDisplay").textContent=profile.name;
@@ -387,10 +585,19 @@ function openProfile(){
   $("profileModal").classList.add("open");
 }
 
-function saveProfile(){
+async function saveProfile(){
+  if(!requireMember())return;
   profile.name=$("profileName").value.trim()||"Luxe Member";
   if(selectedAvatar)profile.photo=selectedAvatar;
   persist();
+  try{
+    const { error } = await supabaseClient.from("profiles")
+      .update({ display_name:profile.name })
+      .eq("id", currentUser.id);
+    if(error) throw error;
+  }catch(error){
+    alert("Your profile name was saved on this device, but not synced to your member profile: " + error.message);
+  }
   closeModal("profileModal");
   render();
   updateAvatar();
@@ -502,6 +709,7 @@ $("categories").addEventListener("click",e=>{
 
 updateAvatar();
 render();
+initializeMemberAuth();
 </script>
 </body>
 </html>
